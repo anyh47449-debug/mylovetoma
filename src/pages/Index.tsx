@@ -54,13 +54,17 @@ const Index = () => {
       {/* Mouse-follow glow */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 -z-10 opacity-60 blur-3xl transition-opacity duration-500"
+        className={`pointer-events-none fixed inset-0 -z-10 blur-3xl transition-opacity duration-700 ${
+          isMusicPlaying ? "opacity-0" : "opacity-60"
+        }`}
         style={glowStyle}
       />
 
       {/* Floating romantic hearts background */}
       <div
-        className={`romantic-hearts-layer ${isMusicPlaying ? "animate-love-beat-glow" : ""}`}
+        className={`romantic-hearts-layer transition-opacity duration-700 ${
+          isMusicPlaying ? "opacity-0" : "opacity-100"
+        }`}
         aria-hidden
       >
         {Array.from({ length: 16 }).map((_, index) => (
@@ -158,17 +162,32 @@ const Index = () => {
         <section className="flex w-full max-w-4xl flex-col items-center gap-6 text-center animate-fade-in">
 
           <div className="relative inline-flex items-center justify-center">
+            {/* Outer glow that pulses from the edges مع الموسيقى */}
             <motion.div
-              className="absolute -inset-6 rounded-[2.5rem] opacity-70"
+              className="absolute -inset-7 rounded-[2.7rem]"
               style={{
                 backgroundImage:
                   "var(--romantic-gradient), radial-gradient(circle at 10% 0%, hsl(var(--accent) / 0.7), transparent 60%)",
               }}
-              animate={{
-                opacity: [0.4, 0.9, 0.6],
-                scale: [0.98, 1.03, 1],
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              animate={
+                isMusicPlaying
+                  ? {
+                      opacity: [0.3, 0.9, 0.5],
+                      scale: [0.96, 1.06, 1],
+                    }
+                  : {
+                      opacity: [0.4, 0.9, 0.6],
+                      scale: [0.98, 1.03, 1],
+                    }
+              }
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            {/* Ring on the edges يشع أكثر لما تشتغل الموسيقى */}
+            <div
+              className={`pointer-events-none absolute -inset-1 rounded-[2.4rem] border border-primary/60 shadow-[0_0_40px_hsl(var(--romantic-heart-soft)/0.9)] transition-opacity duration-500 ${
+                isMusicPlaying ? "opacity-100" : "opacity-0"
+              }`}
             />
 
             <motion.button
@@ -205,6 +224,22 @@ const Index = () => {
                   </motion.span>
                 </div>
               </div>
+
+              {/* Equalizer lines in the center تظهر فقط مع الموسيقى */}
+              {isMusicPlaying && (
+                <div className="pointer-events-none absolute inset-y-2 left-1/2 flex -translate-x-1/2 items-end gap-[3px]">
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <span
+                      key={index}
+                      className="h-6 w-[3px] rounded-full bg-gradient-to-t from-primary via-accent to-primary animate-love-beat-heart shadow-[0_0_14px_hsl(var(--romantic-heart-soft)/0.9)]"
+                      style={{
+                        animationDelay: `${index * 0.04}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
               <Heart className="h-7 w-7 text-primary" aria-hidden />
             </motion.button>
           </div>
