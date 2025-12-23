@@ -267,18 +267,18 @@ const Index = () => {
 
       {/* Love music fake beat bar */}
       {isMusicPlaying && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-end justify-center pb-2">
+        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-end justify-center">
           <div
-            className="pointer-events-auto flex h-8 w-full max-w-4xl items-end gap-1 rounded-full border border-border/70 bg-background/90 px-3 py-1.5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl animate-love-beat-glow"
+            className="pointer-events-auto flex h-10 w-full items-end gap-[3px] bg-background/80 px-2 pt-1 shadow-[0_-10px_40px_hsl(var(--romantic-heart-soft)/0.9)] backdrop-blur-xl"
             aria-hidden
           >
-            {Array.from({ length: 18 }).map((_, index) => (
+            {Array.from({ length: 28 }).map((_, index) => (
               <span
                 key={index}
-                className="w-[5px] flex-1 rounded-full bg-gradient-to-t from-primary via-accent to-primary animate-love-beat-heart"
+                className="flex-1 rounded-t-full bg-gradient-to-t from-primary via-accent to-primary animate-love-beat-heart shadow-[0_0_22px_hsl(var(--romantic-heart-soft)/0.9)]"
                 style={{
-                  height: `${10 + ((index * 7) % 24)}px`,
-                  animationDelay: `${index * 0.08}s`,
+                  height: `${14 + ((index * 11) % 34)}px`,
+                  animationDelay: `${index * 0.05}s`,
                 }}
               />
             ))}
