@@ -12,6 +12,34 @@ const Index = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  const LYRICS_LINES = [
+    "Strange light revolves around you",
+    "You float across the room",
+    "Your touch is made of something",
+    "Heaven can’t hold a candle to",
+    "You’re made of somethin’ new",
+    "",
+    "Let’s not get complicated",
+    "Let’s just enjoy the view",
+    "It’s hard to be a human",
+    "So much to put an answer to",
+    "But that’s just what we do",
+    "",
+    "God only knows where this could go",
+    "And even if our love starts to grow outta control",
+    "And you and me go up in flames",
+    "Heaven won’t be the same",
+    "",
+    "I’m havin’ revelations",
+    "You dance across the floor",
+    "Beyond infatuation",
+    "How I obsessively adore you",
+    "That’s what I do",
+    "I believe I believe, I could die in your kiss",
+    "No it doesn’t get, doesn’t get better than this",
+    "",
+    "(Heaven won’t be the same)",
+  ];
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -96,6 +124,40 @@ const Index = () => {
           <source src="/video/love-bg.mp4" type="video/mp4" />
         </video>
       </div>
+
+      {/* Lyrics floating in the background مع الأغنية */}
+      {isMusicPlaying && (
+        <motion.div
+          className="pointer-events-none fixed inset-0 -z-15 flex items-center justify-center px-6 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 0.95, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+        >
+          <div className="max-w-3xl rounded-3xl bg-background/45 p-6 shadow-[var(--romantic-card-glow)] backdrop-blur-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-3">
+              Heaven · Lyrics
+            </p>
+            <div className="max-h-[60vh] space-y-1 overflow-hidden text-sm leading-relaxed text-[hsl(var(--romantic-text-soft))] sm:text-base">
+              {LYRICS_LINES.map((line, index) => (
+                <motion.p
+                  key={index}
+                  className="whitespace-pre-wrap"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: [0, 0.7, 0.9, 0.2], y: [10, 0, 0, -5] }}
+                  transition={{
+                    duration: 8,
+                    delay: index * 0.22,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  {line}
+                </motion.p>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Grain & overlay */}
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.35),_transparent_60%)]" />
