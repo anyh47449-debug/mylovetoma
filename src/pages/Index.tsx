@@ -228,15 +228,15 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Equalizer lines في الوسط – حركة ناعمة ومتناسقة */}
+              {/* Equalizer lines في الوسط – حركة ناعمة ومتناسقة وتحت الاسم */}
               {isMusicPlaying && (
-                <div className="pointer-events-none absolute inset-y-2 left-1/2 flex -translate-x-1/2 items-end gap-[3px]">
+                <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 items-end gap-[3px]">
                   {Array.from({ length: 9 }).map((_, index) => {
                     const base = 0.7 + (index % 3) * 0.2; // قيم قريبة لبعض لإحساس متناسق
                     return (
                       <motion.span
                         key={index}
-                        className="h-6 w-[3px] origin-bottom rounded-full bg-gradient-to-t from-primary via-accent to-primary shadow-[0_0_10px_hsl(var(--romantic-heart-soft)/0.6)]"
+                        className="h-4 w-[3px] origin-bottom rounded-full bg-gradient-to-t from-primary via-accent to-primary shadow-[0_0_10px_hsl(var(--romantic-heart-soft)/0.6)]"
                         animate={{ scaleY: [base, base + 0.35, base - 0.2, base] }}
                         transition={{
                           duration: 1.4,
