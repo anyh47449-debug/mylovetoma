@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Heart, Sparkles, Gamepad2, Music, Pause } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Heart, Sparkles, Gamepad2, Music, Pause, Cherry } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [isTransitioningToGames, setIsTransitioningToGames] = useState(false);
+  const navigate = useNavigate();
 
   const LOVE_MUSIC_TRACK = "/audio/Niall_Horan_-_Heaven_Official_Video.mp3";
 
@@ -171,7 +173,15 @@ const Index = () => {
     });
   };
 
+  const handleGoToMiniGames = () => {
+    setIsTransitioningToGames(true);
+    playSfx("games");
 
+    // ننتظر الأنيميشن (كرز -> جويستك) ثم ننتقل لصفحة الميني غيمز
+    setTimeout(() => {
+      navigate("/games");
+    }, 1600);
+  };
   return (
     <div className="relative min-h-screen overflow-hidden">
 
