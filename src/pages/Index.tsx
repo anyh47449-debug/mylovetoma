@@ -43,7 +43,7 @@ const Index = () => {
 
 
   return (
-    <div className={`relative min-h-screen overflow-hidden ${isMusicPlaying ? "animate-love-dance" : ""}`}>
+    <div className="relative min-h-screen overflow-hidden">
 
       {/* SEO main heading */}
       <h1 className="sr-only">
@@ -58,11 +58,14 @@ const Index = () => {
       />
 
       {/* Floating romantic hearts background */}
-      <div className="romantic-hearts-layer" aria-hidden>
+      <div
+        className={`romantic-hearts-layer ${isMusicPlaying ? "animate-love-beat-glow" : ""}`}
+        aria-hidden
+      >
         {Array.from({ length: 16 }).map((_, index) => (
           <span
             key={index}
-            className="floating-heart"
+            className={`floating-heart ${isMusicPlaying ? "animate-love-beat-heart" : ""}`}
             style={{
               left: `${5 + ((index * 6) % 90)}%`,
               animationDelay: `${index * 0.9}s`,
