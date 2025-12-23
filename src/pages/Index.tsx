@@ -162,26 +162,30 @@ const Index = () => {
         <motion.section
           className="flex w-full max-w-4xl flex-col items-center gap-6 text-center animate-fade-in"
           initial={{ opacity: 1, y: 0 }}
-          animate={isMusicPlaying ? { y: 40 } : { y: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          animate={isMusicPlaying ? { y: 140 } : { y: 0 }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
         >
           <motion.div
             className="relative inline-flex items-center justify-center"
             animate={isMusicPlaying ? { scale: 1.02 } : { scale: 1 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
-            {/* Outer glow – هادئ أكثر */}
+            {/* Outer glow – يتحرك فقط مع الموسيقى */}
             <motion.div
               className="absolute -inset-7 rounded-[2.7rem]"
               style={{
                 backgroundImage:
                   "var(--romantic-gradient), radial-gradient(circle at 10% 0%, hsl(var(--accent) / 0.7), transparent 60%)",
               }}
-              animate={{
-                opacity: [0.4, 0.9, 0.6],
-                scale: [0.98, 1.03, 1],
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              animate={
+                isMusicPlaying
+                  ? {
+                      opacity: [0.45, 0.9, 0.65],
+                      scale: [0.98, 1.04, 1],
+                    }
+                  : { opacity: 0.55, scale: 1 }
+              }
+              transition={{ duration: 5, repeat: isMusicPlaying ? Infinity : 0, ease: "easeInOut" }}
             />
 
             {/* Soft ring on the edges */}
@@ -224,18 +228,26 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Equalizer lines in the center – بدون نبض مجنون */}
+              {/* Equalizer lines في الوسط – حركة ناعمة ومتناسقة */}
               {isMusicPlaying && (
                 <div className="pointer-events-none absolute inset-y-2 left-1/2 flex -translate-x-1/2 items-end gap-[3px]">
-                  {Array.from({ length: 10 }).map((_, index) => (
-                    <span
-                      key={index}
-                      className="h-5 w-[2.5px] rounded-full bg-gradient-to-t from-primary via-accent to-primary shadow-[0_0_10px_hsl(var(--romantic-heart-soft)/0.6)]"
-                      style={{
-                        opacity: 0.9 - index * 0.04,
-                      }}
-                    />
-                  ))}
+                  {Array.from({ length: 9 }).map((_, index) => {
+                    const base = 0.7 + (index % 3) * 0.2; // قيم قريبة لبعض لإحساس متناسق
+                    return (
+                      <motion.span
+                        key={index}
+                        className="h-6 w-[3px] origin-bottom rounded-full bg-gradient-to-t from-primary via-accent to-primary shadow-[0_0_10px_hsl(var(--romantic-heart-soft)/0.6)]"
+                        animate={{ scaleY: [base, base + 0.35, base - 0.2, base] }}
+                        transition={{
+                          duration: 1.4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: index * 0.08,
+                        }}
+                        style={{ opacity: 0.95 - index * 0.05 }}
+                      />
+                    );
+                  })}
                 </div>
               )}
 
