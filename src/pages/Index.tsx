@@ -12,43 +12,82 @@ const Index = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const LYRICS_LINES = [
-    "Strange light revolves around you",
-    "You float across the room",
-    "Your touch is made of something",
-    "Heaven can’t hold a candle to",
-    "You’re made of somethin’ new",
-    "",
-    "Let’s not get complicated",
-    "Let’s just enjoy the view",
-    "It’s hard to be a human",
-    "So much to put an answer to",
-    "But that’s just what we do",
-    "",
-    "God only knows where this could go",
-    "And even if our love starts to grow outta control",
-    "And you and me go up in flames",
-    "Heaven won’t be the same",
-    "",
-    "I’m havin’ revelations",
-    "You dance across the floor",
-    "Beyond infatuation",
-    "How I obsessively adore you",
-    "That’s what I do",
-    "I believe I believe, I could die in your kiss",
-    "No it doesn’t get, doesn’t get better than this",
-    "",
-    "(Heaven won’t be the same)",
+  const LYRICS_TIMED = [
+    { time: 0, text: "♪♪♪" },
+    { time: 15, text: "♪ STRANGE LIGHT REVOLVES AROUND YOU ♪" },
+    { time: 18, text: "♪ YOU FLOAT ACROSS THE ROOM ♪" },
+    { time: 20, text: "♪ YOUR TOUCH IS MADE OF SOMETHING ♪" },
+    { time: 23, text: "♪ HEAVEN CAN’T HOLD A CANDLE TO ♪" },
+    { time: 28, text: "♪ YOU’RE MADE OF SOMETHIN’ NEW ♪" },
+    { time: 31, text: "♪ LET’S NOT GET COMPLICATED ♪" },
+    { time: 33, text: "♪ LET’S JUST ENJOY THE VIEW ♪" },
+    { time: 36, text: "♪ IT’S HARD TO BE A HUMAN ♪" },
+    { time: 39, text: "♪ SO MUCH TO PUT AN ANSWER TO ♪" },
+    { time: 44, text: "♪ BUT THAT’S JUST WHAT WE DO ♪" },
+    { time: 46, text: "♪ GOD ONLY KNOWS WHERE THIS COULD GO ♪" },
+    { time: 50, text: "♪ AND EVEN IF OUR LOVE STARTS TO GROW OUTTA CONTROL ♪" },
+    { time: 55, text: "♪ AND YOU AND ME GO UP IN FLAMES ♪" },
+    { time: 60, text: "♪ HEAVEN WON’T BE THE SAME ♪" },
+    { time: 67, text: "♪ I’M HAVIN’ REVELATIONS ♪" },
+    { time: 70, text: "♪ YOU DANCE ACROSS THE FLOOR ♪" },
+    { time: 73, text: "♪ BEYOND INFATUATION ♪" },
+    { time: 75, text: "♪ HOW I OBSESSIVELY ADORE YOU ♪" },
+    { time: 81, text: "♪ THAT’S WHAT I DO ♪" },
+    { time: 85, text: "♪ I COULD DIE IN YOUR KISS ♪" },
+    { time: 88, text: "♪ NO IT DOESN’T GET, DOESN’T GET BETTER THAN THIS ♪" },
+    { time: 93, text: "♪ GOD ONLY KNOWS WHERE THIS COULD GO ♪" },
+    { time: 97, text: "♪ AND EVEN IF OUR LOVE STARTS TO GROW OUTTA CONTROL ♪" },
+    { time: 102, text: "♪ AND YOU AND ME GO UP IN FLAMES ♪" },
+    { time: 107, text: "♪ HEAVEN WON’T BE THE SAME ♪" },
+    { time: 109, text: "♪ GOD ONLY KNOWS WHERE THIS COULD GO ♪" },
+    { time: 113, text: "♪ AND EVEN IF OUR LOVE STARTS TO GROW OUTTA CONTROL ♪" },
+    { time: 118, text: "♪ AND YOU AND ME GO UP IN FLAMES ♪" },
+    { time: 122, text: "♪ HEAVEN WON’T BE THE SAME ♪" },
+    { time: 127, text: "♪ (HEAVEN WON’T BE THE SAME) ♪" },
+    { time: 135, text: "♪ I BELIEVE I BELIEVE, I COULD DIE IN YOUR KISS ♪" },
+    { time: 140, text: "♪ NO IT DOESN’T GET, DOESN’T GET BETTER THAN, BETTER THAN THIS ♪" },
+    { time: 148, text: "♪ GOD ONLY KNOWS WHERE THIS COULD GO ♪" },
+    { time: 152, text: "♪ AND EVEN IF OUR LOVE STARTS TO GROW OUTTA CONTROL ♪" },
+    { time: 157, text: "♪ AND YOU AND ME GO UP IN FLAMES ♪" },
+    { time: 161, text: "♪ HEAVEN WON’T BE THE SAME ♪" },
+    { time: 163, text: "♪ GOD ONLY KNOWS WHERE THIS COULD GO ♪" },
+    { time: 167, text: "♪ AND EVEN IF OUR LOVE STARTS TO GROW OUTTA CONTROL ♪" },
+    { time: 172, text: "♪ AND YOU AND ME GO UP IN FLAMES ♪" },
+    { time: 177, text: "♪ HEAVEN WON’T BE THE SAME ♪" },
   ];
+
+  const [currentLyricIndex, setCurrentLyricIndex] = useState(0);
+
   useEffect(() => {
-    const handleMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
+    let frameId: number;
+
+    const syncLyrics = () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+
+      const current = audio.currentTime;
+      let activeIndex = 0;
+
+      for (let i = 0; i < LYRICS_TIMED.length; i++) {
+        if (current >= LYRICS_TIMED[i].time) {
+          activeIndex = i;
+        } else {
+          break;
+        }
+      }
+
+      setCurrentLyricIndex(activeIndex);
+      frameId = requestAnimationFrame(syncLyrics);
     };
 
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, []);
+    if (isMusicPlaying) {
+      frameId = requestAnimationFrame(syncLyrics);
+    }
 
+    return () => {
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, [isMusicPlaying]);
   const glowStyle = useMemo(
     () => ({
       background: `radial-gradient(circle at ${cursorPos.x}px ${cursorPos.y}px, hsl(var(--primary) / 0.55), transparent 60%)`,
@@ -134,26 +173,29 @@ const Index = () => {
           transition={{ duration: 1.2, ease: "easeInOut" }}
         >
           <div className="max-w-3xl rounded-3xl bg-background/45 p-6 shadow-[var(--romantic-card-glow)] backdrop-blur-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-3">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               Heaven · Lyrics
             </p>
             <div className="max-h-[60vh] space-y-1 overflow-hidden text-sm leading-relaxed text-[hsl(var(--romantic-text-soft))] sm:text-base">
-              {LYRICS_LINES.map((line, index) => (
-                <motion.p
-                  key={index}
-                  className="whitespace-pre-wrap"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: [0, 0.7, 0.9, 0.2], y: [10, 0, 0, -5] }}
-                  transition={{
-                    duration: 8,
-                    delay: index * 0.22,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  {line}
-                </motion.p>
-              ))}
+              {LYRICS_TIMED.map((line, index) => {
+                const distance = Math.abs(index - currentLyricIndex);
+                const isActive = index === currentLyricIndex;
+                const opacity = distance === 0 ? 1 : distance === 1 ? 0.6 : 0.2;
+
+                return (
+                  <motion.p
+                    key={index}
+                    className={`whitespace-pre-wrap transition-colors duration-400 ${
+                      isActive ? "text-primary" : "text-[hsl(var(--romantic-text-soft))]"
+                    }`}
+                    style={{ opacity }}
+                    initial={false}
+                    animate={{ y: isActive ? -2 : 0 }}
+                  >
+                    {line.text}
+                  </motion.p>
+                );
+              })}
             </div>
           </div>
         </motion.div>
