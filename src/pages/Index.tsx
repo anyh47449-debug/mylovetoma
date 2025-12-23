@@ -10,6 +10,7 @@ const Index = () => {
   const LOVE_MUSIC_TRACK = "/audio/Niall_Horan_-_Heaven_Official_Video.mp3";
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
@@ -81,7 +82,8 @@ const Index = () => {
       {/* Background video layer (preloaded, fades in with music) */}
       <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
         <video
-          className={`h-full w-full object-cover transition-opacity duration-700 ${
+          ref={videoRef}
+          className={`h-full w-full object-cover transition-opacity duration-150 ${
             isMusicPlaying ? "opacity-40 mix-blend-screen" : "opacity-0"
           }`}
           autoPlay
@@ -103,15 +105,24 @@ const Index = () => {
           <button
             type="button"
             onClick={() => {
-              const el = audioRef.current;
-              if (!el) return;
+              const audioEl = audioRef.current;
+              const vidEl = videoRef.current;
+              if (!audioEl) return;
+
               if (isMusicPlaying) {
-                el.pause();
+                audioEl.pause();
+                vidEl?.pause();
                 setIsMusicPlaying(false);
               } else {
-                void el.play().then(() => setIsMusicPlaying(true)).catch(() => {
-                  // ignore play errors
-                });
+                void audioEl
+                  .play()
+                  .then(() => {
+                    setIsMusicPlaying(true);
+                    vidEl?.play().catch(() => {});
+                  })
+                  .catch(() => {
+                    // ignore play errors
+                  });
               }
             }}
             className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
