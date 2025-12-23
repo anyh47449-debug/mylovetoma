@@ -175,7 +175,9 @@ const Index = () => {
               type="button"
               whileHover={{ scale: 1.04, rotate: -0.5 }}
               whileTap={{ scale: 0.97, rotate: 0.5 }}
-              className="relative flex items-center gap-3 rounded-[2rem] border border-border/60 bg-gradient-to-br from-secondary/70 via-card/90 to-secondary/40 px-10 py-5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl"
+              className={`relative flex items-center gap-3 rounded-[2rem] border border-border/60 bg-gradient-to-br from-secondary/70 via-card/90 to-secondary/40 px-10 py-5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl ${
+                isMusicPlaying ? "animate-love-beat-heart" : ""
+              }`}
             >
               <Sparkles className="h-7 w-7 text-accent" aria-hidden />
               <div className="flex flex-col items-start">
@@ -218,7 +220,12 @@ const Index = () => {
         </section>
  
         {/* Mini games + sections overview */}
-        <section className="w-full max-w-5xl animate-enter">
+        <motion.section
+          className="w-full max-w-5xl animate-enter"
+          initial={{ opacity: 1, y: 0 }}
+          animate={isMusicPlaying ? { opacity: 0, y: 40 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
           <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
             {/* خانة: الميني غيمز البنفسجية */}
             <article
@@ -296,29 +303,9 @@ const Index = () => {
             </article>
 
           </div>
-        </section>
+        </motion.section>
       </main>
 
-      {/* Love music fake beat bar */}
-      {isMusicPlaying && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-end justify-center">
-          <div
-            className="pointer-events-auto flex h-10 w-full items-end gap-[3px] bg-background/80 px-2 pt-1 shadow-[0_-10px_40px_hsl(var(--romantic-heart-soft)/0.9)] backdrop-blur-xl"
-            aria-hidden
-          >
-            {Array.from({ length: 28 }).map((_, index) => (
-              <span
-                key={index}
-                className="flex-1 rounded-t-full bg-gradient-to-t from-primary via-accent to-primary animate-love-beat-heart shadow-[0_0_22px_hsl(var(--romantic-heart-soft)/0.9)]"
-                style={{
-                  height: `${14 + ((index * 11) % 34)}px`,
-                  animationDelay: `${index * 0.05}s`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
