@@ -217,12 +217,15 @@ const Index = () => {
             top: `${extraEvents[activeExtraIndex].y}vh`,
             left: `${extraEvents[activeExtraIndex].x}vw`,
           }}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 0.95, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          initial={{ opacity: 0, y: 12, x: -8 }}
+          animate={{
+            opacity: [0, 0.9, 0],
+            y: [12, 0, -12],
+            x: [-8, 0, 8],
+          }}
+          transition={{ duration: 3.2, ease: "easeInOut" }}
         >
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-[0_0_12px_hsl(var(--romantic-heart-soft)/0.8)]">
+          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-[0_0_14px_hsl(var(--romantic-heart-soft)/0.85)]">
             {extraEvents[activeExtraIndex]?.text}
           </span>
         </motion.span>
