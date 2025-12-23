@@ -69,8 +69,9 @@ const Index = () => {
   type ExtraEvent = {
     time: number;
     text: string;
+    x: number; // نسبة أفقية على الشاشة
+    y: number; // نسبة عمودية على الشاشة
   };
-
   const [currentLyricIndex, setCurrentLyricIndex] = useState(0);
   const [extraEvents, setExtraEvents] = useState<ExtraEvent[]>([]);
   const [activeExtraIndex, setActiveExtraIndex] = useState<number | null>(null);
@@ -107,6 +108,8 @@ const Index = () => {
     const events: ExtraEvent[] = EXTRA_MESSAGES.map((text) => ({
       text,
       time: generateRandomTime(),
+      x: 10 + Math.random() * 80,
+      y: 15 + Math.random() * 65,
     })).sort((a, b) => a.time - b.time);
 
     setExtraEvents(events);
@@ -206,6 +209,25 @@ const Index = () => {
         ))}
       </div>
 
+      {/* Floating random love messages layer */}
+      {isMusicPlaying && activeExtraIndex !== null && extraEvents[activeExtraIndex] && (
+        <motion.span
+          className="pointer-events-none fixed z-0 max-w-[60vw] text-xs font-semibold text-[hsl(var(--romantic-text-soft))] sm:text-sm"
+          style={{
+            top: `${extraEvents[activeExtraIndex].y}vh`,
+            left: `${extraEvents[activeExtraIndex].x}vw`,
+          }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 0.95, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
+          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-[0_0_12px_hsl(var(--romantic-heart-soft)/0.8)]">
+            {extraEvents[activeExtraIndex]?.text}
+          </span>
+        </motion.span>
+      )}
+
       {/* Background video layer (preloaded, tightly synced with music) */}
       <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
         <video
@@ -281,24 +303,6 @@ const Index = () => {
             className="hidden"
           />
         </div>
-
-        {/* Toma hero name */}
-
-        {isMusicPlaying && activeExtraIndex !== null && extraEvents[activeExtraIndex] && (
-          <motion.div
-            className="pointer-events-none mb-4 flex w-full max-w-3xl justify-center"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-          >
-            <div className="inline-flex max-w-full items-center justify-center rounded-full border border-border/70 bg-background/70 px-4 py-1.5 text-xs text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-sm">
-              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text font-semibold text-transparent">
-                {extraEvents[activeExtraIndex]?.text}
-              </span>
-            </div>
-          </motion.div>
-        )}
 
         {/* Toma hero name */}
         <motion.section
