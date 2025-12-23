@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Sparkles, Gamepad2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -133,6 +134,13 @@ const Index = () => {
             <p className="max-w-2xl text-sm text-muted-foreground">
               اختبرت مشاعري في كوكب الألعاب: قبّلات بنظام الككرز، رسائل حب مخفيّة، وتحديات لطيفة لك أنت فقط.
             </p>
+            <Link
+              to="/games"
+              className="mt-3 inline-flex items-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              ادخلي صفحة الألعاب الكاملة
+              <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
+            </Link>
           </header>
 
           <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
