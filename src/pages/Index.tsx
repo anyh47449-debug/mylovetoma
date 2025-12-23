@@ -1,10 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Heart, Sparkles, Gamepad2 } from "lucide-react";
+import { Heart, Sparkles, Gamepad2, Music, Pause } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+
+  const bgTracks = useMemo(
+    () => [
+      "/audio/romantic-1.mp3",
+      "/audio/romantic-2.mp3",
+      "/audio/romantic-3.mp3",
+    ],
+    []
+  );
+
+  const [currentTrack] = useState(
+    () => bgTracks[Math.floor(Math.random() * bgTracks.length)]
+  );
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
@@ -21,6 +37,21 @@ const Index = () => {
     }),
     [cursorPos.x, cursorPos.y]
   );
+
+  const playSfx = (type: "games" | "memories" | "letter") => {
+    const sources: Record<typeof type, string> = {
+      games: "/audio/sfx-games.mp3",
+      memories: "/audio/sfx-memories.mp3",
+      letter: "/audio/sfx-letter.mp3",
+    } as const;
+
+    const audio = new Audio(sources[type]);
+    audio.volume = 0.6;
+    void audio.play().catch(() => {
+      // ignore play errors (e.g. if user blocked sound)
+    });
+  };
+
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -58,8 +89,47 @@ const Index = () => {
       <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.35),_transparent_60%)]" />
 
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-10 px-4 py-10">
+        {/* Music control & hidden player */}
+        <div className="pointer-events-none absolute right-4 top-4 z-30 flex items-center justify-end sm:right-6 sm:top-6">
+          <button
+            type="button"
+            onClick={() => {
+              const el = audioRef.current;
+              if (!el) return;
+              if (isMusicPlaying) {
+                el.pause();
+                setIsMusicPlaying(false);
+              } else {
+                void el.play().then(() => setIsMusicPlaying(true)).catch(() => {
+                  // ignore play errors
+                });
+              }
+            }}
+            className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {isMusicPlaying ? (
+              <Pause className="h-3.5 w-3.5 text-primary" aria-hidden />
+            ) : (
+              <Music className="h-3.5 w-3.5 text-primary" aria-hidden />
+            )}
+            <span className="hidden sm:inline">موسيقى الحب</span>
+          </button>
+
+          <audio
+            ref={(el) => {
+              if (el) {
+                audioRef.current = el;
+                el.loop = true;
+              }
+            }}
+            src={currentTrack}
+            className="hidden"
+          />
+        </div>
+
         {/* Toma hero name */}
         <section className="flex w-full max-w-4xl flex-col items-center gap-6 text-center animate-fade-in">
+
           <div className="relative inline-flex items-center justify-center">
             <motion.div
               className="absolute -inset-6 rounded-[2.5rem] opacity-70"
@@ -124,7 +194,10 @@ const Index = () => {
         <section className="w-full max-w-5xl animate-enter">
           <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
             {/* خانة: الميني غيمز البنفسجية */}
-            <article className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 shadow-[0_18px_40px_rgba(0,0,0,0.55)] backdrop-blur-xl">
+            <article
+              className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 shadow-[0_18px_40px_rgba(0,0,0,0.55)] backdrop-blur-xl"
+              onClick={() => playSfx("games")}
+            >
               <div className="pointer-events-none absolute inset-x-0 -top-10 h-24 bg-[radial-gradient(circle_at_top,_hsl(var(--primary))_0%,_transparent_70%)] opacity-50 transition-opacity duration-500 group-hover:opacity-80" />
               <div className="relative flex flex-col gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
@@ -145,8 +218,12 @@ const Index = () => {
               </div>
             </article>
 
+
             {/* خانة: ألبوم / ذكريات توما */}
-            <article className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl">
+            <article
+              className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl"
+              onClick={() => playSfx("memories")}
+            >
               <div className="pointer-events-none absolute -right-8 -bottom-10 h-28 w-28 rounded-full bg-[radial-gradient(circle_at_center,hsl(var(--romantic-heart-soft)),transparent_70%)] opacity-60 group-hover:opacity-80" />
               <div className="relative flex flex-col gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
@@ -166,8 +243,12 @@ const Index = () => {
               </div>
             </article>
 
+
             {/* خانة: رسالة لتوما */}
-            <article className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl">
+            <article
+              className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl"
+              onClick={() => playSfx("letter")}
+            >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.06),_transparent_55%)] opacity-70 group-hover:opacity-90" />
               <div className="relative flex flex-col gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
@@ -186,6 +267,7 @@ const Index = () => {
                 </button>
               </div>
             </article>
+
           </div>
         </section>
       </main>
