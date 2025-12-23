@@ -65,7 +65,7 @@ const Index = () => {
         {Array.from({ length: 16 }).map((_, index) => (
           <span
             key={index}
-            className={`floating-heart ${isMusicPlaying ? "animate-love-beat-heart" : ""}`}
+            className="floating-heart"
             style={{
               left: `${5 + ((index * 6) % 90)}%`,
               animationDelay: `${index * 0.9}s`,
