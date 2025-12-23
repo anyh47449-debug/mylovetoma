@@ -264,6 +264,27 @@ const Index = () => {
           </div>
         </section>
       </main>
+
+      {/* Love music fake beat bar */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-end justify-center pb-3">
+        <div
+          className="pointer-events-auto flex items-end gap-1 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl"
+          aria-hidden
+        >
+          {Array.from({ length: 7 }).map((_, index) => (
+            <span
+              key={index}
+              className={`w-1.5 rounded-full bg-gradient-to-t from-primary to-accent ${
+                isMusicPlaying ? "animate-love-beat-heart" : ""
+              }`}
+              style={{
+                height: `${10 + (index % 4) * 6}px`,
+                animationDelay: isMusicPlaying ? `${index * 0.12}s` : undefined,
+              }}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
