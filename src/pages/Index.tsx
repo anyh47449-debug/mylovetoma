@@ -62,9 +62,7 @@ const Index = () => {
 
       {/* Floating romantic hearts background */}
       <div
-        className={`romantic-hearts-layer transition-opacity duration-700 ${
-          isMusicPlaying ? "opacity-0" : "opacity-100"
-        }`}
+        className="romantic-hearts-layer transition-opacity duration-700 opacity-100"
         aria-hidden
       >
         {Array.from({ length: 16 }).map((_, index) => (
@@ -228,23 +226,23 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Equalizer lines في الوسط – حركة ناعمة ومتناسقة وتحت الاسم */}
+              {/* Equalizer lines – على طول الحافة السفلية بدون تضارب مع الاسم */}
               {isMusicPlaying && (
-                <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 items-end gap-[3px]">
-                  {Array.from({ length: 9 }).map((_, index) => {
-                    const base = 0.7 + (index % 3) * 0.2; // قيم قريبة لبعض لإحساس متناسق
+                <div className="pointer-events-none absolute inset-x-10 bottom-2 flex items-end justify-center gap-[4px]">
+                  {Array.from({ length: 11 }).map((_, index) => {
+                    const base = 0.7 + ((index % 4) * 0.15);
                     return (
                       <motion.span
                         key={index}
                         className="h-4 w-[3px] origin-bottom rounded-full bg-gradient-to-t from-primary via-accent to-primary shadow-[0_0_10px_hsl(var(--romantic-heart-soft)/0.6)]"
-                        animate={{ scaleY: [base, base + 0.35, base - 0.2, base] }}
+                        animate={{ scaleY: [base, base + 0.3, base - 0.18, base] }}
                         transition={{
                           duration: 1.4,
                           repeat: Infinity,
                           ease: "easeInOut",
-                          delay: index * 0.08,
+                          delay: index * 0.06,
                         }}
-                        style={{ opacity: 0.95 - index * 0.05 }}
+                        style={{ opacity: 0.95 - index * 0.04 }}
                       />
                     );
                   })}
