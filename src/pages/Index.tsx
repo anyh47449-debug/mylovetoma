@@ -79,14 +79,13 @@ const Index = () => {
         ))}
       </div>
 
-      {/* Background video layer (preloaded, fades in with music) */}
+      {/* Background video layer (preloaded, tightly synced with music) */}
       <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
         <video
           ref={videoRef}
-          className={`h-full w-full object-cover transition-opacity duration-150 ${
+          className={`h-full w-full object-cover transition-opacity duration-75 ${
             isMusicPlaying ? "opacity-40 mix-blend-screen" : "opacity-0"
           }`}
-          autoPlay
           loop
           muted
           playsInline
@@ -114,11 +113,19 @@ const Index = () => {
                 vidEl?.pause();
                 setIsMusicPlaying(false);
               } else {
+                // ابدئي الاثنين من نفس اللحظة تقريبًا
+                audioEl.currentTime = 0;
+                if (vidEl) {
+                  vidEl.currentTime = 0;
+                }
+
                 void audioEl
                   .play()
                   .then(() => {
                     setIsMusicPlaying(true);
-                    vidEl?.play().catch(() => {});
+                    if (vidEl) {
+                      vidEl.play().catch(() => {});
+                    }
                   })
                   .catch(() => {
                     // ignore play errors
