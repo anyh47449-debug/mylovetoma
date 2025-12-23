@@ -7,18 +7,7 @@ const Index = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
 
-  const bgTracks = useMemo(
-    () => [
-      "/audio/romantic-1.mp3",
-      "/audio/romantic-2.mp3",
-      "/audio/romantic-3.mp3",
-    ],
-    []
-  );
-
-  const [currentTrack] = useState(
-    () => bgTracks[Math.floor(Math.random() * bgTracks.length)]
-  );
+  const LOVE_MUSIC_TRACK = "/audio/Niall_Horan_-_Heaven_Official_Video.mp3";
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -122,7 +111,7 @@ const Index = () => {
                 el.loop = true;
               }
             }}
-            src={currentTrack}
+            src={LOVE_MUSIC_TRACK}
             className="hidden"
           />
         </div>
