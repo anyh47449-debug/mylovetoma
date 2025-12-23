@@ -159,33 +159,34 @@ const Index = () => {
         </div>
 
         {/* Toma hero name */}
-        <section className="flex w-full max-w-4xl flex-col items-center gap-6 text-center animate-fade-in">
-
-          <div className="relative inline-flex items-center justify-center">
-            {/* Outer glow that pulses from the edges مع الموسيقى */}
+        <motion.section
+          className="flex w-full max-w-4xl flex-col items-center gap-6 text-center animate-fade-in"
+          initial={{ opacity: 1, y: 0 }}
+          animate={isMusicPlaying ? { y: 40 } : { y: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
+          <motion.div
+            className="relative inline-flex items-center justify-center"
+            animate={isMusicPlaying ? { scale: 1.02 } : { scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            {/* Outer glow – هادئ أكثر */}
             <motion.div
               className="absolute -inset-7 rounded-[2.7rem]"
               style={{
                 backgroundImage:
                   "var(--romantic-gradient), radial-gradient(circle at 10% 0%, hsl(var(--accent) / 0.7), transparent 60%)",
               }}
-              animate={
-                isMusicPlaying
-                  ? {
-                      opacity: [0.3, 0.9, 0.5],
-                      scale: [0.96, 1.06, 1],
-                    }
-                  : {
-                      opacity: [0.4, 0.9, 0.6],
-                      scale: [0.98, 1.03, 1],
-                    }
-              }
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              animate={{
+                opacity: [0.4, 0.9, 0.6],
+                scale: [0.98, 1.03, 1],
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             />
 
-            {/* Ring on the edges يشع أكثر لما تشتغل الموسيقى */}
+            {/* Soft ring on the edges */}
             <div
-              className={`pointer-events-none absolute -inset-1 rounded-[2.4rem] border border-primary/60 shadow-[0_0_40px_hsl(var(--romantic-heart-soft)/0.9)] transition-opacity duration-500 ${
+              className={`pointer-events-none absolute -inset-1 rounded-[2.4rem] border border-primary/50 shadow-[0_0_28px_hsl(var(--romantic-heart-soft)/0.6)] transition-opacity duration-500 ${
                 isMusicPlaying ? "opacity-100" : "opacity-0"
               }`}
             />
@@ -194,9 +195,7 @@ const Index = () => {
               type="button"
               whileHover={{ scale: 1.04, rotate: -0.5 }}
               whileTap={{ scale: 0.97, rotate: 0.5 }}
-              className={`relative flex items-center gap-3 rounded-[2rem] border border-border/60 bg-gradient-to-br from-secondary/70 via-card/90 to-secondary/40 px-10 py-5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl ${
-                isMusicPlaying ? "animate-love-beat-heart" : ""
-              }`}
+              className="relative flex items-center gap-3 rounded-[2rem] border border-border/60 bg-gradient-to-br from-secondary/70 via-card/90 to-secondary/40 px-10 py-5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl"
             >
               <Sparkles className="h-7 w-7 text-accent" aria-hidden />
               <div className="flex flex-col items-start">
@@ -207,8 +206,8 @@ const Index = () => {
                     animate={{
                       textShadow: [
                         "0 0 18px hsl(278 84% 64% / 0.8)",
-                        "0 0 36px hsl(312 82% 72% / 0.9)",
-                        "0 0 24px hsl(260 90% 70% / 0.7)",
+                        "0 0 30px hsl(312 82% 72% / 0.7)",
+                        "0 0 22px hsl(260 90% 70% / 0.6)",
                       ],
                     }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -225,15 +224,15 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Equalizer lines in the center تظهر فقط مع الموسيقى */}
+              {/* Equalizer lines in the center – بدون نبض مجنون */}
               {isMusicPlaying && (
                 <div className="pointer-events-none absolute inset-y-2 left-1/2 flex -translate-x-1/2 items-end gap-[3px]">
                   {Array.from({ length: 10 }).map((_, index) => (
                     <span
                       key={index}
-                      className="h-6 w-[3px] rounded-full bg-gradient-to-t from-primary via-accent to-primary animate-love-beat-heart shadow-[0_0_14px_hsl(var(--romantic-heart-soft)/0.9)]"
+                      className="h-5 w-[2.5px] rounded-full bg-gradient-to-t from-primary via-accent to-primary shadow-[0_0_10px_hsl(var(--romantic-heart-soft)/0.6)]"
                       style={{
-                        animationDelay: `${index * 0.04}s`,
+                        opacity: 0.9 - index * 0.04,
                       }}
                     />
                   ))}
@@ -242,17 +241,22 @@ const Index = () => {
 
               <Heart className="h-7 w-7 text-primary" aria-hidden />
             </motion.button>
-          </div>
+          </motion.div>
 
-          <div className="mt-6 max-w-xl rounded-2xl border border-border/60 bg-background/40 px-5 py-4 text-sm text-muted-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-base">
+          <motion.div
+            className="mt-6 max-w-xl rounded-2xl border border-border/60 bg-background/40 px-5 py-4 text-sm text-muted-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-base"
+            initial={{ opacity: 1, y: 0 }}
+            animate={isMusicPlaying ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+          >
             <p className="leading-relaxed">
               هذه الصفحة هدية خاصة لك يا توما؛ كل لمعة، كل قلب، وكل حركة هنا مكتوبة بحبّ، ومصممة فقط لتقول:
             </p>
             <p className="mt-2 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-base font-semibold text-transparent sm:text-lg">
               أنت عالمي البنفسجي.
             </p>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
  
         {/* Mini games + sections overview */}
         <motion.section
