@@ -110,7 +110,7 @@ const Index = () => {
             </motion.button>
           </div>
 
-          <div className="max-w-xl rounded-2xl border border-border/60 bg-background/40 px-5 py-4 text-sm text-muted-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-base">
+          <div className="mt-6 max-w-xl rounded-2xl border border-border/60 bg-background/40 px-5 py-4 text-sm text-muted-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-base">
             <p className="leading-relaxed">
               هذه الصفحة هدية خاصة لك يا توما؛ كل لمعة، كل قلب، وكل حركة هنا مكتوبة بحبّ، ومصممة فقط لتقول:
             </p>
@@ -119,7 +119,7 @@ const Index = () => {
             </p>
           </div>
         </section>
-
+ 
         {/* Mini games + sections overview */}
         <section className="w-full max-w-5xl animate-enter">
           <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
