@@ -109,7 +109,8 @@ const Index = () => {
       text,
       time: generateRandomTime(),
       x: 10 + Math.random() * 80,
-      y: 15 + Math.random() * 65,
+      // نخلي البداية من المنطقة السفلية عشان تطلع لفوق مع القلوب
+      y: 72 + Math.random() * 18,
     })).sort((a, b) => a.time - b.time);
 
     setExtraEvents(events);
@@ -217,13 +218,12 @@ const Index = () => {
             top: `${extraEvents[activeExtraIndex].y}vh`,
             left: `${extraEvents[activeExtraIndex].x}vw`,
           }}
-          initial={{ opacity: 0, y: 12, x: -8 }}
+          initial={{ opacity: 0, translateY: 0 }}
           animate={{
             opacity: [0, 0.9, 0],
-            y: [12, 0, -12],
-            x: [-8, 0, 8],
+            translateY: [0, -40, -70],
           }}
-          transition={{ duration: 3.2, ease: "easeInOut" }}
+          transition={{ duration: 4, ease: "easeInOut" }}
         >
           <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-[0_0_14px_hsl(var(--romantic-heart-soft)/0.85)]">
             {extraEvents[activeExtraIndex]?.text}
