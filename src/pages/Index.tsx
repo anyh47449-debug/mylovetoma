@@ -116,28 +116,8 @@ const Index = () => {
           </p>
         </section>
 
-        {/* Mini games section */}
-        <section className="w-full max-w-5xl space-y-6 animate-enter">
-          <header className="flex flex-col items-center gap-2 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/40 px-4 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-              <Gamepad2 className="h-4 w-4 text-primary" aria-hidden />
-              <span>Mini Games · ألعاب حب لتوما</span>
-            </div>
-            <h2 className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-2xl font-semibold text-transparent sm:text-3xl">
-              خانة الميني غيمز البنفسجية
-            </h2>
-            <p className="max-w-2xl text-sm text-muted-foreground">
-              خانة الألعاب الخاصة بتوما: كل ميني غيم هناك تكمل قصة حبّنا البنفسجية بطريقتها.
-            </p>
-            <Link
-              to="/games"
-              className="mt-3 inline-flex items-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              ادخلي صفحة الألعاب الكاملة
-              <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
-            </Link>
-          </header>
-
+        {/* Mini games + sections overview */}
+        <section className="w-full max-w-5xl animate-enter">
           <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
             {/* خانة: الميني غيمز البنفسجية */}
             <article className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 shadow-[0_18px_40px_rgba(0,0,0,0.55)] backdrop-blur-xl">
