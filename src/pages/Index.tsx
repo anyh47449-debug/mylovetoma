@@ -56,44 +56,102 @@ const Index = () => {
     { time: 177, text: "♪ HEAVEN WON’T BE THE SAME ♪" },
   ];
 
+  const EXTRA_MESSAGES = [
+    "احبج مريتي",
+    "اعشقج",
+    "خلنتزوج",
+    "عليج الله مو شغلي حلو استاهل حلك",
+    "ترا انت حلوه",
+    "يعني شوفي عيونج واو",
+    "شسمه يعني احبج",
+  ];
+
+  type ExtraEvent = {
+    time: number;
+    text: string;
+  };
+
   const [currentLyricIndex, setCurrentLyricIndex] = useState(0);
-
-  useEffect(() => {
-    let frameId: number;
-
-    const syncLyrics = () => {
-      const audio = audioRef.current;
-      if (!audio) return;
-
-      const current = audio.currentTime;
-      let activeIndex = 0;
-
-      for (let i = 0; i < LYRICS_TIMED.length; i++) {
-        if (current >= LYRICS_TIMED[i].time) {
-          activeIndex = i;
-        } else {
-          break;
-        }
-      }
-
-      setCurrentLyricIndex(activeIndex);
-      frameId = requestAnimationFrame(syncLyrics);
-    };
-
-    if (isMusicPlaying) {
-      frameId = requestAnimationFrame(syncLyrics);
-    }
-
-    return () => {
-      if (frameId) cancelAnimationFrame(frameId);
-    };
-  }, [isMusicPlaying]);
+  const [extraEvents, setExtraEvents] = useState<ExtraEvent[]>([]);
+  const [activeExtraIndex, setActiveExtraIndex] = useState<number | null>(null);
   const glowStyle = useMemo(
     () => ({
       background: `radial-gradient(circle at ${cursorPos.x}px ${cursorPos.y}px, hsl(var(--primary) / 0.55), transparent 60%)`,
     }),
     [cursorPos.x, cursorPos.y]
   );
+
+  useEffect(() => {
+    // جهّز أوقات عشوائية للرسائل الإضافية بناءً على طول الأغنية
+    const audio = audioRef.current;
+    if (!audio || extraEvents.length > 0) return;
+
+    const duration = isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 180;
+    const minTime = 12; // ما نخليها في أول ثواني مرة
+    const maxTime = Math.max(duration - 10, minTime + 10);
+
+    const usedTimes: number[] = [];
+
+    const generateRandomTime = () => {
+      let t = minTime + Math.random() * (maxTime - minTime);
+      // نحاول نخلي بينهم على الأقل 6 ثواني
+      let tries = 0;
+      while (usedTimes.some((u) => Math.abs(u - t) < 6) && tries < 10) {
+        t = minTime + Math.random() * (maxTime - minTime);
+        tries++;
+      }
+      usedTimes.push(t);
+      return t;
+    };
+
+    const events: ExtraEvent[] = EXTRA_MESSAGES.map((text) => ({
+      text,
+      time: generateRandomTime(),
+    })).sort((a, b) => a.time - b.time);
+
+    setExtraEvents(events);
+  }, [extraEvents.length]);
+
+  useEffect(() => {
+    let frameId: number;
+
+    const syncLyricsAndExtras = () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+
+      const current = audio.currentTime;
+      let activeLyricIndex = 0;
+
+      for (let i = 0; i < LYRICS_TIMED.length; i++) {
+        if (current >= LYRICS_TIMED[i].time) {
+          activeLyricIndex = i;
+        } else {
+          break;
+        }
+      }
+
+      setCurrentLyricIndex(activeLyricIndex);
+
+      // ابحث عن رسالة عاطفية مناسبة للوقت الحالي
+      if (extraEvents.length > 0) {
+        const visibleWindow = 3; // مدة ظهور كل رسالة تقريباً
+        const foundIndex = extraEvents.findIndex(
+          (event) => current >= event.time && current <= event.time + visibleWindow
+        );
+        setActiveExtraIndex(foundIndex >= 0 ? foundIndex : null);
+      }
+
+      frameId = requestAnimationFrame(syncLyricsAndExtras);
+    };
+
+    if (isMusicPlaying) {
+      frameId = requestAnimationFrame(syncLyricsAndExtras);
+    }
+
+    return () => {
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, [isMusicPlaying, extraEvents]);
 
   const playSfx = (type: "games" | "memories" | "letter") => {
     const sources: Record<typeof type, string> = {
@@ -223,6 +281,24 @@ const Index = () => {
             className="hidden"
           />
         </div>
+
+        {/* Toma hero name */}
+
+        {isMusicPlaying && activeExtraIndex !== null && extraEvents[activeExtraIndex] && (
+          <motion.div
+            className="pointer-events-none mb-4 flex w-full max-w-3xl justify-center"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
+            <div className="inline-flex max-w-full items-center justify-center rounded-full border border-border/70 bg-background/70 px-4 py-1.5 text-xs text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-sm">
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text font-semibold text-transparent">
+                {extraEvents[activeExtraIndex]?.text}
+              </span>
+            </div>
+          </motion.div>
+        )}
 
         {/* Toma hero name */}
         <motion.section
