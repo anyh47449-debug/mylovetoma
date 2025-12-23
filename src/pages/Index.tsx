@@ -78,20 +78,21 @@ const Index = () => {
         ))}
       </div>
 
-      {/* Background video layer when music is playing */}
-      {isMusicPlaying && (
-        <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
-          <video
-            className="h-full w-full object-cover opacity-40 mix-blend-screen"
-            autoPlay
-            loop
-            muted
-            playsInline
-          >
-            <source src="/video/love-bg.mp4" type="video/mp4" />
-          </video>
-        </div>
-      )}
+      {/* Background video layer (preloaded, fades in with music) */}
+      <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
+        <video
+          className={`h-full w-full object-cover transition-opacity duration-700 ${
+            isMusicPlaying ? "opacity-40 mix-blend-screen" : "opacity-0"
+          }`}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+        >
+          <source src="/video/love-bg.mp4" type="video/mp4" />
+        </video>
+      </div>
 
       {/* Grain & overlay */}
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.35),_transparent_60%)]" />
