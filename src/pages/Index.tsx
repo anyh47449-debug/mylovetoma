@@ -164,44 +164,8 @@ const Index = () => {
         </video>
       </div>
 
-      {/* Lyrics floating in the background مع الأغنية */}
-      {isMusicPlaying && (
-        <motion.div
-          className="pointer-events-none fixed inset-0 -z-15 flex items-center justify-center px-6 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 0.95, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-        >
-          <div className="max-w-3xl rounded-3xl bg-background/45 p-6 shadow-[var(--romantic-card-glow)] backdrop-blur-2xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Heaven · Lyrics
-            </p>
-            <div className="max-h-[60vh] space-y-1 overflow-hidden text-sm leading-relaxed text-[hsl(var(--romantic-text-soft))] sm:text-base">
-              {LYRICS_TIMED.map((line, index) => {
-                const distance = Math.abs(index - currentLyricIndex);
-                const isActive = index === currentLyricIndex;
-                const opacity = distance === 0 ? 1 : distance === 1 ? 0.6 : 0.2;
-
-                return (
-                  <motion.p
-                    key={index}
-                    className={`whitespace-pre-wrap transition-colors duration-400 ${
-                      isActive ? "text-primary" : "text-[hsl(var(--romantic-text-soft))]"
-                    }`}
-                    style={{ opacity }}
-                    initial={false}
-                    animate={{ y: isActive ? -2 : 0 }}
-                  >
-                    {line.text}
-                  </motion.p>
-                );
-              })}
-            </div>
-          </div>
-        </motion.div>
-      )}
-
       {/* Grain & overlay */}
+      <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.35),_transparent_60%)]" />
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.35),_transparent_60%)]" />
 
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-10 px-4 py-10">
@@ -370,6 +334,39 @@ const Index = () => {
               أنت عالمي البنفسجي.
             </p>
           </motion.div>
+
+          {/* Lyrics section – منفصل عن الكرت، يشتغل مع الأغنية بدون نشاز */}
+          {isMusicPlaying && (
+            <section className="mt-6 w-full max-w-2xl rounded-2xl border border-border/60 bg-background/55 px-4 py-3 text-center text-sm text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-base">
+              <p className="mb-1 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+                Heaven · Lyrics
+              </p>
+              <div className="space-y-0.5">
+                {LYRICS_TIMED.map((line, index) => {
+                  const distance = Math.abs(index - currentLyricIndex);
+                  if (distance > 2) return null;
+                  const isActive = index === currentLyricIndex;
+                  const opacity = distance === 0 ? 1 : distance === 1 ? 0.6 : 0.32;
+
+                  return (
+                    <motion.p
+                      key={index}
+                      className={`text-xs sm:text-sm ${
+                        isActive
+                          ? "bg-gradient-to-r from-primary via-accent to-primary bg-clip-text font-semibold text-transparent"
+                          : "text-[hsl(var(--romantic-text-soft))]"
+                      }`}
+                      style={{ opacity }}
+                      initial={false}
+                      animate={{ y: isActive ? -2 : 0 }}
+                    >
+                      {line.text}
+                    </motion.p>
+                  );
+                })}
+              </div>
+            </section>
+          )}
         </motion.section>
  
         {/* Mini games + sections overview */}
