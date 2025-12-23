@@ -96,6 +96,13 @@ export default {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(100%)" },
         },
+        "love-dance": {
+          "0%": { transform: "translateY(0) rotate(0deg) scale(1)" },
+          "25%": { transform: "translateY(-4px) rotate(-0.6deg) scale(1.01)" },
+          "50%": { transform: "translateY(2px) rotate(0.6deg) scale(0.99)" },
+          "75%": { transform: "translateY(-3px) rotate(-0.4deg) scale(1.01)" },
+          "100%": { transform: "translateY(0) rotate(0deg) scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.24s ease-out",
@@ -108,6 +115,7 @@ export default {
         "slide-out-right": "slide-out-right 0.3s ease-out",
         enter: "fade-in 0.4s ease-out, scale-in 0.25s ease-out",
         exit: "fade-out 0.3s ease-out, scale-out 0.2s ease-out",
+        "love-dance": "love-dance 1.4s ease-in-out infinite",
       },
     },
   },

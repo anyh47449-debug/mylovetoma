@@ -43,7 +43,8 @@ const Index = () => {
 
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className={`relative min-h-screen overflow-hidden ${isMusicPlaying ? "animate-love-dance" : ""}`}>
+
       {/* SEO main heading */}
       <h1 className="sr-only">
         موقع هدية رومنسية بنفسجي لحبيبي توما مع تفاعل بصري مبهر وخانة ميني غيمز خاصة
