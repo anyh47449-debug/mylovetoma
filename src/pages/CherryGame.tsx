@@ -281,34 +281,18 @@ type WorldViewProps = {
 };
 
 const WorldView = ({ state, collected, cameraOffset }: WorldViewProps) => {
-  return (
-    <div className="relative h-64 w-full overflow-hidden rounded-xl border border-border/70 bg-[radial-gradient(circle_at_top,_rgba(120,81,169,0.4),_transparent_60%),_linear-gradient(to_top,_hsl(var(--background))_10%,_rgba(12,10,24,0.95)_100%)]">
-      {/* خلفية قلوب ونجوم */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)] opacity-60" />
-        {Array.from({ length: 18 }).map((_, i) => (
-          <span
-            key={i}
-            className="absolute text-[10px] text-[hsl(var(--romantic-heart-soft))] opacity-60 animate-[float_10s_ease-in-out_infinite]"
-            style={{
-              left: `${(i * 7) % 100}%`,
-              top: `${10 + ((i * 13) % 70)}%`,
-              animationDelay: `${i * 0.6}s`,
-            }}
-          >
-            ♥
-          </span>
-        ))}
-      </div>
+  const isRunning = state.vx !== 0 && state.onGround;
 
+  return (
+    <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border border-border/70 bg-[linear-gradient(to_top,_hsl(120,40%,40%)_0%,_hsl(120,45%,45%)_22%,_hsl(200,90%,78%)_22%,_hsl(200,95%,85%)_100%)]">
       {/* عالم اللعب */}
       <div
         className="absolute inset-y-0 left-0 flex"
         style={{ width: WORLD_WIDTH, transform: `translateX(${-cameraOffset}px)` }}
       >
-        {/* الأرض */}
-        <div className="absolute bottom-5 left-0 right-0 h-6 bg-[repeating-linear-gradient(135deg,_rgba(220,80,120,1)_0px,_rgba(220,80,120,1)_8px,_rgba(40,20,60,1)_8px,_rgba(40,20,60,1)_16px)] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
-          <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.25),_transparent_70%)] opacity-60" />
+        {/* الأرض الخضراء */}
+        <div className="absolute bottom-5 left-0 right-0 h-8 bg-[repeating-linear-gradient(0deg,_hsl(120,35%,32%)_0px,_hsl(120,35%,32%)_6px,_hsl(120,30%,26%)_6px,_hsl(120,30%,26%)_12px)] shadow-[0_-10px_25px_rgba(0,0,0,0.6)]">
+          <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-70" />
         </div>
 
         {/* المنصات */}
@@ -375,7 +359,7 @@ const WorldView = ({ state, collected, cameraOffset }: WorldViewProps) => {
             >
               <div className="relative h-7 w-8">
                 <div className="absolute bottom-0 left-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
-                <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
+                <div className="absolute bottom-0 right-0 h-4 و w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
                 <div className="absolute left-1 top-1 h-2 w-2 rounded-full bg-[rgba(255,255,255,0.9)] opacity-80" />
                 <div className="absolute -top-1 left-1 h-4 w-3 -rotate-12 rounded-t-full border-t-2 border-l-2 border-[rgba(90,220,150,0.95)]" />
                 <div className="absolute -top-1 right-1 h-4 w-3 rotate-12 rounded-t-full border-t-2 border-r-2 border-[rgba(90,220,150,0.95)]" />
