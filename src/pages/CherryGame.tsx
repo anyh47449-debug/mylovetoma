@@ -15,39 +15,44 @@ const GRAVITY = 0.35;
 const MOVE_SPEED = 3.2;
 const JUMP_FORCE = -10.5;
 const FLOOR_Y = 220;
-const WORLD_WIDTH = 1600;
+// نخلي العالم أطول بكثير عشان إحساس 2D محترم
+const WORLD_WIDTH = 2600;
 const VIEWPORT_WIDTH = 640;
 
+// نوزّع الكرز على طول المرحلة بدل ما يكون متقارب
 const CHERRIES = [
-  { id: 1, x: 80, y: 180 },
-  { id: 2, x: 260, y: 150 },
-  { id: 3, x: 430, y: 130 },
-  { id: 4, x: 620, y: 170 },
-  { id: 5, x: 780, y: 150 },
-  { id: 6, x: 980, y: 160 },
-  { id: 7, x: 1180, y: 140 },
-  { id: 8, x: 1380, y: 180 },
-  { id: 9, x: 220, y: 120 },
-  { id: 10, x: 520, y: 110 },
-  { id: 11, x: 860, y: 125 },
-  { id: 12, x: 1120, y: 115 },
-  { id: 13, x: 1450, y: 135 },
-  { id: 14, x: 300, y: 190 },
-  { id: 15, x: 690, y: 185 },
-  { id: 16, x: 910, y: 175 },
-  { id: 17, x: 1290, y: 165 },
-  { id: 18, x: 1520, y: 150 },
-  { id: 19, x: 1380, y: 120 },
-  { id: 20, x: 1040, y: 135 },
+  { id: 1, x: 140, y: 185 },
+  { id: 2, x: 320, y: 150 },
+  { id: 3, x: 520, y: 130 },
+  { id: 4, x: 720, y: 175 },
+  { id: 5, x: 910, y: 150 },
+  { id: 6, x: 1120, y: 165 },
+  { id: 7, x: 1320, y: 140 },
+  { id: 8, x: 1520, y: 180 },
+  { id: 9, x: 1720, y: 150 },
+  { id: 10, x: 1880, y: 130 },
+  { id: 11, x: 2040, y: 165 },
+  { id: 12, x: 2180, y: 150 },
+  { id: 13, x: 2340, y: 135 },
+  { id: 14, x: 420, y: 195 },
+  { id: 15, x: 780, y: 190 },
+  { id: 16, x: 1280, y: 185 },
+  { id: 17, x: 1680, y: 175 },
+  { id: 18, x: 1960, y: 170 },
+  { id: 19, x: 2220, y: 165 },
+  { id: 20, x: 2460, y: 155 },
 ] as const;
 
+// منصات موزّعة على طول العالم
 const PLATFORMS = [
-  { x: 160, y: 200, width: 130, height: 10 },
-  { x: 340, y: 175, width: 130, height: 10 },
-  { x: 540, y: 190, width: 140, height: 10 },
-  { x: 760, y: 170, width: 150, height: 10 },
-  { x: 1000, y: 185, width: 150, height: 10 },
-  { x: 1240, y: 165, width: 150, height: 10 },
+  { x: 260, y: 200, width: 140, height: 10 },
+  { x: 520, y: 175, width: 140, height: 10 },
+  { x: 760, y: 190, width: 150, height: 10 },
+  { x: 1040, y: 180, width: 150, height: 10 },
+  { x: 1320, y: 170, width: 160, height: 10 },
+  { x: 1600, y: 185, width: 150, height: 10 },
+  { x: 1880, y: 175, width: 150, height: 10 },
+  { x: 2160, y: 165, width: 150, height: 10 },
 ] as const;
 
 const CherryGame = () => {
@@ -177,10 +182,11 @@ const CherryCollectorGame = () => {
         let nextX = x + vx;
         let nextY = y + vy;
 
-        // لو فيه بوس، نحبس المنطقة حوله شوي عشان يكون قتال في ساحة
+        // حد العالم العادي
         if (mode === "boss1" || mode === "boss2") {
-          const arenaLeft = bossX - 120;
-          const arenaRight = bossX + 120;
+          // ساحة قتال أوسع
+          const arenaLeft = bossX - 200;
+          const arenaRight = bossX + 200;
           if (nextX < arenaLeft) nextX = arenaLeft;
           if (nextX > arenaRight) nextX = arenaRight;
         } else {
@@ -205,6 +211,19 @@ const CherryCollectorGame = () => {
           nextY = FLOOR_Y;
           vy = 0;
           onGround = true;
+        }
+
+        // حركة البوس: يطارد البنت شوية يمين/يسار بدل ما يكون ثابت
+        if (mode === "boss1" || mode === "boss2") {
+          setBossX((current) => {
+            const chaseSpeed = mode === "boss1" ? 1.4 : 1.8;
+            const targetX = nextX;
+            const dir = targetX > current ? 1 : -1;
+            const proposed = current + dir * chaseSpeed;
+            const arenaLeft = current - 220;
+            const arenaRight = current + 220;
+            return Math.max(arenaLeft, Math.min(arenaRight, proposed));
+          });
         }
 
         return { x: nextX, y: nextY, vx, vy, onGround };
