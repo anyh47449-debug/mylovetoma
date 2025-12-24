@@ -119,8 +119,8 @@ const CherryCollectorGame = () => {
 
   const [mode, setMode] = useState<Mode>("world");
   const [state, setState] = useState<CherryCollectorGameState>({
-    x: 40,
-    y: FLOOR_Y,
+    x: PLATFORMS[0].x + PLATFORMS[0].width / 2,
+    y: PLATFORMS[0].y,
     vx: 0,
     vy: 0,
     onGround: true,
@@ -210,13 +210,11 @@ const CherryCollectorGame = () => {
           }
         });
 
-        // الأرض في عالم الباركور شوك مميت – أي سقوط عليها يرجّع البنت للبداية ويمسح الكرز
-        if (nextY >= FLOOR_Y) {
-          if (mode === "world") {
-            setCollected([]);
-            nextX = 40;
-            nextY = FLOOR_Y;
-          }
+        // الأرض في عالم الباركور شوك مميت – أي سقوط عليها يرجّع البنت لبداية المنصات ويمسح الكرز
+        if (nextY >= FLOOR_Y && mode === "world") {
+          setCollected([]);
+          nextX = PLATFORMS[0].x + PLATFORMS[0].width / 2;
+          nextY = PLATFORMS[0].y;
           vy = 0;
           onGround = true;
         }
