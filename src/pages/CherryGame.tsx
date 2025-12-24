@@ -67,7 +67,7 @@ const CherryGame = () => {
         className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.55),_transparent_65%)]"
       />
 
-      <main className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col gap-8 px-4 py-10">
+      <main className="relative z-10 mx-auto flex min-h-screen w-full flex-col gap-8 px-4 py-10">
         <header className="flex items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] backdrop-blur">
@@ -322,9 +322,11 @@ const WorldView = ({ state, collected, cameraOffset }: WorldViewProps) => {
           </div>
         ))}
 
-        {/* شخصية ماريو بشكل مبسّط */}
+        {/* شخصية ماريو بشكل مبسّط مع أنيميشن للجري */}
         <div
-          className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-100"
+          className={`absolute -translate-x-1/2 -translate-y-full transition-transform duration-100 ${
+            isRunning ? "animate-bounce" : ""
+          } ${state.vx < 0 ? "-scale-x-100" : "scale-x-100"}`}
           style={{ left: state.x, top: state.y }}
         >
           <div className="relative h-16 w-11">
