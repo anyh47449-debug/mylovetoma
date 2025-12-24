@@ -131,8 +131,10 @@ const CherryCollectorGame = () => {
   const [boss2Defeated, setBoss2Defeated] = useState(false);
   const [bossHealth, setBossHealth] = useState(0);
   const [bossX, setBossX] = useState(1300);
+  const [playerHealth, setPlayerHealth] = useState(3);
   const keysRef = useRef({ ArrowLeft: false, ArrowRight: false, Space: false, ArrowUp: false });
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const lastHitRef = useRef<number>(0);
 
   useEffect(() => {
     const audio = new Audio(marioCoinSfx);
@@ -182,17 +184,18 @@ const CherryCollectorGame = () => {
         let nextX = x + vx;
         let nextY = y + vy;
 
-        // حد العالم العادي
+        // حدود العالم / ساحة البوس
         if (mode === "boss1" || mode === "boss2") {
-          // ساحة قتال أوسع
-          const arenaLeft = bossX - 200;
-          const arenaRight = bossX + 200;
+          // ساحة قتال أوسع ومحددة حول البوس
+          const arenaLeft = bossX - 220;
+          const arenaRight = bossX + 220;
           if (nextX < arenaLeft) nextX = arenaLeft;
           if (nextX > arenaRight) nextX = arenaRight;
         } else {
           nextX = Math.max(10, Math.min(WORLD_WIDTH - 10, nextX));
         }
 
+        // التصادم مع المنصات (الباركور)
         onGround = false;
         PLATFORMS.forEach((p) => {
           const withinX = nextX + 12 > p.x && nextX - 12 < p.x + p.width;
@@ -207,8 +210,13 @@ const CherryCollectorGame = () => {
           }
         });
 
+        // الأرض في عالم الباركور شوك مميت – أي سقوط عليها يرجّع البنت للبداية ويمسح الكرز
         if (nextY >= FLOOR_Y) {
-          nextY = FLOOR_Y;
+          if (mode === "world") {
+            setCollected([]);
+            nextX = 40;
+            nextY = FLOOR_Y;
+          }
           vy = 0;
           onGround = true;
         }
@@ -309,6 +317,7 @@ const CherryCollectorGame = () => {
     const overlapX = girlRight > bossLeft && girlLeft < bossRight;
     const hittingFromTop = girlBottom >= bossTop && girlTop < bossTop && state.vy > 0;
 
+    // قفزة من فوق: تضر البوس
     if (overlapX && hittingFromTop) {
       setBossHealth((h) => Math.max(0, h - 1));
       // نطّة ارتداد خفيفة بعد الضربة
@@ -316,7 +325,45 @@ const CherryCollectorGame = () => {
     }
   }, [state, mode, bossHealth, bossX]);
 
-  // لما ينتهي دم البوس، نرجع للوضع العادي
+  // ضرر البوس للبنت: إذا لمسها من الجوانب أو من تحت في ساحة البوس، يخسر قلب
+  useEffect(() => {
+    if (mode === "world" || bossHealth <= 0) return;
+
+    const girlWidth = 18;
+    const girlHeight = 28;
+    const bossWidth = 70;
+    const bossHeight = 60;
+
+    const girlLeft = state.x - girlWidth / 2;
+    const girlRight = state.x + girlWidth / 2;
+    const girlTop = state.y - girlHeight;
+    const girlBottom = state.y;
+
+    const bossLeft = bossX - bossWidth / 2;
+    const bossRight = bossX + bossWidth / 2;
+    const bossTop = FLOOR_Y - bossHeight;
+    const bossBottom = FLOOR_Y;
+
+    const overlapX = girlRight > bossLeft && girlLeft < bossRight;
+    const overlapY = girlBottom > bossTop && girlTop < bossBottom;
+    const hittingFromTop = girlBottom >= bossTop && girlTop < bossTop && state.vy > 0;
+
+    if (overlapX && overlapY && !hittingFromTop) {
+      const now = performance.now();
+      if (now - lastHitRef.current > 600) {
+        lastHitRef.current = now;
+        setPlayerHealth((h) => Math.max(0, h - 1));
+        // ارتداد بسيط للخلف
+        setState((prev) => ({
+          ...prev,
+          vx: prev.x < bossX ? -MOVE_SPEED : MOVE_SPEED,
+          vy: JUMP_FORCE * 0.5,
+        }));
+      }
+    }
+  }, [state, mode, bossHealth, bossX]);
+
+  // لما ينتهي دم البوس، يعتبر هزمناه ونرجع لعالم الكرز
   useEffect(() => {
     if (bossHealth <= 0 && (mode === "boss1" || mode === "boss2")) {
       if (mode === "boss1") setBoss1Defeated(true);
@@ -324,6 +371,17 @@ const CherryCollectorGame = () => {
       setMode("world");
     }
   }, [bossHealth, mode]);
+
+  // لو خسرنا كل القلوب في قتال البوس، نرجع للبداية ونعيد تجميع الكرز من جديد
+  useEffect(() => {
+    if (playerHealth <= 0 && (mode === "boss1" || mode === "boss2")) {
+      setMode("world");
+      setBossHealth(0);
+      setCollected([]);
+      setPlayerHealth(3);
+      setState({ x: 40, y: FLOOR_Y, vx: 0, vy: 0, onGround: true });
+    }
+  }, [playerHealth, mode]);
 
   useEffect(() => {
     if (
@@ -347,21 +405,32 @@ const CherryCollectorGame = () => {
         <span>
           الكرز المجموع: <span className="font-semibold text-primary">{collected.length}</span> / {CHERRIES.length}
         </span>
-        {mode === "world" && hasWon && (
-          <span className="text-[0.7rem] text-[hsl(var(--romantic-heart-soft))]">
-            يا سلام! خلصتي المرحلة الأولى وهزمتي كل البوسات 💜
-          </span>
-        )}
-        {mode === "boss1" && (
-          <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-            بوس ١: علم العراق – اقفزي على العلم من فوق عشان تنقصي دمه
-          </span>
-        )}
-        {mode === "boss2" && (
-          <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-            بوس ٢: مخلوق ماريو البنفسجي – اقفزي على رأسه أكثر من مرة
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
+            <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">القلوب:</span>
+            {Array.from({ length: playerHealth }).map((_, i) => (
+              <span
+                key={i}
+                className="h-2.5 w-3 rounded-full bg-[hsl(var(--romantic-heart-soft))] shadow-[0_0_10px_rgba(255,120,170,0.9)]"
+              />
+            ))}
+          </div>
+          {mode === "world" && hasWon && (
+            <span className="text-[0.7rem] text-[hsl(var(--romantic-heart-soft))]">
+              يا سلام! خلصتي المرحلة الأولى وهزمتي كل البوسات 💜
+            </span>
+          )}
+          {mode === "boss1" && (
+            <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
+              بوس ١: علم العراق – اقفزي على العلم من فوق وتجنبي لمسه ٣ مرات
+            </span>
+          )}
+          {mode === "boss2" && (
+            <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
+              بوس ٢: مخلوق ماريو البنفسجي – قتال باركور مع قلوب
+            </span>
+          )}
+        </div>
       </div>
 
       <WorldView
@@ -411,10 +480,16 @@ const WorldView = ({ state, collected, cameraOffset, mode, bossHealth, bossX }: 
         className="absolute inset-y-0 left-0 flex"
         style={{ width: WORLD_WIDTH, transform: `translateX(${-cameraOffset}px)` }}
       >
-        {/* الأرض */}
-        <div className="absolute bottom-5 left-0 right-0 h-6 bg-[linear-gradient(to_top,_rgba(40,20,60,1),_rgba(40,20,60,0.2))] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
-          <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-40" />
-        </div>
+        {/* الأرض / الشوك */}
+        {mode === "world" ? (
+          <div className="absolute bottom-5 left-0 right-0 h-6 bg-[repeating-linear-gradient(135deg,_rgba(220,80,120,1)_0px,_rgba(220,80,120,1)_8px,_rgba(40,20,60,1)_8px,_rgba(40,20,60,1)_16px)] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
+            <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.25),_transparent_70%)] opacity-60" />
+          </div>
+        ) : (
+          <div className="absolute bottom-5 left-0 right-0 h-6 bg-[linear-gradient(to_top,_rgba(40,20,60,1),_rgba(40,20,60,0.2))] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
+            <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-40" />
+          </div>
+        )}
 
         {/* المنصات */}
         {PLATFORMS.map((p) => (
