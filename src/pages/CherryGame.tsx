@@ -300,7 +300,10 @@ const WorldView = ({ state, collected, cameraOffset }: WorldViewProps) => {
         style={{ width: WORLD_WIDTH, transform: `translateX(${-cameraOffset}px)` }}
       >
         {/* الأرض الخضراء */}
-        <div className="absolute bottom-5 left-0 right-0 h-8 bg-[repeating-linear-gradient(0deg,_hsl(120,35%,32%)_0px,_hsl(120,35%,32%)_6px,_hsl(120,30%,26%)_6px,_hsl(120,30%,26%)_12px)] shadow-[0_-10px_25px_rgba(0,0,0,0.6)]">
+        <div
+          className="absolute left-0 right-0 h-8 bg-[repeating-linear-gradient(0deg,_hsl(120,35%,32%)_0px,_hsl(120,35%,32%)_6px,_hsl(120,30%,26%)_6px,_hsl(120,30%,26%)_12px)] shadow-[0_-10px_25px_rgba(0,0,0,0.6)]"
+          style={{ top: FLOOR_Y }}
+        >
           <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-70" />
         </div>
 
