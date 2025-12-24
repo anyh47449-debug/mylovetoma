@@ -180,7 +180,7 @@ const Index = () => {
     // ننتظر الأنيميشن (كرز -> جويستك) ثم ننتقل لصفحة الميني غيمز
     setTimeout(() => {
       navigate("/games");
-    }, 1600);
+    }, 2300);
   };
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -275,8 +275,8 @@ const Index = () => {
               <motion.div
                 className="absolute inset-0 flex items-center justify-center"
                 initial={{ scale: 0, rotate: -20, opacity: 0 }}
-                animate={{ scale: [0, 1.1, 0.7, 0.4], rotate: [-20, 5, 0, 10], opacity: [0, 1, 1, 0] }}
-                transition={{ duration: 1.1, ease: "easeInOut" }}
+                animate={{ scale: [0, 1.1, 0.75, 0.45], rotate: [-20, 5, 0, 10], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
               >
                 <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary/80 shadow-[var(--romantic-card-glow)]">
                   <Cherry className="h-14 w-14 text-primary" aria-hidden />
@@ -286,9 +286,13 @@ const Index = () => {
               {/* الجويستك */}
               <motion.div
                 className="absolute inset-0 flex items-center justify-center"
-                initial={{ scale: 0.4, rotate: -15, opacity: 0 }}
-                animate={{ scale: [0.4, 0.9, 1.05, 1], rotate: [-15, 4, -2, 0], opacity: [0, 0.3, 0.9, 1] }}
-                transition={{ duration: 1.1, ease: "easeOut", delay: 0.35 }}
+                initial={{ scale: 0.35, rotate: -18, opacity: 0 }}
+                animate={{
+                  scale: [0.35, 0.85, 1.08, 1],
+                  rotate: [-18, 4, -2, 0],
+                  opacity: [0, 0.25, 0.9, 1],
+                }}
+                transition={{ duration: 1.6, ease: "easeOut", delay: 0.45 }}
               >
                 <div className="flex h-28 w-28 items-center justify-center rounded-[1.4rem] bg-primary/90 shadow-[0_0_40px_hsl(var(--primary)/0.7)]">
                   <Gamepad2 className="h-14 w-14 text-primary-foreground" aria-hidden />
@@ -298,9 +302,9 @@ const Index = () => {
 
             <motion.p
               className="max-w-xs text-sm font-medium text-[hsl(var(--romantic-text-soft))] sm:text-base"
-              initial={{ y: 20, opacity: 0 }}
+              initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
             >
               استعدي لمملكة الألعاب البنفسجية… الكرز يتحول لعصا تحكم مخصوصة لتوما
             </motion.p>
