@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Heart, Sparkles, Gamepad2, Music, Pause, Cherry } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-
+import marioCoinSfx from "../assets/mario-coin.mp3";
 const Index = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
@@ -161,7 +161,7 @@ const Index = () => {
 
   const playSfx = (type: "games" | "memories" | "letter") => {
     const sources: Record<typeof type, string> = {
-      games: "/audio/sfx-games.mp3",
+      games: marioCoinSfx,
       memories: "/audio/sfx-memories.mp3",
       letter: "/audio/sfx-letter.mp3",
     } as const;
