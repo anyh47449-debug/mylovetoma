@@ -13,21 +13,29 @@ interface CherryCollectorGameState {
 
 const GRAVITY = 0.35;
 const MOVE_SPEED = 3.2;
-const JUMP_FORCE = -8.5;
+const JUMP_FORCE = -10.5;
 const FLOOR_Y = 220;
+const WORLD_WIDTH = 1600;
+const VIEWPORT_WIDTH = 640;
 
 const CHERRIES = [
-  { id: 1, x: 40, y: 180 },
-  { id: 2, x: 180, y: 140 },
-  { id: 3, x: 310, y: 110 },
-  { id: 4, x: 430, y: 160 },
-  { id: 5, x: 540, y: 190 },
+  { id: 1, x: 80, y: 180 },
+  { id: 2, x: 260, y: 150 },
+  { id: 3, x: 430, y: 130 },
+  { id: 4, x: 620, y: 170 },
+  { id: 5, x: 780, y: 150 },
+  { id: 6, x: 980, y: 160 },
+  { id: 7, x: 1180, y: 140 },
+  { id: 8, x: 1380, y: 180 },
 ] as const;
 
 const PLATFORMS = [
-  { x: 120, y: 200, width: 120, height: 10 },
-  { x: 280, y: 170, width: 120, height: 10 },
-  { x: 430, y: 190, width: 130, height: 10 },
+  { x: 160, y: 200, width: 130, height: 10 },
+  { x: 340, y: 175, width: 130, height: 10 },
+  { x: 540, y: 190, width: 140, height: 10 },
+  { x: 760, y: 170, width: 150, height: 10 },
+  { x: 1000, y: 185, width: 150, height: 10 },
+  { x: 1240, y: 165, width: 150, height: 10 },
 ] as const;
 
 const CherryGame = () => {
@@ -150,7 +158,7 @@ const CherryCollectorGame = () => {
         y += vy;
 
         // world bounds
-        x = Math.max(10, Math.min(590, x));
+        x = Math.max(10, Math.min(WORLD_WIDTH - 10, x));
 
         // floor collision
         if (y >= FLOOR_Y) {
@@ -215,6 +223,11 @@ const CherryCollectorGame = () => {
     }
   }, [collected, hasWon]);
 
+  const cameraOffset = Math.max(
+    0,
+    Math.min(state.x - VIEWPORT_WIDTH / 2, WORLD_WIDTH - VIEWPORT_WIDTH)
+  );
+
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-[0.7rem] text-muted-foreground">
@@ -231,94 +244,100 @@ const CherryCollectorGame = () => {
         {/* background stars */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)] opacity-60" />
 
-        {/* floor */}
-        <div className="absolute bottom-5 left-0 right-0 h-6 bg-[linear-gradient(to_top,_rgba(40,20,60,1),_rgba(40,20,60,0.2))] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
-          <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-40" />
-        </div>
-
-        {/* platforms */}
-        {PLATFORMS.map((p) => (
-          <div
-            key={`${p.x}-${p.y}`}
-            className="absolute rounded-lg bg-[linear-gradient(to_top,_rgba(90,60,140,1),_rgba(120,90,170,0.6))] shadow-[0_6px_16px_rgba(0,0,0,0.6)]"
-            style={{ left: p.x, top: p.y, width: p.width, height: p.height }}
-          >
-            <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.25),_transparent_70%)] opacity-60" />
-          </div>
-        ))}
-
-        {/* girl character - chibi cartoon */}
+        {/* world container */}
         <div
-          className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-100"
-          style={{ left: state.x, top: state.y }}
+          className="absolute inset-y-0 left-0 flex"
+          style={{ width: WORLD_WIDTH, transform: `translateX(${-cameraOffset}px)` }}
         >
-          <div className="relative h-16 w-11">
-            {/* shadow */}
-            <div className="absolute -bottom-1 left-1 right-1 h-2 rounded-full bg-black/40 blur-sm" />
+          {/* floor */}
+          <div className="absolute bottom-5 left-0 right-0 h-6 bg-[linear-gradient(to_top,_rgba(40,20,60,1),_rgba(40,20,60,0.2))] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
+            <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-40" />
+          </div>
 
-            {/* hair back */}
-            <div className="absolute left-0 right-0 top-1 h-6 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))] shadow-[0_2px_6px_rgba(0,0,0,0.55)]" />
-            {/* hair bangs */}
-            <div className="absolute left-1.5 right-1.5 top-1 h-3 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))]" />
-            {/* hair bow */}
-            <div className="absolute -top-1 right-0 h-3.5 w-5 -rotate-6 rounded-full bg-[hsl(var(--accent))] shadow-[0_1px_4px_rgba(0,0,0,0.6)]" />
+          {/* platforms */}
+          {PLATFORMS.map((p) => (
+            <div
+              key={`${p.x}-${p.y}`}
+              className="absolute rounded-lg bg-[linear-gradient(to_top,_rgba(90,60,140,1),_rgba(120,90,170,0.6))] shadow-[0_6px_16px_rgba(0,0,0,0.6)]"
+              style={{ left: p.x, top: p.y, width: p.width, height: p.height }}
+            >
+              <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.25),_transparent_70%)] opacity-60" />
+            </div>
+          ))}
 
-            {/* face */}
-            <div className="absolute left-1.5 right-1.5 top-3 h-6 rounded-2xl bg-[hsl(var(--romantic-skin-soft))] shadow-[0_1px_4px_rgba(0,0,0,0.55)]">
-              {/* eyes + mouth */}
-              <div className="mt-2 flex flex-col items-center gap-0.5">
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
-                  <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
+          {/* girl character - chibi cartoon */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-100"
+            style={{ left: state.x, top: state.y }}
+          >
+            <div className="relative h-16 w-11">
+              {/* shadow */}
+              <div className="absolute -bottom-1 left-1 right-1 h-2 rounded-full bg-black/40 blur-sm" />
+
+              {/* hair back */}
+              <div className="absolute left-0 right-0 top-1 h-6 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))] shadow-[0_2px_6px_rgba(0,0,0,0.55)]" />
+              {/* hair bangs */}
+              <div className="absolute left-1.5 right-1.5 top-1 h-3 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))]" />
+              {/* hair bow */}
+              <div className="absolute -top-1 right-0 h-3.5 w-5 -rotate-6 rounded-full bg-[hsl(var(--accent))] shadow-[0_1px_4px_rgba(0,0,0,0.6)]" />
+
+              {/* face */}
+              <div className="absolute left-1.5 right-1.5 top-3 h-6 rounded-2xl bg-[hsl(var(--romantic-skin-soft))] shadow-[0_1px_4px_rgba(0,0,0,0.55)]">
+                {/* eyes + mouth */}
+                <div className="mt-2 flex flex-col items-center gap-0.5">
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
+                  </div>
+                  <div className="h-0.5 w-3 rounded-full bg-[rgba(30,20,60,0.7)]" />
                 </div>
-                <div className="h-0.5 w-3 rounded-full bg-[rgba(30,20,60,0.7)]" />
+                {/* blush */}
+                <div className="absolute inset-x-1 bottom-0 flex justify-between px-1">
+                  <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
+                  <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
+                </div>
               </div>
-              {/* blush */}
-              <div className="absolute inset-x-1 bottom-0 flex justify-between px-1">
-                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
-                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
+
+              {/* dress */}
+              <div className="absolute bottom-3 left-0 right-0 h-8 rounded-b-3xl bg-[hsl(var(--primary))] shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
+                <div className="absolute inset-x-2 top-1 h-1.5 rounded-full bg-[hsl(var(--primary-foreground))]/20" />
+                <div className="absolute inset-x-1 bottom-1 h-1 rounded-full bg-[hsl(var(--accent))]/40" />
               </div>
-            </div>
 
-            {/* dress */}
-            <div className="absolute bottom-3 left-0 right-0 h-8 rounded-b-3xl bg-[hsl(var(--primary))] shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
-              <div className="absolute inset-x-2 top-1 h-1.5 rounded-full bg-[hsl(var(--primary-foreground))]/20" />
-              <div className="absolute inset-x-1 bottom-1 h-1 rounded-full bg-[hsl(var(--accent))]/40" />
-            </div>
-
-            {/* legs */}
-            <div className="absolute bottom-0 left-2 right-2 flex justify-between gap-1">
-              <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
-              <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
+              {/* legs */}
+              <div className="absolute bottom-0 left-2 right-2 flex justify-between gap-1">
+                <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
+                <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* cherries */}
-        {CHERRIES.map((cherry) => {
-          const isCollected = collected.includes(cherry.id);
-          if (isCollected) return null;
-          return (
-            <div
-              key={cherry.id}
-              className="absolute -translate-x-1/2 -translate-y-1/2 animate-[float_2.2s_ease-in-out_infinite]"
-              style={{ left: cherry.x, top: cherry.y }}
-            >
-              <div className="relative h-7 w-8">
-                {/* double cherry body */}
-                <div className="absolute bottom-0 left-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
-                <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
-                {/* shine */}
-                <div className="absolute left-1 top-1 h-2 w-2 rounded-full bg-[rgba(255,255,255,0.9)] opacity-80" />
-                {/* stems */}
-                <div className="absolute -top-1 left-1 h-4 w-3 -rotate-12 rounded-t-full border-t-2 border-l-2 border-[rgba(90,220,150,0.95)]" />
-                <div className="absolute -top-1 right-1 h-4 w-3 rotate-12 rounded-t-full border-t-2 border-r-2 border-[rgba(90,220,150,0.95)]" />
-                {/* leaf */}
-                <div className="absolute -top-2 left-3 h-2 w-3 rotate-[-18deg] rounded-full bg-[rgba(90,220,150,0.95)]" />
+          {/* cherries */}
+          {CHERRIES.map((cherry) => {
+            const isCollected = collected.includes(cherry.id);
+            if (isCollected) return null;
+            return (
+              <div
+                key={cherry.id}
+                className="absolute -translate-x-1/2 -translate-y-1/2 animate-[float_2.2s_ease-in-out_infinite]"
+                style={{ left: cherry.x, top: cherry.y }}
+              >
+                <div className="relative h-7 w-8">
+                  {/* double cherry body */}
+                  <div className="absolute bottom-0 left-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
+                  <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
+                  {/* shine */}
+                  <div className="absolute left-1 top-1 h-2 w-2 rounded-full bg-[rgba(255,255,255,0.9)] opacity-80" />
+                  {/* stems */}
+                  <div className="absolute -top-1 left-1 h-4 w-3 -rotate-12 rounded-t-full border-t-2 border-l-2 border-[rgba(90,220,150,0.95)]" />
+                  <div className="absolute -top-1 right-1 h-4 w-3 rotate-12 rounded-t-full border-t-2 border-r-2 border-[rgba(90,220,150,0.95)]" />
+                  {/* leaf */}
+                  <div className="absolute -top-2 left-3 h-2 w-3 rotate-[-18deg] rounded-full bg-[rgba(90,220,150,0.95)]" />
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
