@@ -27,6 +27,18 @@ const CHERRIES = [
   { id: 6, x: 980, y: 160 },
   { id: 7, x: 1180, y: 140 },
   { id: 8, x: 1380, y: 180 },
+  { id: 9, x: 220, y: 120 },
+  { id: 10, x: 520, y: 110 },
+  { id: 11, x: 860, y: 125 },
+  { id: 12, x: 1120, y: 115 },
+  { id: 13, x: 1450, y: 135 },
+  { id: 14, x: 300, y: 190 },
+  { id: 15, x: 690, y: 185 },
+  { id: 16, x: 910, y: 175 },
+  { id: 17, x: 1290, y: 165 },
+  { id: 18, x: 1520, y: 150 },
+  { id: 19, x: 1380, y: 120 },
+  { id: 20, x: 1040, y: 135 },
 ] as const;
 
 const PLATFORMS = [
@@ -51,7 +63,7 @@ const CherryGame = () => {
       />
 
       <main className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col gap-8 px-4 py-10">
-        <header className="flex items-center justify-between gap-4">
+        <header className="flex items-center justify بين gap-4">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] backdrop-blur">
               <Gamepad2 className="h-4 w-4 text-primary" aria-hidden />
@@ -98,6 +110,9 @@ const CherryGame = () => {
 };
 
 const CherryCollectorGame = () => {
+  type Mode = "world" | "boss1" | "boss2";
+
+  const [mode, setMode] = useState<Mode>("world");
   const [state, setState] = useState<CherryCollectorGameState>({
     x: 40,
     y: FLOOR_Y,
@@ -107,6 +122,9 @@ const CherryCollectorGame = () => {
   });
   const [collected, setCollected] = useState<number[]>([]);
   const [hasWon, setHasWon] = useState(false);
+  const [boss1Defeated, setBoss1Defeated] = useState(false);
+  const [boss2Defeated, setBoss2Defeated] = useState(false);
+  const [bossHealth, setBossHealth] = useState(0);
   const keysRef = useRef({ ArrowLeft: false, ArrowRight: false, Space: false, ArrowUp: false });
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -133,60 +151,60 @@ const CherryCollectorGame = () => {
     };
 
     const loop = () => {
-        setState((prev) => {
-          let { x, y, vx, vy, onGround } = prev;
+      if (mode !== "world") {
+        animationFrame = requestAnimationFrame(loop);
+        return;
+      }
 
-          const movingLeft = keysRef.current.ArrowLeft;
-          const movingRight = keysRef.current.ArrowRight;
-          const wantJump = keysRef.current.Space || keysRef.current.ArrowUp;
+      setState((prev) => {
+        let { x, y, vx, vy, onGround } = prev;
 
-          if (movingLeft === movingRight) {
-            vx = 0;
-          } else if (movingLeft) {
-            vx = -MOVE_SPEED;
-          } else if (movingRight) {
-            vx = MOVE_SPEED;
-          }
+        const movingLeft = keysRef.current.ArrowLeft;
+        const movingRight = keysRef.current.ArrowRight;
+        const wantJump = keysRef.current.Space || keysRef.current.ArrowUp;
 
-          if (wantJump && onGround) {
-            vy = JUMP_FORCE;
-            onGround = false;
-          }
+        if (movingLeft === movingRight) {
+          vx = 0;
+        } else if (movingLeft) {
+          vx = -MOVE_SPEED;
+        } else if (movingRight) {
+          vx = MOVE_SPEED;
+        }
 
-          // apply gravity
-          vy += GRAVITY;
-
-          // tentative next position before collisions
-          let nextX = x + vx;
-          let nextY = y + vy;
-
-          // keep inside world horizontally
-          nextX = Math.max(10, Math.min(WORLD_WIDTH - 10, nextX));
-
-          // platform collisions (treat platforms as solid ground from top only)
+        if (wantJump && onGround) {
+          vy = JUMP_FORCE;
           onGround = false;
-          PLATFORMS.forEach((p) => {
-            const withinX = nextX + 12 > p.x && nextX - 12 < p.x + p.width;
-            const wasAbove = y <= p.y;
-            const nowBelowOrOn = nextY >= p.y;
-            const fallingDown = vy >= 0;
+        }
 
-            if (withinX && wasAbove && nowBelowOrOn && fallingDown) {
-              nextY = p.y;
-              vy = 0;
-              onGround = true;
-            }
-          });
+        vy += GRAVITY;
 
-          // floor collision (after platforms so المنصات تكون فوق الأرض)
-          if (nextY >= FLOOR_Y) {
-            nextY = FLOOR_Y;
+        let nextX = x + vx;
+        let nextY = y + vy;
+
+        nextX = Math.max(10, Math.min(WORLD_WIDTH - 10, nextX));
+
+        onGround = false;
+        PLATFORMS.forEach((p) => {
+          const withinX = nextX + 12 > p.x && nextX - 12 < p.x + p.width;
+          const wasAbove = y <= p.y;
+          const nowBelowOrOn = nextY >= p.y;
+          const fallingDown = vy >= 0;
+
+          if (withinX && wasAbove && nowBelowOrOn && fallingDown) {
+            nextY = p.y;
             vy = 0;
             onGround = true;
           }
-
-          return { x: nextX, y: nextY, vx, vy, onGround };
         });
+
+        if (nextY >= FLOOR_Y) {
+          nextY = FLOOR_Y;
+          vy = 0;
+          onGround = true;
+        }
+
+        return { x: nextX, y: nextY, vx, vy, onGround };
+      });
 
       animationFrame = requestAnimationFrame(loop);
     };
@@ -200,14 +218,14 @@ const CherryCollectorGame = () => {
       window.removeEventListener("keyup", handleKeyUp);
       cancelAnimationFrame(animationFrame);
     };
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
-    // handle cherry collection - أي تلامس تقريباً بين البنت والكرز
     const hitRadius = 26;
     const girlX = state.x;
-    // نرفع مركز البنت للأعلى شوي عشان يصير أقرب لمنتصف شخصيتها
     const girlY = state.y - 12;
+
+    let newCollected: number[] | null = null;
 
     CHERRIES.forEach((cherry) => {
       if (collected.includes(cherry.id)) return;
@@ -215,20 +233,35 @@ const CherryCollectorGame = () => {
       const dy = girlY - cherry.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < hitRadius) {
-        setCollected((prev) => [...prev, cherry.id]);
+        if (!newCollected) newCollected = [...collected];
+        newCollected.push(cherry.id);
         if (audioRef.current) {
           audioRef.current.currentTime = 0;
           audioRef.current.play().catch(() => {});
         }
       }
     });
-  }, [state, collected]);
+
+    if (newCollected) {
+      setCollected(newCollected);
+
+      const total = newCollected.length;
+
+      if (total >= 10 && !boss1Defeated) {
+        setMode("boss1");
+        setBossHealth(6);
+      } else if (total >= 20 && boss1Defeated && !boss2Defeated) {
+        setMode("boss2");
+        setBossHealth(8);
+      }
+    }
+  }, [state, collected, boss1Defeated, boss2Defeated]);
 
   useEffect(() => {
-    if (!hasWon && collected.length === CHERRIES.length) {
+    if (!hasWon && collected.length === CHERRIES.length && boss1Defeated && boss2Defeated) {
       setHasWon(true);
     }
-  }, [collected, hasWon]);
+  }, [collected, hasWon, boss1Defeated, boss2Defeated]);
 
   const cameraOffset = Math.max(
     0,
@@ -241,124 +274,221 @@ const CherryCollectorGame = () => {
         <span>
           الكرز المجموع: <span className="font-semibold text-primary">{collected.length}</span> / {CHERRIES.length}
         </span>
-        {hasWon && (
+        {mode === "world" && hasWon && (
           <span className="text-[0.7rem] text-[hsl(var(--romantic-heart-soft))]">
-            يا سلام! جمعتي كل الكرز لتوما 💜
+            يا سلام! جمعتي كل الكرز لتوما 💜 وجبتي كل البوسات
+          </span>
+        )}
+        {mode === "boss1" && (
+          <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
+            بوس ١: علم العراق – اطلقي قلوبك عليه 💜
+          </span>
+        )}
+        {mode === "boss2" && (
+          <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
+            بوس ٢: مخلوق ماريو البنفسجي – خلّي البنت تهزمه
           </span>
         )}
       </div>
-      <div className="relative h-64 w-full overflow-hidden rounded-xl border border-border/70 bg-[radial-gradient(circle_at_top,_rgba(120,81,169,0.4),_transparent_60%),_linear-gradient(to_top,_hsl(var(--background))_10%,_rgba(12,10,24,0.95)_100%)]">
-         {/* background stars & drifting hearts */}
-         <div className="pointer-events-none absolute inset-0">
-           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)] opacity-60" />
-           {Array.from({ length: 18 }).map((_, i) => (
-             <span
-               key={i}
-               className="absolute text-[10px] text-[hsl(var(--romantic-heart-soft))] opacity-60 animate-[float_10s_ease-in-out_infinite]"
-               style={{
-                 left: `${(i * 7) % 100}%`,
-                 top: `${10 + ((i * 13) % 70)}%`,
-                 animationDelay: `${i * 0.6}s`,
-               }}
-             >
-               ♥
-             </span>
-           ))}
-         </div>
 
-        {/* world container */}
-        <div
-          className="absolute inset-y-0 left-0 flex"
-          style={{ width: WORLD_WIDTH, transform: `translateX(${-cameraOffset}px)` }}
-        >
-          {/* floor */}
-          <div className="absolute bottom-5 left-0 right-0 h-6 bg-[linear-gradient(to_top,_rgba(40,20,60,1),_rgba(40,20,60,0.2))] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
-            <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-40" />
-          </div>
+      {mode !== "world" ? (
+        <BossBattle
+          mode={mode === "boss1" ? "boss1" : "boss2"}
+          bossHealth={bossHealth}
+          onAttack={() => setBossHealth((h) => Math.max(0, h - 1))}
+          onDefeated={() => {
+            if (mode === "boss1") {
+              setBoss1Defeated(true);
+            } else if (mode === "boss2") {
+              setBoss2Defeated(true);
+            }
+            setMode("world");
+          }}
+        />
+      ) : (
+        <WorldView state={state} collected={collected} cameraOffset={cameraOffset} />
+      )}
+    </div>
+  );
+};
 
-          {/* platforms */}
-          {PLATFORMS.map((p) => (
-            <div
-              key={`${p.x}-${p.y}`}
-              className="absolute rounded-lg bg-[linear-gradient(to_top,_rgba(90,60,140,1),_rgba(120,90,170,0.6))] shadow-[0_6px_16px_rgba(0,0,0,0.6)]"
-              style={{ left: p.x, top: p.y, width: p.width, height: p.height }}
-            >
-              <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.25),_transparent_70%)] opacity-60" />
-            </div>
-          ))}
+type WorldViewProps = {
+  state: CherryCollectorGameState;
+  collected: number[];
+  cameraOffset: number;
+};
 
-          {/* girl character - chibi cartoon */}
-          <div
-            className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-100"
-            style={{ left: state.x, top: state.y }}
+const WorldView = ({ state, collected, cameraOffset }: WorldViewProps) => {
+  return (
+    <div className="relative h-64 w-full overflow-hidden rounded-xl border border-border/70 bg-[radial-gradient(circle_at_top,_rgba(120,81,169,0.4),_transparent_60%),_linear-gradient(to_top,_hsl(var(--background))_10%,_rgba(12,10,24,0.95)_100%)]">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)] opacity-60" />
+        {Array.from({ length: 18 }).map((_, i) => (
+          <span
+            key={i}
+            className="absolute text-[10px] text-[hsl(var(--romantic-heart-soft))] opacity-60 animate-[float_10s_ease-in-out_infinite]"
+            style={{
+              left: `${(i * 7) % 100}%`,
+              top: `${10 + ((i * 13) % 70)}%`,
+              animationDelay: `${i * 0.6}s`,
+            }}
           >
-            <div className="relative h-16 w-11">
-              {/* shadow */}
-              <div className="absolute -bottom-1 left-1 right-1 h-2 rounded-full bg-black/40 blur-sm" />
+            ♥
+          </span>
+        ))}
+      </div>
 
-              {/* hair back */}
-              <div className="absolute left-0 right-0 top-1 h-6 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))] shadow-[0_2px_6px_rgba(0,0,0,0.55)]" />
-              {/* hair bangs */}
-              <div className="absolute left-1.5 right-1.5 top-1 h-3 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))]" />
-              {/* hair bow */}
-              <div className="absolute -top-1 right-0 h-3.5 w-5 -rotate-6 rounded-full bg-[hsl(var(--accent))] shadow-[0_1px_4px_rgba(0,0,0,0.6)]" />
+      <div
+        className="absolute inset-y-0 left-0 flex"
+        style={{ width: WORLD_WIDTH, transform: `translateX(${-cameraOffset}px)` }}
+      >
+        <div className="absolute bottom-5 left-0 right-0 h-6 bg-[linear-gradient(to_top,_rgba(40,20,60,1),_rgba(40,20,60,0.2))] shadow-[0_-6px_20px_rgba(0,0,0,0.7)]">
+          <div className="h-full w-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15),_transparent_70%)] opacity-40" />
+        </div>
 
-              {/* face */}
-              <div className="absolute left-1.5 right-1.5 top-3 h-6 rounded-2xl bg-[hsl(var(--romantic-skin-soft))] shadow-[0_1px_4px_rgba(0,0,0,0.55)]">
-                {/* eyes + mouth */}
-                <div className="mt-2 flex flex-col items-center gap-0.5">
-                  <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
-                    <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
-                  </div>
-                  <div className="h-0.5 w-3 rounded-full bg-[rgba(30,20,60,0.7)]" />
+        {PLATFORMS.map((p) => (
+          <div
+            key={`${p.x}-${p.y}`}
+            className="absolute rounded-lg bg-[linear-gradient(to_top,_rgba(90,60,140,1),_rgba(120,90,170,0.6))] shadow-[0_6px_16px_rgba(0,0,0,0.6)]"
+            style={{ left: p.x, top: p.y, width: p.width, height: p.height }}
+          >
+            <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.25),_transparent_70%)] opacity-60" />
+          </div>
+        ))}
+
+        <div
+          className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-100"
+          style={{ left: state.x, top: state.y }}
+        >
+          <div className="relative h-16 w-11">
+            <div className="absolute -bottom-1 left-1 right-1 h-2 rounded-full bg-black/40 blur-sm" />
+
+            <div className="absolute left-0 right-0 top-1 h-6 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))] shadow-[0_2px_6px_rgba(0,0,0,0.55)]" />
+            <div className="absolute left-1.5 right-1.5 top-1 h-3 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))]" />
+            <div className="absolute -top-1 right-0 h-3.5 w-5 -rotate-6 rounded-full bg-[hsl(var(--accent))] shadow-[0_1px_4px_rgba(0,0,0,0.6)]" />
+
+            <div className="absolute left-1.5 right-1.5 top-3 h-6 rounded-2xl bg-[hsl(var(--romantic-skin-soft))] shadow-[0_1px_4px_rgba(0,0,0,0.55)]">
+              <div className="mt-2 flex flex-col items-center gap-0.5">
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
                 </div>
-                {/* blush */}
-                <div className="absolute inset-x-1 bottom-0 flex justify-between px-1">
-                  <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
-                  <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
-                </div>
+                <div className="h-0.5 w-3 rounded-full bg-[rgba(30,20,60,0.7)]" />
               </div>
-
-              {/* dress */}
-              <div className="absolute bottom-3 left-0 right-0 h-8 rounded-b-3xl bg-[hsl(var(--primary))] shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
-                <div className="absolute inset-x-2 top-1 h-1.5 rounded-full bg-[hsl(var(--primary-foreground))]/20" />
-                <div className="absolute inset-x-1 bottom-1 h-1 rounded-full bg-[hsl(var(--accent))]/40" />
-              </div>
-
-              {/* legs */}
-              <div className="absolute bottom-0 left-2 right-2 flex justify-between gap-1">
-                <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
-                <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
+              <div className="absolute inset-x-1 bottom-0 flex justify-between px-1">
+                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
+                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
               </div>
             </div>
+
+            <div className="absolute bottom-3 left-0 right-0 h-8 rounded-b-3xl bg-[hsl(var(--primary))] shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
+              <div className="absolute inset-x-2 top-1 h-1.5 rounded-full bg-[hsl(var(--primary-foreground))]/20" />
+              <div className="absolute inset-x-1 bottom-1 h-1 rounded-full bg-[hsl(var(--accent))]/40" />
+            </div>
+
+            <div className="absolute bottom-0 left-2 right-2 flex justify-between gap-1">
+              <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
+              <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
+            </div>
+          </div>
+        </div>
+
+        {CHERRIES.map((cherry) => {
+          const isCollected = collected.includes(cherry.id);
+          if (isCollected) return null;
+          return (
+            <div
+              key={cherry.id}
+              className="absolute -translate-x-1/2 -translate-y-1/2 animate-[float_2.2s_ease-in-out_infinite]"
+              style={{ left: cherry.x, top: cherry.y }}
+            >
+              <div className="relative h-7 w-8">
+                <div className="absolute bottom-0 left-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
+                <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
+                <div className="absolute left-1 top-1 h-2 w-2 rounded-full bg-[rgba(255,255,255,0.9)] opacity-80" />
+                <div className="absolute -top-1 left-1 h-4 w-3 -rotate-12 rounded-t-full border-t-2 border-l-2 border-[rgba(90,220,150,0.95)]" />
+                <div className="absolute -top-1 right-1 h-4 w-3 rotate-12 rounded-t-full border-t-2 border-r-2 border-[rgba(90,220,150,0.95)]" />
+                <div className="absolute -top-2 left-3 h-2 w-3 rotate-[-18deg] rounded-full bg-[rgba(90,220,150,0.95)]" />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+interface BossBattleProps {
+  mode: "boss1" | "boss2";
+  bossHealth: number;
+  onAttack: () => void;
+  onDefeated: () => void;
+}
+
+const BossBattle = ({ mode, bossHealth, onAttack, onDefeated }: BossBattleProps) => {
+  const isDead = bossHealth <= 0;
+
+  const title =
+    mode === "boss1" ? "البوس الأول: علم العراق اللي يغار من حبكم" : "البوس الثاني: مخلوق ماريو البنفسجي";
+
+  return (
+    <div className="relative h-64 w-full overflow-hidden rounded-xl border border-border/70 bg-[radial-gradient(circle_at_top,_rgba(120,81,169,0.5),_transparent_60%),_linear-gradient(to_top,_hsl(var(--background))_10%,_rgba(5,5,20,0.98)_100%)]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.18),_transparent_70%)] opacity-70" />
+
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 text-center">
+        <p className="text-xs font-semibold text-[hsl(var(--romantic-text-soft))]">{title}</p>
+
+        {mode === "boss1" ? (
+          <div className="relative h-24 w-40 overflow-hidden rounded-md shadow-[0_0_25px_rgba(0,0,0,0.8)]">
+            <div className="absolute inset-0">
+              <div className="h-1/3 w-full bg-[hsl(0,80%,50%)]" />
+              <div className="flex h-1/3 w-full items-center justify-center bg-[hsl(0,0%,100%)] text-[10px] font-bold text-[hsl(120,70%,30%)]">
+                الله أكبر
+              </div>
+              <div className="h-1/3 w-full bg-[hsl(0,0%,0%)]" />
+            </div>
+            <div className="pointer-events-none absolute inset-0 border border-[hsl(var(--accent))]/40 shadow-[0_0_30px_rgba(255,120,170,0.8)]" />
+          </div>
+        ) : (
+          <div className="relative h-24 w-32">
+            <div className="absolute bottom-0 left-2 right-2 h-6 rounded-full bg-black/50 blur-sm" />
+            <div className="absolute bottom-4 left-4 right-4 h-10 rounded-t-3xl rounded-b-2xl bg-[hsl(var(--primary))] shadow-[0_0_22px_rgba(120,80,220,0.9)]" />
+            <div className="absolute bottom-9 left-6 right-6 h-6 rounded-t-3xl bg-[hsl(var(--accent))]" />
+            <div className="absolute bottom-7 left-8 flex gap-4">
+              <div className="h-3 w-3 rounded-full bg-white" />
+              <div className="h-3 w-3 rounded-full bg-white" />
+            </div>
+            <div className="absolute bottom-5 left-9 h-1 w-6 rounded-full bg-black/60" />
+          </div>
+        )}
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-center gap-1">
+            {Array.from({ length: Math.max(0, bossHealth) }).map((_, i) => (
+              <span
+                key={i}
+                className="h-3 w-3 rounded-full bg-[hsl(var(--romantic-heart-soft))] shadow-[0_0_12px_rgba(255,120,170,0.9)]"
+              />
+            ))}
           </div>
 
-          {/* cherries */}
-          {CHERRIES.map((cherry) => {
-            const isCollected = collected.includes(cherry.id);
-            if (isCollected) return null;
-            return (
-              <div
-                key={cherry.id}
-                className="absolute -translate-x-1/2 -translate-y-1/2 animate-[float_2.2s_ease-in-out_infinite]"
-                style={{ left: cherry.x, top: cherry.y }}
-              >
-                <div className="relative h-7 w-8">
-                  {/* double cherry body */}
-                  <div className="absolute bottom-0 left-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
-                  <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
-                  {/* shine */}
-                  <div className="absolute left-1 top-1 h-2 w-2 rounded-full bg-[rgba(255,255,255,0.9)] opacity-80" />
-                  {/* stems */}
-                  <div className="absolute -top-1 left-1 h-4 w-3 -rotate-12 rounded-t-full border-t-2 border-l-2 border-[rgba(90,220,150,0.95)]" />
-                  <div className="absolute -top-1 right-1 h-4 w-3 rotate-12 rounded-t-full border-t-2 border-r-2 border-[rgba(90,220,150,0.95)]" />
-                  {/* leaf */}
-                  <div className="absolute -top-2 left-3 h-2 w-3 rotate-[-18deg] rounded-full bg-[rgba(90,220,150,0.95)]" />
-                </div>
-              </div>
-            );
-          })}
+          {!isDead ? (
+            <button
+              type="button"
+              onClick={onAttack}
+              className="rounded-full bg-primary px-4 py-1 text-[0.7rem] font-semibold text-primary-foreground shadow hover:shadow-[var(--romantic-card-glow)]"
+            >
+              اضغطي لإطلاق قلب سحري على البوس
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={onDefeated}
+              className="rounded-full bg-[hsl(var(--accent))] px-4 py-1 text-[0.7rem] font-semibold text-white shadow hover:shadow-[var(--romantic-card-glow)]"
+            >
+              هزمتي البوس! ارجعي لعالم الكرز 🎉
+            </button>
+          )}
         </div>
       </div>
     </div>
