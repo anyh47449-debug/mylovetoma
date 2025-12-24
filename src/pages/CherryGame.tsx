@@ -133,54 +133,60 @@ const CherryCollectorGame = () => {
     };
 
     const loop = () => {
-      setState((prev) => {
-        let { x, y, vx, vy, onGround } = prev;
+        setState((prev) => {
+          let { x, y, vx, vy, onGround } = prev;
 
-        const movingLeft = keysRef.current.ArrowLeft;
-        const movingRight = keysRef.current.ArrowRight;
-        const wantJump = keysRef.current.Space || keysRef.current.ArrowUp;
+          const movingLeft = keysRef.current.ArrowLeft;
+          const movingRight = keysRef.current.ArrowRight;
+          const wantJump = keysRef.current.Space || keysRef.current.ArrowUp;
 
-        if (movingLeft === movingRight) {
-          vx = 0;
-        } else if (movingLeft) {
-          vx = -MOVE_SPEED;
-        } else if (movingRight) {
-          vx = MOVE_SPEED;
-        }
+          if (movingLeft === movingRight) {
+            vx = 0;
+          } else if (movingLeft) {
+            vx = -MOVE_SPEED;
+          } else if (movingRight) {
+            vx = MOVE_SPEED;
+          }
 
-        if (wantJump && onGround) {
-          vy = JUMP_FORCE;
+          if (wantJump && onGround) {
+            vy = JUMP_FORCE;
+            onGround = false;
+          }
+
+          // apply gravity
+          vy += GRAVITY;
+
+          // tentative next position before collisions
+          let nextX = x + vx;
+          let nextY = y + vy;
+
+          // keep inside world horizontally
+          nextX = Math.max(10, Math.min(WORLD_WIDTH - 10, nextX));
+
+          // platform collisions (treat platforms as solid ground from top only)
           onGround = false;
-        }
+          PLATFORMS.forEach((p) => {
+            const withinX = nextX + 12 > p.x && nextX - 12 < p.x + p.width;
+            const wasAbove = y <= p.y;
+            const nowBelowOrOn = nextY >= p.y;
+            const fallingDown = vy >= 0;
 
-        vy += GRAVITY;
-        x += vx;
-        y += vy;
+            if (withinX && wasAbove && nowBelowOrOn && fallingDown) {
+              nextY = p.y;
+              vy = 0;
+              onGround = true;
+            }
+          });
 
-        // world bounds
-        x = Math.max(10, Math.min(WORLD_WIDTH - 10, x));
-
-        // floor collision
-        if (y >= FLOOR_Y) {
-          y = FLOOR_Y;
-          vy = 0;
-          onGround = true;
-        }
-
-        // platform collisions (simple top collision)
-        PLATFORMS.forEach((p) => {
-          const withinX = x + 12 > p.x && x - 12 < p.x + p.width;
-          const fallingDown = vy >= 0;
-          const abovePlatform = y <= p.y && y + vy >= p.y;
-          if (withinX && fallingDown && abovePlatform) {
-            y = p.y;
+          // floor collision (after platforms so المنصات تكون فوق الأرض)
+          if (nextY >= FLOOR_Y) {
+            nextY = FLOOR_Y;
             vy = 0;
             onGround = true;
           }
-        });
 
-        return { x, y, vx, vy, onGround };
-      });
+          return { x: nextX, y: nextY, vx, vy, onGround };
+        });
 
       animationFrame = requestAnimationFrame(loop);
     };
@@ -197,17 +203,18 @@ const CherryCollectorGame = () => {
   }, []);
 
   useEffect(() => {
-    // handle cherry collection
-    const radius = 16;
+    // handle cherry collection - أي تلامس تقريباً بين البنت والكرز
+    const hitRadius = 26;
     const girlX = state.x;
-    const girlY = state.y;
+    // نرفع مركز البنت للأعلى شوي عشان يصير أقرب لمنتصف شخصيتها
+    const girlY = state.y - 12;
 
     CHERRIES.forEach((cherry) => {
       if (collected.includes(cherry.id)) return;
       const dx = girlX - cherry.x;
       const dy = girlY - cherry.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < radius) {
+      if (dist < hitRadius) {
         setCollected((prev) => [...prev, cherry.id]);
         if (audioRef.current) {
           audioRef.current.currentTime = 0;
@@ -241,8 +248,23 @@ const CherryCollectorGame = () => {
         )}
       </div>
       <div className="relative h-64 w-full overflow-hidden rounded-xl border border-border/70 bg-[radial-gradient(circle_at_top,_rgba(120,81,169,0.4),_transparent_60%),_linear-gradient(to_top,_hsl(var(--background))_10%,_rgba(12,10,24,0.95)_100%)]">
-        {/* background stars */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)] opacity-60" />
+         {/* background stars & drifting hearts */}
+         <div className="pointer-events-none absolute inset-0">
+           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)] opacity-60" />
+           {Array.from({ length: 18 }).map((_, i) => (
+             <span
+               key={i}
+               className="absolute text-[10px] text-[hsl(var(--romantic-heart-soft))] opacity-60 animate-[float_10s_ease-in-out_infinite]"
+               style={{
+                 left: `${(i * 7) % 100}%`,
+                 top: `${10 + ((i * 13) % 70)}%`,
+                 animationDelay: `${i * 0.6}s`,
+               }}
+             >
+               ♥
+             </span>
+           ))}
+         </div>
 
         {/* world container */}
         <div
