@@ -261,6 +261,53 @@ const Index = () => {
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.35),_transparent_60%)]" />
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.35),_transparent_60%)]" />
 
+      {isTransitioningToGames && (
+        // شاشة أنيميشن كاملة تغطي الصفحة
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-background/95">
+          <motion.div
+            className="relative flex flex-col items-center gap-5 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <motion.div className="relative flex h-40 w-40 items-center justify-center">
+              {/* الكرز */}
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ scale: 0, rotate: -20, opacity: 0 }}
+                animate={{ scale: [0, 1.1, 0.7, 0.4], rotate: [-20, 5, 0, 10], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 1.1, ease: "easeInOut" }}
+              >
+                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary/80 shadow-[var(--romantic-card-glow)]">
+                  <Cherry className="h-14 w-14 text-primary" aria-hidden />
+                </div>
+              </motion.div>
+
+              {/* الجويستك */}
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ scale: 0.4, rotate: -15, opacity: 0 }}
+                animate={{ scale: [0.4, 0.9, 1.05, 1], rotate: [-15, 4, -2, 0], opacity: [0, 0.3, 0.9, 1] }}
+                transition={{ duration: 1.1, ease: "easeOut", delay: 0.35 }}
+              >
+                <div className="flex h-28 w-28 items-center justify-center rounded-[1.4rem] bg-primary/90 shadow-[0_0_40px_hsl(var(--primary)/0.7)]">
+                  <Gamepad2 className="h-14 w-14 text-primary-foreground" aria-hidden />
+                </div>
+              </motion.div>
+            </motion.div>
+
+            <motion.p
+              className="max-w-xs text-sm font-medium text-[hsl(var(--romantic-text-soft))] sm:text-base"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+            >
+              استعدي لمملكة الألعاب البنفسجية… الكرز يتحول لعصا تحكم مخصوصة لتوما
+            </motion.p>
+          </motion.div>
+        </div>
+      )}
+
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-10 px-4 py-10">
         {/* Music control & hidden player */}
         <div className="pointer-events-none absolute right-4 top-4 z-30 flex items-center justify-end sm:right-6 sm:top-6">
@@ -485,13 +532,14 @@ const Index = () => {
                 <p className="text-xs text-muted-foreground">
                   خانة الألعاب الخاصة بتوما: كل ميني غيم هناك تكمل قصة حبّنا البنفسجية بطريقتها.
                 </p>
-                <Link
-                  to="/games"
-                  className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  ادخلي صفحة الألعاب الكاملة
-                  <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
-                </Link>
+                  <button
+                    type="button"
+                    onClick={handleGoToMiniGames}
+                    className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    ادخلي صفحة الألعاب الكاملة
+                    <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
+                  </button>
               </div>
             </article>
 
