@@ -72,11 +72,11 @@ const CherryGame = () => {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] backdrop-blur">
               <Gamepad2 className="h-4 w-4 text-primary" aria-hidden />
-              <span>cherry runner · toma edition</span>
+              <span>mario · cherry edition</span>
             </div>
-            <h2 className="text-lg font-semibold text-foreground">لعبة جمع الكرز للبنت الكارتونية الصغيرة</h2>
+            <h2 className="text-lg font-semibold text-foreground">لعبة ماريو البسيطة لجمع الكرز</h2>
             <p className="text-xs text-muted-foreground">
-              اجمعي حبات الكرز في عالم بنفسجي كبير، وكل ١٠ كرزات يظهر بوس داخل نفس العالم تقاتليه.
+              تحكم في ماريو، امشِ على الأرض واقفز بين الحواجز واجمع أكبر عدد ممكن من حبات الكرز.
             </p>
             <p className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
               التحكم: الأسهم لليمين واليسار، و زر المسافة أو السهم ↑ للقفز.
@@ -119,8 +119,8 @@ const CherryCollectorGame = () => {
 
   const [mode, setMode] = useState<Mode>("world");
   const [state, setState] = useState<CherryCollectorGameState>({
-    x: PLATFORMS[0].x + PLATFORMS[0].width / 2,
-    y: PLATFORMS[0].y,
+    x: 60,
+    y: FLOOR_Y,
     vx: 0,
     vy: 0,
     onGround: true,
@@ -210,11 +210,9 @@ const CherryCollectorGame = () => {
           }
         });
 
-        // الأرض في عالم الباركور شوك مميت – أي سقوط عليها يرجّع البنت لبداية المنصات ويمسح الكرز
-        if (nextY >= FLOOR_Y && mode === "world") {
-          setCollected([]);
-          nextX = PLATFORMS[0].x + PLATFORMS[0].width / 2;
-          nextY = PLATFORMS[0].y;
+        // الأرض الآن أرض عادية مثل ماريو، ما تموت لو لمستها
+        if (nextY >= FLOOR_Y) {
+          nextY = FLOOR_Y;
           vy = 0;
           onGround = true;
         }
