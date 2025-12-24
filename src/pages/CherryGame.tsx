@@ -247,42 +247,49 @@ const CherryCollectorGame = () => {
           </div>
         ))}
 
-        {/* girl character - more detailed cartoon */}
+        {/* girl character - chibi cartoon */}
         <div
-          className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-75"
+          className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-100"
           style={{ left: state.x, top: state.y }}
         >
-          <div className="relative h-14 w-9">
+          <div className="relative h-16 w-11">
+            {/* shadow */}
+            <div className="absolute -bottom-1 left-1 right-1 h-2 rounded-full bg-black/40 blur-sm" />
+
             {/* hair back */}
-            <div className="absolute left-0 right-0 top-1 h-5 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))] shadow-[0_2px_6px_rgba(0,0,0,0.5)]" />
+            <div className="absolute left-0 right-0 top-1 h-6 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))] shadow-[0_2px_6px_rgba(0,0,0,0.55)]" />
             {/* hair bangs */}
-            <div className="absolute left-1 right-1 top-1 h-3 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))]" />
+            <div className="absolute left-1.5 right-1.5 top-1 h-3 rounded-t-3xl bg-[hsl(var(--romantic-heart-soft))]" />
             {/* hair bow */}
-            <div className="absolute -top-1 right-1 h-3 w-4 rounded-full bg-[hsl(var(--accent))] shadow-[0_1px_4px_rgba(0,0,0,0.6)]" />
+            <div className="absolute -top-1 right-0 h-3.5 w-5 -rotate-6 rounded-full bg-[hsl(var(--accent))] shadow-[0_1px_4px_rgba(0,0,0,0.6)]" />
 
             {/* face */}
-            <div className="absolute left-1 right-1 top-3 h-5 rounded-2xl bg-[hsl(var(--romantic-skin-soft))] shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
-              {/* eyes */}
-              <div className="mt-2 flex items-center justify-center gap-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.95)]" />
-                <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.95)]" />
+            <div className="absolute left-1.5 right-1.5 top-3 h-6 rounded-2xl bg-[hsl(var(--romantic-skin-soft))] shadow-[0_1px_4px_rgba(0,0,0,0.55)]">
+              {/* eyes + mouth */}
+              <div className="mt-2 flex flex-col items-center gap-0.5">
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-[rgba(30,20,60,0.98)]" />
+                </div>
+                <div className="h-0.5 w-3 rounded-full bg-[rgba(30,20,60,0.7)]" />
               </div>
               {/* blush */}
               <div className="absolute inset-x-1 bottom-0 flex justify-between px-1">
-                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,120,150,0.7)]" />
-                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,120,150,0.7)]" />
+                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
+                <div className="h-1.5 w-2 rounded-full bg-[rgba(255,140,170,0.8)]" />
               </div>
             </div>
 
             {/* dress */}
-            <div className="absolute bottom-2 left-0 right-0 h-7 rounded-b-3xl bg-[hsl(var(--primary))] shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
+            <div className="absolute bottom-3 left-0 right-0 h-8 rounded-b-3xl bg-[hsl(var(--primary))] shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
               <div className="absolute inset-x-2 top-1 h-1.5 rounded-full bg-[hsl(var(--primary-foreground))]/20" />
+              <div className="absolute inset-x-1 bottom-1 h-1 rounded-full bg-[hsl(var(--accent))]/40" />
             </div>
 
             {/* legs */}
             <div className="absolute bottom-0 left-2 right-2 flex justify-between gap-1">
-              <div className="h-3.5 w-1.5 rounded-full bg-[rgba(35,25,60,0.9)]" />
-              <div className="h-3.5 w-1.5 rounded-full bg-[rgba(35,25,60,0.9)]" />
+              <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
+              <div className="h-4 w-1.5 rounded-full bg-[rgba(40,28,70,0.95)]" />
             </div>
           </div>
         </div>
@@ -297,10 +304,17 @@ const CherryCollectorGame = () => {
               className="absolute -translate-x-1/2 -translate-y-1/2 animate-[float_2.2s_ease-in-out_infinite]"
               style={{ left: cherry.x, top: cherry.y }}
             >
-              <div className="relative h-6 w-6">
-                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_top,_#ff6b9c,_#b3125d)] shadow-[0_0_18px_rgba(255,107,156,0.9)]" />
+              <div className="relative h-7 w-8">
+                {/* double cherry body */}
+                <div className="absolute bottom-0 left-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
+                <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--accent)),_hsl(var(--romantic-heart-soft)))] shadow-[0_0_18px_rgba(255,120,170,0.95)]" />
+                {/* shine */}
                 <div className="absolute left-1 top-1 h-2 w-2 rounded-full bg-[rgba(255,255,255,0.9)] opacity-80" />
-                <div className="absolute -top-1 left-1 h-3 w-3 rotate-[-25deg] rounded-t-full border-t-2 border-l-2 border-[rgba(70,200,120,0.9)]" />
+                {/* stems */}
+                <div className="absolute -top-1 left-1 h-4 w-3 -rotate-12 rounded-t-full border-t-2 border-l-2 border-[rgba(90,220,150,0.95)]" />
+                <div className="absolute -top-1 right-1 h-4 w-3 rotate-12 rounded-t-full border-t-2 border-r-2 border-[rgba(90,220,150,0.95)]" />
+                {/* leaf */}
+                <div className="absolute -top-2 left-3 h-2 w-3 rotate-[-18deg] rounded-full bg-[rgba(90,220,150,0.95)]" />
               </div>
             </div>
           );
