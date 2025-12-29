@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 // صفحة ميني غيمز فعلية بدون حكي طويل:
 // 1) لعبة صيد القلوب في شبكة مربعات
-// 2) لعبة نمط الذاكرة (لمعان مربعات)
-// 3) لعبة موازنة أرقام بسيطة بينك وبين توما
+// 2) لعبة تحريك شخصية تجمع كرز
+// 3) لعبة لغز قلوب تضوينها كلها
 
 type TabId = "catch" | "reaction" | "spam";
 
@@ -51,10 +51,10 @@ const CherryGame = () => {
                 لعبة صيد القلوب
               </TabButton>
               <TabButton id="reaction" activeTab={activeTab} onClick={setActiveTab}>
-                لعبة نمط الذاكرة
+                لعبة تجميع الكرز
               </TabButton>
               <TabButton id="spam" activeTab={activeTab} onClick={setActiveTab}>
-                لعبة موازنة الأرقام
+                لعبة لغز القلوب
               </TabButton>
             </div>
 
@@ -236,76 +236,60 @@ const HeartCatchGame = () => {
   );
 };
 
-// 2) لعبة نمط الذاكرة: مربعات تومض بتسلسل وتحاولين تعيدينها
+// 2) لعبة تحريك شخصية تجمع كرز في شبكة 7x7
 const ReactionGame = () => {
-  const [sequence, setSequence] = useState<number[]>([]);
-  const [playerInput, setPlayerInput] = useState<number[]>([]);
-  const [showing, setShowing] = useState(false);
-  const [level, setLevel] = useState(1);
-  const [status, setStatus] = useState<string>("اضغطي ابدأ عشان يطلع أول نمط، وحاولي تحفظينه.");
+  const GRID = 7;
+  const START_POS = Math.floor((GRID * GRID) / 2);
 
-  const GRID = 3; // شبكة 3x3
+  const [running, setRunning] = useState(false);
+  const [playerPos, setPlayerPos] = useState<number>(START_POS);
+  const [cherries, setCherries] = useState<number[]>([]);
+  const [movesLeft, setMovesLeft] = useState<number>(20);
+  const [score, setScore] = useState<number>(0);
 
-  const generateNextSequence = (prev: number[]) => {
-    const nextCell = Math.floor(Math.random() * GRID * GRID);
-    return [...prev, nextCell];
-  };
-
-  const playSequence = (seq: number[]) => {
-    setShowing(true);
-    setPlayerInput([]);
-    let index = 0;
-    setStatus("ركّزي، المربعات تومض بالترتيب...");
-
-    const interval = window.setInterval(() => {
-      if (index >= seq.length) {
-        window.clearInterval(interval);
-        setShowing(false);
-        setStatus("حان دورك، اضغطي على المربعات بنفس الترتيب.");
-        return;
-      }
-      setPlayerInput((prev) => prev); // مجرد تحديث بسيط لتحفيز إعادة الرسم إذا احتجنا
-      index += 1;
-    }, 650);
+  const generateCherries = () => {
+    const positions = new Set<number>();
+    while (positions.size < 5) {
+      const cell = Math.floor(Math.random() * GRID * GRID);
+      if (cell !== START_POS) positions.add(cell);
+    }
+    return Array.from(positions);
   };
 
   const startGame = () => {
-    const firstSeq = generateNextSequence([]);
-    setSequence(firstSeq);
-    setLevel(1);
-    playSequence(firstSeq);
+    setRunning(true);
+    setPlayerPos(START_POS);
+    setCherries(generateCherries());
+    setMovesLeft(20);
+    setScore(0);
   };
 
-  const handleCellClick = (index: number) => {
-    if (showing || sequence.length === 0) return;
+  const movePlayer = (dx: number, dy: number) => {
+    if (!running || movesLeft <= 0) return;
 
-    const nextInput = [...playerInput, index];
-    setPlayerInput(nextInput);
+    const row = Math.floor(playerPos / GRID);
+    const col = playerPos % GRID;
+    const newRow = row + dy;
+    const newCol = col + dx;
 
-    const expected = sequence[nextInput.length - 1];
-    if (index !== expected) {
-      setStatus("غلط بسيط، لا بأس! ارجعي اضغطي ابدأ وجربي من جديد من ليفل 1.");
-      setSequence([]);
-      setPlayerInput([]);
-      setLevel(1);
-      return;
-    }
+    if (newRow < 0 || newRow >= GRID || newCol < 0 || newCol >= GRID) return;
 
-    if (nextInput.length === sequence.length) {
-      const newLevel = level + 1;
-      setLevel(newLevel);
-      const newSeq = generateNextSequence(sequence);
-      setSequence(newSeq);
-      playSequence(newSeq);
-      setStatus("برافو! زودنا خطوة جديدة، ركّزي في النمط الجديد.");
-    }
+    const newPos = newRow * GRID + newCol;
+    setPlayerPos(newPos);
+    setMovesLeft((m) => m - 1);
+
+    setCherries((prev) => {
+      if (prev.includes(newPos)) {
+        setScore((s) => s + 1);
+        return prev.filter((c) => c !== newPos);
+      }
+      return prev;
+    });
   };
 
-  const isHighlighted = (index: number) => {
-    if (!showing || sequence.length === 0) return false;
-    const currentStep = playerInput.length;
-    return sequence[currentStep] === index;
-  };
+  const isCherry = (index: number) => cherries.includes(index);
+
+  const isOver = !running || movesLeft <= 0 || cherries.length === 0;
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -313,11 +297,11 @@ const ReactionGame = () => {
         <div className="space-y-1">
           <p className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.65rem] font-medium text-muted-foreground">
             <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
-            <span>Game · نمط الذاكرة</span>
+            <span>Game · تجميع الكرز</span>
           </p>
           <p className="text-[0.75rem] text-muted-foreground">
-            مربعات صغيرة تومض بترتيب معيّن، وتحاولين تعيدين نفس الترتيب. أنتي وتوما تشوفون مين يوصل لليفل أعلى
-            بدون ما يغلط.
+            حرّكي الشخصية الصغيرة داخل الشبكة عشان تجمعين أكبر عدد ممكن من الكرز قبل ما تخلص حركاتك. أنتي وتوما
+            تشوفون مين يقدر يخطط أحسن.
           </p>
         </div>
         <button
@@ -326,76 +310,120 @@ const ReactionGame = () => {
           className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-[0.75rem] font-semibold text-primary-foreground shadow-sm hover:shadow-[var(--romantic-card-glow)]"
         >
           <Timer className="h-3.5 w-3.5" aria-hidden />
-          ابدأي النمط
+          {running ? "إعادة" : "ابدئي الجولة"}
         </button>
       </div>
 
       <div className="flex items-center justify-between text-[0.75rem] text-muted-foreground">
         <span>
-          المستوى الحالي: <span className="font-semibold text-primary">Lv {level}</span>
+          عدد الكرز: <span className="font-semibold text-primary">{score}</span>
         </span>
-        <span className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">{status}</span>
+        <span>
+          الحركات المتبقية: <span className="font-semibold text-primary">{movesLeft}</span>
+        </span>
       </div>
 
-      <div className="mt-2 grid flex-1 grid-cols-3 gap-2">
+      <div className="mt-2 grid flex-1 grid-cols-7 gap-1.5">
         {Array.from({ length: GRID * GRID }).map((_, index) => {
-          const highlighted = isHighlighted(index);
+          const isPlayer = index === playerPos;
+          const hasCherry = isCherry(index);
+
           return (
-            <button
+            <div
               key={index}
-              type="button"
-              onClick={() => handleCellClick(index)}
-              className={`flex items-center justify-center rounded-lg border border-border/60 bg-background/70 transition-colors ${
-                highlighted ? "bg-[hsl(var(--romantic-heart-soft))]/80" : "hover:bg-secondary/60"
-              }`}
-            />
+              className="flex items-center justify-center rounded-lg border border-border/60 bg-background/80 text-sm"
+            >
+              {isPlayer ? (
+                <span aria-hidden>🧸</span>
+              ) : hasCherry ? (
+                <span aria-hidden>🍒</span>
+              ) : null}
+            </div>
           );
         })}
       </div>
 
-      {sequence.length === 0 && (
+      <div className="flex items-center justify-center gap-2 pt-2 text-sm">
+        <button
+          type="button"
+          onClick={() => movePlayer(0, -1)}
+          className="rounded-full bg-secondary/70 px-4 py-1.5 text-foreground hover:bg-secondary/90"
+        >
+          ↑
+        </button>
+      </div>
+      <div className="flex items-center justify-center gap-4 text-sm">
+        <button
+          type="button"
+          onClick={() => movePlayer(-1, 0)}
+          className="rounded-full bg-secondary/70 px-4 py-1.5 text-foreground hover:bg-secondary/90"
+        >
+          ←
+        </button>
+        <button
+          type="button"
+          onClick={() => movePlayer(1, 0)}
+          className="rounded-full bg-secondary/70 px-4 py-1.5 text-foreground hover:bg-secondary/90"
+        >
+          →
+        </button>
+      </div>
+      <div className="flex items-center justify-center gap-2 pb-1 text-sm">
+        <button
+          type="button"
+          onClick={() => movePlayer(0, 1)}
+          className="rounded-full bg-secondary/70 px-4 py-1.5 text-foreground hover:bg-secondary/90"
+        >
+          ↓
+        </button>
+      </div>
+
+      {isOver && (
         <p className="pt-1 text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
-          اضغطي ابدأ عشان يبدأ أول نمط، وكل مرة تنجحين نزود خطوة جديدة وتكبر الذكرى.
+          الجولة انتهت! سجّلي كم كرز جمعتي أنتي وتوما، وشوفي مين بطل تخطيط المسار.
         </p>
       )}
     </div>
   );
 };
 
-// 3) لعبة موازنة الأرقام: توصّلين لرقم الهدف بعدد حركات محدود
+// 3) لعبة لغز القلوب: تضوين كل القلوب عن طريق قلب الخانات والجيران
 const HeartSpamGame = () => {
-  const [target, setTarget] = useState<number>(20 + Math.floor(Math.random() * 21)); // من 20 إلى 40
-  const [current, setCurrent] = useState<number>(0);
+  const SIZE = 3;
+  const [grid, setGrid] = useState<boolean[]>(() => Array(SIZE * SIZE).fill(false));
   const [moves, setMoves] = useState<number>(0);
-  const [maxMoves, setMaxMoves] = useState<number>(7);
-  const [status, setStatus] = useState<string>("استخدمي الأزرار عشان توصّلين للرقم الهدف بالضبط قبل ما تخلص الحركات.");
 
-  const reset = () => {
-    setTarget(20 + Math.floor(Math.random() * 21));
-    setCurrent(0);
+  const randomize = () => {
+    const next = Array(SIZE * SIZE)
+      .fill(false)
+      .map(() => Math.random() < 0.5);
+    setGrid(next);
     setMoves(0);
-    setMaxMoves(7);
-    setStatus("جولة جديدة! جربي توصلين للهدف بحسابات ذكية.");
   };
 
-  const applyMove = (delta: number) => {
-    if (moves >= maxMoves) {
-      setStatus("خلصت حركاتك! اضغطي إعادة المحاولة عشان تبدأون رقم جديد.");
-      return;
-    }
+  const toggleAt = (index: number) => {
+    setGrid((prev) => {
+      const next = [...prev];
+      const toggle = (i: number) => {
+        if (i < 0 || i >= SIZE * SIZE) return;
+        next[i] = !next[i];
+      };
 
-    const next = current + delta;
-    setCurrent(next);
+      const row = Math.floor(index / SIZE);
+      const col = index % SIZE;
+
+      toggle(index);
+      if (col > 0) toggle(index - 1);
+      if (col < SIZE - 1) toggle(index + 1);
+      if (row > 0) toggle(index - SIZE);
+      if (row < SIZE - 1) toggle(index + SIZE);
+
+      return next;
+    });
     setMoves((m) => m + 1);
-
-    if (next === target) {
-      setStatus("يا سلام! وصلتي للرقم بالضبط، سجّلي عدد الحركات وشوفي مين فيكم الأذكى.");
-    } else if (next > target) {
-      setStatus("تعديتي الهدف شوي، حاولي تعدلين بالحركات الجاية.");
-    } else {
-      setStatus("لسا أقل من الهدف، كم حركة تحتاجين عشان توصّلين له؟");
-    }
   };
+
+  const allOn = grid.every((cell) => cell);
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -403,75 +431,51 @@ const HeartSpamGame = () => {
         <div className="space-y-1">
           <p className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.65rem] font-medium text-muted-foreground">
             <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
-            <span>Game · موازنة الأرقام</span>
+            <span>Game · لغز القلوب</span>
           </p>
           <p className="text-[0.75rem] text-muted-foreground">
-            لعبة هادية تعتمد على التفكير بدل السرعة. أنتي وتوما تحاولون توصلون للرقم الهدف باستخدام أزرار + و-
-            بعدد حركات أقل.
+            كل خانة فيها قلب يطفي ويولع، وإذا ضغطتي وحدة يتأثر معها جيرانها. الهدف تضوين كل القلوب بأقل عدد
+            ممكن من الحركات.
           </p>
         </div>
         <button
           type="button"
-          onClick={reset}
+          onClick={randomize}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-[0.75rem] font-semibold text-primary-foreground shadow-sm hover:shadow-[var(--romantic-card-glow)]"
         >
           <Timer className="h-3.5 w-3.5" aria-hidden />
-          إعادة التحدّي
+          لغز جديد
         </button>
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-        <div className="flex flex-col items-center gap-1">
-          <p className="text-[0.8rem] text-muted-foreground">الهدف</p>
-          <div className="rounded-full bg-secondary/60 px-5 py-2 text-sm font-semibold text-primary">
-            {target}
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-[0.8rem] text-muted-foreground">رقمك الحالي</p>
-          <div className="rounded-full bg-background px-6 py-3 text-lg font-bold text-foreground shadow-md">
-            {current}
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <button
-            type="button"
-            onClick={() => applyMove(-3)}
-            className="rounded-full bg-secondary/70 px-4 py-1.5 text-sm text-foreground hover:bg-secondary/90"
-          >
-            -3
-          </button>
-          <button
-            type="button"
-            onClick={() => applyMove(-1)}
-            className="rounded-full bg-secondary/70 px-4 py-1.5 text-sm text-foreground hover:bg-secondary/90"
-          >
-            -1
-          </button>
-          <button
-            type="button"
-            onClick={() => applyMove(+1)}
-            className="rounded-full bg-secondary/70 px-4 py-1.5 text-sm text-foreground hover:bg-secondary/90"
-          >
-            +1
-          </button>
-          <button
-            type="button"
-            onClick={() => applyMove(+3)}
-            className="rounded-full bg-secondary/70 px-4 py-1.5 text-sm text-foreground hover:bg-secondary/90"
-          >
-            +3
-          </button>
+        <div className="grid grid-cols-3 gap-2">
+          {grid.map((on, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => toggleAt(index)}
+              className={`flex h-14 w-14 items-center justify-center rounded-xl border border-border/70 text-xl transition-colors ${
+                on
+                  ? "bg-[hsl(var(--romantic-heart-soft))] text-primary-foreground"
+                  : "bg-background/80 text-muted-foreground hover:bg-secondary/60"
+              }`}
+            >
+              <Heart className="h-6 w-6" aria-hidden />
+            </button>
+          ))}
         </div>
 
         <div className="space-y-1 text-[0.8rem] text-muted-foreground">
           <p>
-            عدد الحركات المستخدمة:
-            <span className="ml-1 font-semibold text-primary">{moves}</span> / {maxMoves}
+            عدد الحركات:
+            <span className="ml-1 font-semibold text-primary">{moves}</span>
           </p>
-          <p className="max-w-xs text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">{status}</p>
+          <p className="max-w-xs text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
+            {allOn
+              ? "لوّعتي كل القلوب! سجّلي عدد الحركات لك وله وشوفي مين يحل اللغز بأقل عدد."
+              : "حاولي ترتبين ضغطاتك عشان توصّلين لوضع كل القلوب منوّرة."}
+          </p>
         </div>
       </div>
     </div>
