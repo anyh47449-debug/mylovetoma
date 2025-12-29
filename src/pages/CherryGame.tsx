@@ -3,9 +3,9 @@ import { ArrowLeft, Gamepad2, Heart, Timer, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // صفحة ميني غيمز فعلية بدون حكي طويل:
-// 1) لعبة صيد القلوب (تضغطين على قلب يطلع بمكان عشوائي قبل يختفي)
-// 2) لعبة سرعة رد الفعل (تنتظرين الإشارة وتضغطين بأسرع ما يمكن)
-// 3) لعبة ضغط سريع على القلب خلال 10 ثواني
+// 1) لعبة صيد القلوب في شبكة مربعات
+// 2) لعبة تصويب قلب يتحرك في مساحة حرة
+// 3) لعبة شريط دقّة تحاولين توقفينه في المنتصف
 
 type TabId = "catch" | "reaction" | "spam";
 
@@ -51,10 +51,10 @@ const CherryGame = () => {
                 لعبة صيد القلوب
               </TabButton>
               <TabButton id="reaction" activeTab={activeTab} onClick={setActiveTab}>
-                لعبة سرعة رد الفعل
+                لعبة تصويب القلب
               </TabButton>
               <TabButton id="spam" activeTab={activeTab} onClick={setActiveTab}>
-                لعبة عدّاد الضغط
+                لعبة شريط الدقّة
               </TabButton>
             </div>
 
@@ -236,58 +236,68 @@ const HeartCatchGame = () => {
   );
 };
 
-// 2) لعبة سرعة رد الفعل: تنتظرين اللون يتحول للأخضر، ثم تضغطين بأسرع ما يمكن
+// 2) لعبة تصويب قلب يتحرك في مساحة حرة
 const ReactionGame = () => {
-  const [state, setState] = useState<"idle" | "waiting" | "ready" | "done">("idle");
-  const [result, setResult] = useState<number | null>(null);
-  const startTimeRef = useRef<number | null>(null);
-  const timeoutRef = useRef<number | null>(null);
+  const [running, setRunning] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(20);
+  const [hits, setHits] = useState(0);
+  const [shots, setShots] = useState(0);
+  const [pos, setPos] = useState({ x: 50, y: 50 }); // نسبة مئوية داخل الصندوق
+  const timerRef = useRef<number | null>(null);
+  const moveRef = useRef<number | null>(null);
 
   const reset = () => {
-    setState("idle");
-    setResult(null);
-    startTimeRef.current = null;
-    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    setRunning(false);
+    setTimeLeft(20);
+    setHits(0);
+    setShots(0);
+    setPos({ x: 50, y: 50 });
+    if (timerRef.current) window.clearInterval(timerRef.current);
+    if (moveRef.current) window.clearInterval(moveRef.current);
   };
 
   const start = () => {
     reset();
-    setState("waiting");
-    const delay = 1000 + Math.random() * 3000; // بين ثانية و4
-    timeoutRef.current = window.setTimeout(() => {
-      startTimeRef.current = performance.now();
-      setState("ready");
-    }, delay);
+    setRunning(true);
+
+    timerRef.current = window.setInterval(() => {
+      setTimeLeft((t) => {
+        if (t <= 1) {
+          setRunning(false);
+          if (timerRef.current) window.clearInterval(timerRef.current);
+          if (moveRef.current) window.clearInterval(moveRef.current);
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+
+    moveRef.current = window.setInterval(() => {
+      setPos({
+        x: 10 + Math.random() * 80,
+        y: 10 + Math.random() * 80,
+      });
+    }, 700);
   };
 
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+      if (timerRef.current) window.clearInterval(timerRef.current);
+      if (moveRef.current) window.clearInterval(moveRef.current);
     };
   }, []);
 
-  const handleClickArea = () => {
-    if (state === "waiting") {
-      // ضغطتِ بدري
-      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
-      setState("done");
-      setResult(-1);
-    } else if (state === "ready" && startTimeRef.current) {
-      const diff = performance.now() - startTimeRef.current;
-      setResult(Math.round(diff));
-      setState("done");
-    }
+  const handleHit = () => {
+    if (!running) return;
+    setHits((h) => h + 1);
+    setShots((s) => s + 1);
+    setPos({ x: 10 + Math.random() * 80, y: 10 + Math.random() * 80 });
   };
 
-  let message = "اضغطي Start واتبعي التعليمات.";
-  if (state === "waiting") message = "لا تضغطين لسه… استعدي.";
-  if (state === "ready") message = "اضغطي الآن فوراً!";
-  if (state === "done" && result !== null) {
-    if (result === -1) message = "ضغطتِ بدري! أعيدي المحاولة وخلي توما يشوف مين أهدى واحد.";
-    else if (result < 200) message = `ردّة فعل مجنونة! ${result}ms`;
-    else if (result < 350) message = `مرة سريعة، أحس يدك متعودة على الألعاب. ${result}ms`;
-    else message = `كويسة، بس تقدرين تحسنين أكثر. ${result}ms`;
-  }
+  const accuracy = useMemo(() => {
+    if (shots === 0) return 0;
+    return Math.round((hits / shots) * 100);
+  }, [hits, shots]);
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -295,10 +305,10 @@ const ReactionGame = () => {
         <div className="space-y-1">
           <p className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.65rem] font-medium text-muted-foreground">
             <Zap className="h-3.5 w-3.5 text-primary" aria-hidden />
-            <span>Game · سرعة رد الفعل</span>
+            <span>Game · تصويب القلب</span>
           </p>
           <p className="text-[0.75rem] text-muted-foreground">
-            شغّلوا اللعبة واحد واحد. اضغطي Start، انتظري اللون يتحوّل، ثم اضغطي بأسرع ما تقدرين وشوفي الوقت بالملي ثانية.
+            قلب صغير يتحرك في المساحة، حاولي تضغطينه كل مرة يغيّر مكانه خلال 20 ثانية وشوفي دقّة تصويبك.
           </p>
         </div>
         <button
@@ -307,72 +317,90 @@ const ReactionGame = () => {
           className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-[0.75rem] font-semibold text-primary-foreground shadow-sm hover:shadow-[var(--romantic-card-glow)]"
         >
           <Timer className="h-3.5 w-3.5" aria-hidden />
-          Start
+          {running ? "إعادة" : "ابدئي الجولة"}
         </button>
       </div>
 
-      <div className="flex-1">
+      <div className="flex items-center justify-between text-[0.75rem] text-muted-foreground">
+        <span>
+          الوقت المتبقي: <span className="font-semibold text-primary">{timeLeft}s</span>
+        </span>
+        <span>
+          التصويبات: <span className="font-semibold text-primary">{hits}</span> · الدقة: {accuracy}%
+        </span>
+      </div>
+
+      <div className="relative mt-2 flex-1 rounded-2xl border border-border/60 bg-background/80">
         <button
           type="button"
-          onClick={handleClickArea}
-          className={`flex h-44 w-full items-center justify-center rounded-2xl border border-border/60 text-sm font-semibold transition-colors ${
-            state === "ready"
-              ? "bg-emerald-500 text-primary-foreground"
-              : state === "waiting"
-              ? "bg-yellow-500/80 text-black"
-              : "bg-background/80 text-foreground hover:bg-secondary/60"
-          }`}
+          onClick={handleHit}
+          style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: "translate(-50%, -50%)" }}
+          className="absolute flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--romantic-heart-soft))] text-primary-foreground shadow-md hover:scale-105 transition"
         >
-          {state === "idle" && "هنا تضغطين لما يقول لك اضغطي."}
-          {state === "waiting" && "لا تضغطين… لسه!"}
-          {state === "ready" && "اضغطي الآن الآن الآن!"}
-          {state === "done" && result !== null &&
-            (result === -1 ? "ضغطتِ بدري!" : `${result}ms`)}
+          <Heart className="h-5 w-5" aria-hidden />
         </button>
       </div>
 
-      <p className="text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
-        جرّبي أكثر من مرة، وخلي توما يسوي نفس الشيء، وشوفوا مين عنده ردّة فعل أسرع.
-      </p>
+      {!running && timeLeft === 0 && (
+        <p className="pt-1 text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
+          الجلسة خلصت! سجّلي عدد التصويبات لك وله، وشوفي مين القنّاص الحقيقي.
+        </p>
+      )}
     </div>
   );
 };
 
-// 3) لعبة عدّاد الضغط: 10 ثواني تحاولين تضغطين القلب قد ما تقدرين
+// 3) لعبة شريط الدقّة: تحاولين توقفين الشريط أقرب ما يكون للمنتصف
 const HeartSpamGame = () => {
-  const [timeLeft, setTimeLeft] = useState(10);
-  const [count, setCount] = useState(0);
+  const [value, setValue] = useState(0); // 0 - 100
+  const [direction, setDirection] = useState<1 | -1>(1);
   const [running, setRunning] = useState(false);
-  const timerRef = useRef<number | null>(null);
+  const [lastScore, setLastScore] = useState<number | null>(null);
+  const [bestScore, setBestScore] = useState<number | null>(null);
+  const animRef = useRef<number | null>(null);
+
+  const animate = () => {
+    setValue((v) => {
+      let next = v + direction * 2.5;
+      if (next >= 100) {
+        next = 100;
+        setDirection(-1);
+      } else if (next <= 0) {
+        next = 0;
+        setDirection(1);
+      }
+      return next;
+    });
+    animRef.current = requestAnimationFrame(animate);
+  };
 
   const start = () => {
     if (running) return;
-    setCount(0);
-    setTimeLeft(10);
     setRunning(true);
-    if (timerRef.current) window.clearInterval(timerRef.current);
-    timerRef.current = window.setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 1) {
-          setRunning(false);
-          if (timerRef.current) window.clearInterval(timerRef.current);
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
+    setLastScore(null);
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+    animRef.current = requestAnimationFrame(animate);
+  };
+
+  const stop = () => {
+    if (!running) return;
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+    animRef.current = null;
+    setRunning(false);
+    setValue((v) => {
+      const distance = Math.abs(v - 50); // المسافة عن المنتصف
+      const score = Math.max(0, Math.round(100 - distance * 4));
+      setLastScore(score);
+      setBestScore((prev) => (prev == null || score > prev ? score : prev));
+      return v;
+    });
   };
 
   useEffect(() => {
     return () => {
-      if (timerRef.current) window.clearInterval(timerRef.current);
+      if (animRef.current) cancelAnimationFrame(animRef.current);
     };
   }, []);
-
-  const handleClick = () => {
-    if (!running) return;
-    setCount((c) => c + 1);
-  };
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -380,47 +408,49 @@ const HeartSpamGame = () => {
         <div className="space-y-1">
           <p className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.65rem] font-medium text-muted-foreground">
             <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
-            <span>Game · عدّاد الضغط</span>
+            <span>Game · شريط الدقّة</span>
           </p>
           <p className="text-[0.75rem] text-muted-foreground">
-            عندك 10 ثواني فقط. اضغطي على القلب بسرعة قد ما تقدرين وشوفي كم توصلي، وبعدين خليه هو يحاول يكسر رقمك.
+            الشريط يتحرك يمين ويسار، حاولي توقفينه وهو أقرب ما يكون للوسط عشان تاخذين أعلى نتيجة من 100.
           </p>
         </div>
         <button
           type="button"
-          onClick={start}
+          onClick={running ? stop : start}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-[0.75rem] font-semibold text-primary-foreground shadow-sm hover:shadow-[var(--romantic-card-glow)]"
         >
           <Timer className="h-3.5 w-3.5" aria-hidden />
-          ابدئي الجولة
+          {running ? "أوقفي الآن" : "ابدئي الجولة"}
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-4">
-        <button
-          type="button"
-          onClick={handleClick}
-          className={`inline-flex h-24 w-24 items-center justify-center rounded-full text-primary-foreground shadow-[0_0_40px_rgba(0,0,0,0.6)] transition ${
-            running
-              ? "bg-gradient-to-br from-primary to-accent hover:scale-105 hover:shadow-[var(--romantic-card-glow)]"
-              : "bg-secondary/70 opacity-80"
-          }`}
-        >
-          <Heart className="h-12 w-12" aria-hidden />
-        </button>
-        <div className="text-center">
-          <div className="text-xs text-muted-foreground">الوقت المتبقي</div>
-          <div className="text-2xl font-semibold text-primary">{timeLeft}s</div>
-          <div className="mt-3 text-xs text-muted-foreground">العدّاد</div>
-          <div className="text-2xl font-semibold text-foreground">{count}</div>
+      <div className="mt-2 flex flex-1 flex-col justify-center gap-4">
+        <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
+          <div
+            className="h-full rounded-full bg-primary transition-[width]"
+            style={{ width: `${value}%` }}
+          />
+        </div>
+        <div className="flex items-center justify-between text-[0.75rem] text-muted-foreground">
+          <span>
+            موضع الشريط الآن: <span className="font-semibold text-primary">{Math.round(value)}%</span>
+          </span>
+          <span>
+            أفضل نتيجة: <span className="font-semibold text-primary">{bestScore ?? "—"}</span>
+          </span>
         </div>
       </div>
 
-      {!running && timeLeft === 0 && (
-        <p className="text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
-          اكتبي رقمك ورقم توما، وشوفي مين عنده أصابع أسرع.
-        </p>
-      )}
+      <div className="mt-1 text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
+        {lastScore != null ? (
+          <p>
+            نتيجتك الأخيرة: <span className="font-semibold text-primary">{lastScore}/100</span> — جربي تعيدين
+            وتشوفين إذا تقدرين تقربي أكثر من المنتصف.
+          </p>
+        ) : (
+          <p>كل واحد منكم يحاول يجيب أقرب نتيجة لـ 100، وسجّلوا الأرقام عشان تعرفون مين أدق واحد.</p>
+        )}
+      </div>
     </div>
   );
 };
