@@ -318,34 +318,34 @@ const Index = () => {
           <button
             type="button"
             onClick={() => {
-              const audioEl = audioRef.current;
-              const vidEl = videoRef.current;
-              if (!audioEl) return;
-
-              if (isMusicPlaying) {
-                audioEl.pause();
-                vidEl?.pause();
-                setIsMusicPlaying(false);
-              } else {
-                // ابدئي الاثنين من نفس اللحظة تقريبًا
-                audioEl.currentTime = 0;
-                if (vidEl) {
-                  vidEl.currentTime = 0;
-                }
-
-                void audioEl
-                  .play()
-                  .then(() => {
-                    setIsMusicPlaying(true);
-                    if (vidEl) {
-                      vidEl.play().catch(() => {});
-                    }
-                  })
-                  .catch(() => {
-                    // ignore play errors
-                  });
-              }
-            }}
+               const audioEl = audioRef.current;
+               const vidEl = videoRef.current;
+               if (!audioEl) return;
+ 
+               if (isMusicPlaying) {
+                 audioEl.pause();
+                 vidEl?.pause();
+                 setIsMusicPlaying(false);
+               } else {
+                 // ابدئي الاثنين من نفس اللحظة تقريبًا
+                 audioEl.currentTime = 0;
+                 if (vidEl) {
+                   vidEl.currentTime = 0;
+                 }
+ 
+                 // فعّلي حالة التشغيل فور الضغط عشان الفيديو والخلفيات يشتغلون بنفس الوقت
+                 setIsMusicPlaying(true);
+                 if (vidEl) {
+                   vidEl.play().catch(() => {});
+                 }
+ 
+                 void audioEl
+                   .play()
+                   .catch(() => {
+                     // حتى لو فشل التشغيل (إعدادات المتصفح)، نخلي الأنيميشن شغالة
+                   });
+               }
+             }}
             className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {isMusicPlaying ? (
