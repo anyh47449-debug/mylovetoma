@@ -218,10 +218,12 @@ const HeartCatchGame = () => {
               type="button"
               onClick={() => handleCellClick(index)}
               className={`flex items-center justify-center rounded-lg border border-border/60 bg-background/70 transition-colors ${
-                isActive ? "bg-[hsl(var(--romantic-heart-soft))]/80" : "hover:bg-secondary/50"
+                isActive
+                  ? "bg-[hsl(var(--romantic-heart-soft))] shadow-[0_0_16px_hsl(var(--romantic-heart-soft))]"
+                  : "hover:bg-secondary/60"
               }`}
             >
-              {isActive && <Heart className="h-5 w-5 text-primary-foreground" aria-hidden />}
+              {isActive && <Heart className="h-6 w-6 text-primary" aria-hidden />}
             </button>
           );
         })}
