@@ -9,6 +9,7 @@ import CherryGame from "./pages/CherryGame";
 import ReactionGame from "./pages/ReactionGame";
 import TypingGame from "./pages/TypingGame";
 import MemoryGame from "./pages/MemoryGame";
+import SpamHeartsGame from "./pages/SpamHeartsGame";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/games/reaction" element={<ReactionGame />} />
           <Route path="/games/typing" element={<TypingGame />} />
           <Route path="/games/memory" element={<MemoryGame />} />
+          <Route path="/games/spam-hearts" element={<SpamHeartsGame />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
