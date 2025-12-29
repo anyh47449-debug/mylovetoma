@@ -3,6 +3,7 @@ import { Heart, Gamepad2, Sparkles, MessagesSquare, Stars } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const MiniGames = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative min-h-screen overflow-hidden">
       <h1 className="sr-only">صفحة الميني غيمز الرومنسية لتوما</h1>
@@ -40,8 +41,15 @@ const MiniGames = () => {
               </div>
               <h2 className="text-base font-semibold text-foreground">رسائل حب عشوائية لتوما</h2>
               <p className="text-xs text-muted-foreground">
-                لعبة زر واحد: كل ضغطة تطلع رسالة مختلفة مصاغة بحب لتوما؛ نقدر نضيف لاحقاً رسائلك الخاصة.
+                لعبة كتابة سريعة: كل جولة جملة حب جديدة، حاولي تكتبينها بأقل أخطاء وفي وقت قصير.
               </p>
+              <button
+                type="button"
+                onClick={() => navigate("/games/typing")}
+                className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
+              >
+                ادخلي لعبة الكتابة
+              </button>
             </div>
             <p className="mt-4 rounded-xl bg-secondary/40 px-3 py-2 text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
               مثال رسالة: "في كل مرّة أغمض عيني، المدينة الوحيدة اللي أشوفها هي مدينة اسمها توما." ✦
@@ -58,8 +66,15 @@ const MiniGames = () => {
               </div>
               <h2 className="text-base font-semibold text-foreground">تطابق القلوب البنفسجية</h2>
               <p className="text-xs text-muted-foreground">
-                تختاري صفات فيك وفي توما، واللعبة تعطيكم نسبة تطابق (دائماً 100%) مع جملة حب صغيرة.
+                لعبة كروت قلوب: اكتشفي مكان كل زوج متشابه بأقل عدد حركات وبأسرع وقت.
               </p>
+              <button
+                type="button"
+                onClick={() => navigate("/games/memory")}
+                className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
+              >
+                ادخلي لعبة القلوب
+              </button>
             </div>
             <p className="mt-4 text-[0.7rem] text-muted-foreground/90">
               هنا لاحقاً نضيف اختيارات مثل: "ألطف شيء تحبيه فيه"، "أول موقف ما نسيتيه"… إلخ.
@@ -75,8 +90,15 @@ const MiniGames = () => {
               </div>
               <h2 className="text-base font-semibold text-foreground">ذكرياتنا البنفسجية</h2>
               <p className="text-xs text-muted-foreground">
-                لعبة بطاقات؛ كل كرت فيه سؤال عن ذكرياتكم أو لحظة معيّنة، تجاوبوا عليها مع بعض وأنتم قدام الشاشة.
+                نفس نمط لعبة القلوب لكن بإحساس أهدى؛ جربي تكسرين رقمك في عدد الحركات والوقت.
               </p>
+              <button
+                type="button"
+                onClick={() => navigate("/games/memory")}
+                className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
+              >
+                ادخلي لعبة الذكريات
+              </button>
             </div>
             <p className="mt-4 text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
               لاحقاً: نقدر نضيف أسئلة مخصصة تكتبينها بنفسك، وتطلع بشكل عشوائي في الكروت.
@@ -93,8 +115,15 @@ const MiniGames = () => {
               </div>
               <h2 className="text-base font-semibold text-foreground">رسالة سرّية من قلبك لقلب توما</h2>
               <p className="text-xs text-muted-foreground">
-                مساحة للعبة أخيرة نخصصها تماماً لفكرتك أنت؛ رسالة مشفّرة، أو لعبة تخمين، أو أي شيء تتخيليه.
+                لعبة كتابة هادية: اكتبي كل اللي في قلبك خلال الوقت، وشوفي كم حرف حب قدرتي توصّلين له.
               </p>
+              <button
+                type="button"
+                onClick={() => navigate("/games/typing")}
+                className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
+              >
+                ادخلي لعبة الرسالة
+              </button>
             </div>
             <p className="mt-4 text-[0.7rem] text-muted-foreground/90">
               قولي لي الفكرة اللي في بالك، ونحوّل هذا الكرت للعبة كاملة تلعبوها أنتي وتوما سوا.
