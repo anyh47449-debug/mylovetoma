@@ -27,8 +27,8 @@ const MiniGames = () => {
         </header>
 
         <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-enter">
-          {/* Game 1: Cherry Collector (Mario-style) */}
-          <CherryCollectorCard />
+          {/* Game 1: Romantic Mini Games Hub */}
+          <RomanticMiniGamesCard />
 
           {/* Game 2: Random Love Letters */}
           <article className="group relative flex flex-col justify-between rounded-2xl border border-border/70 bg-card/90 p-5 shadow-[0_18px_40px_rgba(0,0,0,0.55)] backdrop-blur-xl">
@@ -106,7 +106,7 @@ const MiniGames = () => {
   );
 };
 
-const CherryCollectorCard = () => {
+const RomanticMiniGamesCard = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const navigate = useNavigate();
 
@@ -116,20 +116,20 @@ const CherryCollectorCard = () => {
 
     setTimeout(() => {
       navigate("/games/cherry");
-    }, 1500);
+    }, 900);
   };
 
   return (
-    <article className="group relative flex flex-col justify-between rounded-2xl border border-border/70 bg-gradient-to-br from-card/90 via-secondary/80 to-card/80 p-5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl overflow-hidden">
+    <article className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/70 bg-gradient-to-br from-card/90 via-secondary/80 to-card/80 p-5 shadow-[var(--romantic-card-glow)] backdrop-blur-xl">
       <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[radial-gradient(circle_at_center,hsl(var(--accent)),transparent_70%)] opacity-60 group-hover:opacity-80" />
       <div className="relative space-y-3">
         <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.65rem] font-medium text-muted-foreground">
           <Gamepad2 className="h-3.5 w-3.5 text-primary" aria-hidden />
-          <span>Game 1 · Cherry Runner</span>
+          <span>Game 1 · Soft Mini Games</span>
         </div>
-        <h2 className="text-base font-semibold text-foreground">لعبة جمع الكرز · أسلوب ماريو</h2>
+        <h2 className="text-base font-semibold text-foreground">ثلاث ميني غيمز ناعمة لتوما</h2>
         <p className="text-xs text-muted-foreground">
-          بنت كارتونية صغيرة تركض في عالم بنفسجي وتجمع حبات الكرز بدل الكوينز؛ كل كرز تجمعيه يزيد عدّاد الحب لتوما.
+          غرفة صغيرة فيها ثلاث ألعاب: تحديات حب، أسئلة ذكريات، وعدّاد قلوب. ما فيها منصات ولا جري، بس كلام ناعم يطلّع اللي في قلبك.
         </p>
       </div>
       <div className="mt-4 space-y-3">
@@ -138,23 +138,23 @@ const CherryCollectorCard = () => {
           onClick={handleEnterGame}
           className="w-full rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
         >
-          ادخلي لعبة جمع الكرز
+          ادخلي غرفة الميني غيمز
         </button>
         <p className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-          أولاً تشوفي انميشن بسيط، بعدها تنتقلين لصفحة خاصة فيها زر Start ثم يبدأ اللعب.
+          اختاري اللعبة اللي تعجبك من فوق: تحدّي، سؤال، أو عدّاد قلوب… وكل شيء مصمَّم علشان أنتي وتوما.
         </p>
       </div>
 
       {isTransitioning && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/90 backdrop-blur-md animate-fade-in">
           <div className="flex flex-col items-center gap-3">
-            <div className="relative h-20 w-20">
+            <div className="relative h-16 w-16">
               <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.14),_transparent_70%)]" />
-              <div className="absolute inset-0 animate-[spin_1.4s_ease-in-out_forwards] rounded-full border-2 border-dashed border-[hsl(var(--primary))]" />
-              <div className="absolute inset-4 rounded-2xl bg-[radial-gradient(circle_at_top,_#ff6b9c,_#b3125d)] shadow-[0_0_25px_rgba(255,107,156,0.9)]" />
+              <div className="absolute inset-0 animate-[spin_1.2s_ease-in-out_forwards] rounded-full border-2 border-dashed border-[hsl(var(--primary))]" />
+              <div className="absolute inset-4 rounded-2xl bg-[radial-gradient(circle_at_top,_hsl(var(--romantic-heart-soft)),_hsl(var(--accent)))] shadow-[0_0_25px_rgba(255,107,156,0.9)]" />
             </div>
             <p className="text-xs text-[hsl(var(--romantic-text-soft))]">
-              جاري فتح عالم جمع الكرز… استعدي للمغامرة البنفسجية 💜
+              جاري فتح غرفة الميني غيمز الرومنسية… ركّزي في اللي يحس فيه قلبك 💜
             </p>
           </div>
         </div>
