@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Heart, Gamepad2, Sparkles, MessagesSquare, Stars } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import marioCoinSfx from "../assets/mario-coin.mp3";
 const MiniGames = () => {
   const navigate = useNavigate();
   return (
@@ -141,6 +141,11 @@ const RomanticMiniGamesCard = () => {
 
   const handleEnterGame = () => {
     if (isTransitioning) return;
+
+    const audio = new Audio(marioCoinSfx);
+    audio.volume = 0.6;
+    void audio.play().catch(() => {});
+
     setIsTransitioning(true);
 
     setTimeout(() => {
