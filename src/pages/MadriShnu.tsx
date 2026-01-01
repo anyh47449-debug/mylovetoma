@@ -1,15 +1,57 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Cake, Heart, Sparkles } from "lucide-react";
+import { Cake, Heart, Sparkles, Music2, PauseCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import birthdayMusic from "@/assets/HAPPY_BIRTHDAY_INSTRUMENTAL.mp3";
 
 const MadriShnu = () => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+
   useEffect(() => {
     document.title = "مدري شنو – رسالة حب عيد ميلاد لتوما";
+
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 0.4;
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          setIsPlaying(false);
+        });
+    }
   }, []);
 
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          // تجاهل الخطأ لو المتصفح منع التشغيل التلقائي
+        });
+    }
+  };
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <audio
+        ref={audioRef}
+        src={birthdayMusic}
+        loop
+        autoPlay
+        className="hidden"
+      />
       {/* خلفيات وأجواء عيد ميلاد */}
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.3),_transparent_60%)]" />
       <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_bottom,_hsl(var(--accent)/0.25),_transparent_55%)]" />
@@ -63,6 +105,23 @@ const MadriShnu = () => {
                 <Cake className="h-5 w-5 text-primary-foreground" aria-hidden />
               </div>
             </div>
+            <button
+              type="button"
+              onClick={togglePlay}
+              className="hover-scale mt-1 inline-flex items-center gap-1 rounded-full bg-primary/85 px-2.5 py-1 text-[0.65rem] font-semibold text-primary-foreground shadow-[0_0_18px_hsl(var(--primary)/0.85)]"
+            >
+              {isPlaying ? (
+                <>
+                  <PauseCircle className="h-3.5 w-3.5" aria-hidden />
+                  <span>أوقفي موسيقى عيد الميلاد</span>
+                </>
+              ) : (
+                <>
+                  <Music2 className="h-3.5 w-3.5" aria-hidden />
+                  <span>شغّلي موسيقى عيد الميلاد</span>
+                </>
+              )}
+            </button>
           </motion.div>
         </motion.header>
 
