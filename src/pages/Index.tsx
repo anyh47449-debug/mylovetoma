@@ -425,7 +425,7 @@ const Index = () => {
                     animate={{ y: [-2, 1, -2] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    قلبي البنفسجي
+                    كرزتي الحلوهه
                   </motion.span>
                 </div>
               </div>
