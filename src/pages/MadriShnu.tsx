@@ -146,18 +146,18 @@ const MadriShnu = () => {
         {/* كرت الرسالة على اليمين */}
         <div className="flex flex-1 items-stretch gap-4 sm:gap-6">
           <motion.div
-            className="hidden w-24 flex-shrink-0 items-center justify-center sm:flex md:w-28"
-            initial={{ opacity: 0, x: -30, rotate: -8, scale: 0.9 }}
+            className="flex w-24 flex-shrink-0 items-center justify-center sm:w-28 md:w-32"
+            initial={{ opacity: 0, x: -26, rotate: -6, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, rotate: 0, scale: 1 }}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
-            whileHover={{ scale: 1.06, rotate: -4 }}
+            whileHover={{ scale: 1.08, rotate: -4 }}
           >
-            <div className="relative flex aspect-[3/5] w-full items-center justify-center overflow-hidden rounded-3xl bg-[radial-gradient(circle_at_top,_hsl(var(--primary)),_hsl(var(--accent)))] shadow-[0_0_45px_hsl(var(--primary)/0.7)]">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--accent)/0.35),_transparent_60%)]" />
-              <span className="relative text-4xl font-black tracking-tight text-primary-foreground drop-shadow-[0_0_18px_hsl(var(--background)/0.8)]">
+            <div className="relative flex aspect-[3/5] w-full items-center justify-center overflow-hidden rounded-3xl bg-[radial-gradient(circle_at_top,_hsl(var(--primary)),_hsl(var(--accent)))] shadow-[0_0_55px_hsl(var(--primary)/0.7)]">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--accent)/0.3),_transparent_60%)]" />
+              <span className="relative text-5xl font-black tracking-tight text-primary-foreground drop-shadow-[0_0_20px_hsl(var(--background)/0.85)]">
                 T
               </span>
-              <span className="pointer-events-none absolute inset-x-1 bottom-3 mx-auto rounded-full bg-background/25 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-primary-foreground/90 backdrop-blur-sm">
+              <span className="pointer-events-none absolute inset-x-1 bottom-3 mx-auto rounded-full bg-background/35 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-primary-foreground/90 backdrop-blur-sm">
                 Happy Birthday
               </span>
             </div>
@@ -165,7 +165,7 @@ const MadriShnu = () => {
 
           {/* كرت الرسالة على اليمين */}
           <motion.section
-            className="relative ml-auto flex max-w-xl flex-1 overflow-hidden rounded-2xl border border-border/70 bg-card/95 p-4 shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:p-6"
+            className="relative ml-auto flex max-w-xl flex-1 overflow-hidden rounded-2xl border border-border/60 bg-background/88 p-4 shadow-[var(--romantic-card-glow)] backdrop-blur-2xl sm:p-6"
             initial={{ opacity: 0, y: 30, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
