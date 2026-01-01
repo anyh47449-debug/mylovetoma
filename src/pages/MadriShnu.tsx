@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Cake, Heart, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 const MadriShnu = () => {
   useEffect(() => {
@@ -29,7 +30,12 @@ const MadriShnu = () => {
 
       <main className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-4 py-8 animate-fade-in sm:px-6 sm:py-12">
         {/* ترويسة عيد الميلاد */}
-        <header className="flex items-center justify-between gap-3">
+        <motion.header
+          className="flex items-center justify-between gap-3"
+          initial={{ opacity: 0, y: -30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
               Birthday Letter · رسالة عيد ميلاد
@@ -41,19 +47,32 @@ const MadriShnu = () => {
               رسالة سرّية، بس لقلب توما الي أحبّه اكثر من كل شي بهالدنيا.
             </p>
           </div>
-          <div className="flex flex-col items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full bg-secondary/70 px-3 py-1 text-[0.65rem] font-semibold text-muted-foreground">
+          <motion.div
+            className="flex flex-col items-center gap-2"
+            initial={{ opacity: 0, scale: 0.7, rotate: -10 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 160, damping: 12 }}
+          >
+            <span className="inline-flex items-center gap-1 rounded-full bg-secondary/70 px-3 py-1 text-[0.65rem] font-semibold text-muted-foreground shadow-[0_0_20px_hsl(var(--accent)/0.6)]">
               <Sparkles className="h-3 w-3 text-accent" aria-hidden />
               <span>Happy 17th Birthday</span>
             </span>
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary shadow-[0_0_22px_hsl(var(--primary)/0.9)]">
-              <Cake className="h-5 w-5 text-primary-foreground" aria-hidden />
+            <div className="relative flex h-12 w-12 items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_180deg,_hsl(var(--primary)),_hsl(var(--accent)),_hsl(var(--primary)))] opacity-70 blur-[6px]" />
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary shadow-[0_0_32px_hsl(var(--primary)/0.9)]">
+                <Cake className="h-5 w-5 text-primary-foreground" aria-hidden />
+              </div>
             </div>
-          </div>
-        </header>
+          </motion.div>
+        </motion.header>
 
         {/* كرت الرسالة */}
-        <section className="relative flex-1 overflow-hidden rounded-2xl border border-border/70 bg-card/95 p-4 shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:p-6">
+        <motion.section
+          className="relative flex-1 overflow-hidden rounded-2xl border border-border/70 bg-card/95 p-4 shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:p-6"
+          initial={{ opacity: 0, y: 30, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+        >
           {/* هالة قلوب وبالونات خفيفة */}
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--accent))_0%,_transparent_55%),radial-gradient(circle_at_bottom_left,_hsl(var(--primary))_0%,_transparent_60%)] opacity-40" />
           <div className="pointer-events-none absolute inset-0">
@@ -72,78 +91,64 @@ const MadriShnu = () => {
           </div>
 
           <div className="relative flex h-full flex-col gap-4">
-            <div className="inline-flex items-center gap-2 rounded-full bg-secondary/70 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
+            <motion.div
+              className="inline-flex items-center gap-2 rounded-full bg-secondary/70 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+            >
               <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
               <span>من قلب يحبج اكثر مما يتخيل الكون</span>
-            </div>
+            </motion.div>
 
-            <div className="max-h-[70vh] space-y-4 overflow-y-auto pr-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              <p>توتي الحلوه الاموت عليها الاعشقها يا احلا بنوته شافتها عيوني.</p>
-              <p>كل عام وانت بالف خير وهابي بيرث دي واحبج واموت عليج.</p>
-              <p>
-                والله احلا 17 سنه مرت عله الكرة الارضيه كلها وغصبا عله الكون كامل همين انت احلا شي اجه بهذا
-                العالم.
-              </p>
-              <p>
-                اعرف هذا المدري شنو قليل ومو كافي ابد حته اوصفج وافرحج بشكل كامل، بس وعد، هاي البداية وبس وبعدج
-                ماشفتي شي.
-              </p>
-              <p>
-                ماعرف شحجي، زربه عالعراق بس يعني اموت بيج واعشقج بالحسين، كلشي بحياتي هاي انت، كلشي يخليني سعيج
-                انت وماكو غير انت، احبج واموت عليج يا روحي انت.
-              </p>
-              <p>احبج اموتتتتتت عليجججججججج.</p>
-              <p>
-                لهسه اتذكر الموسم الفات… شنو الموسم الفات اقصد يعني السنه الفاتت يوم الخميس عيد ميلادج كتبتلج
-                هيج او شي قريب منه مامتاكد، بس كتبت:
-              </p>
-              <p>"توما الاسطورة كل عام وانت بالف خير ياخوش بنيه، وهاج كيكة وهاج ورده".</p>
-              <p>وانت رديتي علي: "يااا كيوتي انت وانت بالف خير".</p>
-              <p>
-                يعنييييييي احجبج واموت عليج، لهسه اتذكر شكد كزكزت عالموضوع، خرب يومج بس احبج، اموت عليج يا احلا
-                بنيه بهذا العالم، والكون احلا انثى بالكون، يعني حته لو اكو انثى فضائية انت عابرتها.
-              </p>
-              <p>
-                شوكت يجي اليوم ونصير سوه، خرب روحج ونحتفل بعيد ميلادج واجيبلج ورده واطيج بوسه ونلعب فيفا ونباوع
-                برشلونه.
-              </p>
-              <p>
-                تدرين بعد يومين لعبة برشلونة، حته من يجي عيد ميلادج ترجع برشلونة، شكد وجهج خير عالعالم.
-              </p>
-              <p>
-                اكلج، شو خل اتغزل؟ شو جني صاير فاهي ماعرف احجي. انت شايفه عيونج؟ شايفتهن شكد حلوات؟ والله الله
-                يساعد قلبي، انا كل مره اشوف صورة الج اتعب نفسياً لان ماكدر الزمج، ابوس عيونج للصبح، كمية الجمال
-                الي بيهم تنسّيني اني منو وليش عايش. احبج.
-              </p>
-              <p>
-                ويعني نبدي بخصرج لو ما نبدي؟ يعني ترا اذا ابدي بخصرج ما اكمل، لو ارجع اكمل بعقليتج الحلوه، لو ارجع
-                اكمل بشعرج؟ انت بحر مايخلص من الجمال.
-              </p>
-              <p>
-                ماكدر احجي شي هواي واحجي شي قليل لان اضلمج، انت من كل ناحية متكامله ومثاليه، انت الافضل في تاريخ
-                الكون، ونسبة ضهورج كلش ضئيله، واني كنت المحظوظ زايد، كلش كلش محظوظ.
-              </p>
-              <p>صدق يعني نسبة ضهورج 0.000000000000000000000000001.</p>
-              <p>
-                ماعرف شحجي والله، مادري شكول اكثر يكدر يعبر عن الشعور الي احسه وياج وكمية حبي الج. احبج من كل عقلي
-                وقلبي، واحبج من اعماق اعماق اعماق قاع قلبي الصغير.
-              </p>
-              <p>
-                احبج يا روحي، اموت عليج، اعشقج كلش هواي، انت فوك كل غزل وسبب كل شعور حلو احس بيه، انت اول دفعه
-                وحافز يجيني اكمل بيه حياتي وشغلي وافكر بمستقبلي. انت مستقبلي وحياتي وروحي وعقلي وقلبي وكلشي حلو
-                بحياتي.
-              </p>
-              <p>
-                طولج الحلو وشعراتج الناعمات، خرب روحج، اريد ازمج واجعصج جعصصصصصصصصصصصص. صدك يعني فدوه اروحلج، اموت
-                بيج اموت بيج اموت بيج يا توما، احبج.
-              </p>
-              <p>
-                اعذريني عله المدري شنو هذا، انت تستاهلين اضعاف، بس والله لوما هذا الذكاء الاصطناعي والاشتراك، جان
-                كل شوي اغير وافكار اكثر. بس الأهم: أحبج هواي.
-              </p>
-            </div>
+            <motion.div
+              className="max-h-[70vh] space-y-4 overflow-y-auto pr-2 text-sm leading-relaxed text-muted-foreground sm:text-base"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { staggerChildren: 0.045, delayChildren: 0.3 },
+                },
+              }}
+            >
+              {[
+                "توتي الحلوه الاموت عليها الاعشقها يا احلا بنوته شافتها عيوني.",
+                "كل عام وانت بالف خير وهابي بيرث دي واحبج واموت عليج.",
+                "والله احلا 17 سنه مرت عله الكرة الارضيه كلها وغصبا عله الكون كامل همين انت احلا شي اجه بهذا العالم.",
+                "اعرف هذا المدري شنو قليل ومو كافي ابد حته اوصفج وافرحج بشكل كامل، بس وعد، هاي البداية وبس وبعدج ماشفتي شي.",
+                "ماعرف شحجي، زربه عالعراق بس يعني اموت بيج واعشقج بالحسين، كلشي بحياتي هاي انت، كلشي يخليني سعيج انت وماكو غير انت، احبج واموت عليج يا روحي انت.",
+                "احبج اموتتتتتت عليجججججججج.",
+                "لهسه اتذكر الموسم الفات… شنو الموسم الفات اقصد يعني السنه الفاتت يوم الخميس عيد ميلادج كتبتلج هيج او شي قريب منه مامتاكد، بس كتبت:",
+                '"توما الاسطورة كل عام وانت بالف خير ياخوش بنيه، وهاج كيكة وهاج ورده".',
+                'وانت رديتي علي: "يااا كيوتي انت وانت بالف خير".',
+                "يعنييييييي احجبج واموت عليج، لهسه اتذكر شكد كزكزت عالموضوع، خرب يومج بس احبج، اموت عليج يا احلا بنيه بهذا العالم، والكون احلا انثى بالكون، يعني حته لو اكو انثى فضائية انت عابرتها.",
+                "شوكت يجي اليوم ونصير سوه، خرب روحج ونحتفل بعيد ميلادج واجيبلج ورده واطيج بوسه ونلعب فيفا ونباوع برشلونه.",
+                "تدرين بعد يومين لعبة برشلونة، حته من يجي عيد ميلادج ترجع برشلونة، شكد وجهج خير عالعالم.",
+                "اكلج، شو خل اتغزل؟ شو جني صاير فاهي ماعرف احجي. انت شايفه عيونج؟ شايفتهن شكد حلوات؟ والله الله يساعد قلبي، انا كل مره اشوف صورة الج اتعب نفسياً لان ماكدر الزمج، ابوس عيونج للصبح، كمية الجمال الي بيهم تنسّيني اني منو وليش عايش. احبج.",
+                "ويعني نبدي بخصرج لو ما نبدي؟ يعني ترا اذا ابدي بخصرج ما اكمل، لو ارجع اكمل بعقليتج الحلوه، لو ارجع اكمل بشعرج؟ انت بحر مايخلص من الجمال.",
+                "ماكدر احجي شي هواي واحجي شي قليل لان اضلمج، انت من كل ناحية متكامله ومثاليه، انت الافضل في تاريخ الكون، ونسبة ضهورج كلش ضئيله، واني كنت المحظوظ زايد، كلش كلش محظوظ.",
+                "صدق يعني نسبة ضهورج 0.000000000000000000000000001.",
+                "ماعرف شحجي والله، مادري شكول اكثر يكدر يعبر عن الشعور الي احسه وياج وكمية حبي الج. احبج من كل عقلي وقلبي، واحبج من اعماق اعماق اعماق قاع قلبي الصغير.",
+                "احبج يا روحي، اموت عليج، اعشقج كلش هواي، انت فوك كل غزل وسبب كل شعور حلو احس بيه، انت اول دفعه وحافز يجيني اكمل بيه حياتي وشغلي وافكر بمستقبلي. انت مستقبلي وحياتي وروحي وعقلي وقلبي وكلشي حلو بحياتي.",
+                "طولج الحلو وشعراتج الناعمات، خرب روحج، اريد ازمج واجعصج جعصصصصصصصصصصصص. صدك يعني فدوه اروحلج، اموت بيج اموت بيج اموت بيج يا توما، احبج.",
+                "اعذريني عله المدري شنو هذا، انت تستاهلين اضعاف، بس والله لوما هذا الذكاء الاصطناعي والاشتراك، جان كل شوي اغير وافكار اكثر. بس الأهم: أحبج هواي.",
+              ].map((paragraph, index) => (
+                <motion.p
+                  key={index}
+                  variants={{
+                    hidden: { opacity: 0, y: 8 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                >
+                  {paragraph}
+                </motion.p>
+              ))}
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* فوتر بسيط */}
         <footer className="flex items-center justify-between gap-4 pt-2 text-xs text-muted-foreground">
