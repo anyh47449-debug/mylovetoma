@@ -551,6 +551,7 @@ const Index = () => {
             {/* خانة: مدري شنو */}
             <article
               className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl"
+              onClick={() => navigate("/madri-shnu")}
             >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_hsl(var(--accent))_0%,_transparent_65%)] opacity-40 transition-opacity duration-500 group-hover:opacity-70" />
               <div className="relative flex flex-col gap-2">
@@ -560,13 +561,17 @@ const Index = () => {
                 </div>
                 <h3 className="text-sm font-semibold text-foreground">مدري شنو</h3>
                 <p className="text-xs text-muted-foreground">
-                  خانة غامضة... ممكن نخليها لأي شيء تبينه لاحقاً. مفاجأة، ميزة جديدة، أو أي شيء يخطر على بالنا.
+                  خانة غامضة تحولت لرسالة حب سرّية مكتوبة بس لتوما.
                 </p>
                 <button
                   type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate("/madri-shnu");
+                  }}
                   className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-dashed border-border/70 bg-background/40 px-3 py-1.5 text-[0.7rem] font-semibold text-muted-foreground/90 backdrop-blur-sm"
                 >
-                  قريباً: اكتشفي المفاجأة
+                  افتحي رسالة "مدري شنو" السرّية
                 </button>
               </div>
             </article>
