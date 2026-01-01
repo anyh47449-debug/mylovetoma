@@ -165,7 +165,7 @@ const MadriShnu = () => {
 
           {/* كرت الرسالة على اليمين */}
           <motion.section
-            className="relative ml-auto flex max-w-xl flex-1 overflow-hidden rounded-2xl border border-border/60 bg-background/88 p-4 shadow-[var(--romantic-card-glow)] backdrop-blur-2xl sm:p-6"
+            className="relative ml-auto flex min-h-[26rem] flex-1 overflow-hidden rounded-3xl border border-border/60 bg-background/90 p-5 shadow-[var(--romantic-card-glow)] backdrop-blur-2xl sm:p-7 lg:max-w-3xl"
             initial={{ opacity: 0, y: 30, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
