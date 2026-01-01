@@ -548,51 +548,25 @@ const Index = () => {
             </article>
 
 
-            {/* خانة: ألبوم / ذكريات توما */}
+            {/* خانة: مدري شنو */}
             <article
               className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl"
-              onClick={() => playSfx("memories")}
             >
-              <div className="pointer-events-none absolute -right-8 -bottom-10 h-28 w-28 rounded-full bg-[radial-gradient(circle_at_center,hsl(var(--romantic-heart-soft)),transparent_70%)] opacity-60 group-hover:opacity-80" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_hsl(var(--accent))_0%,_transparent_65%)] opacity-40 transition-opacity duration-500 group-hover:opacity-70" />
               <div className="relative flex flex-col gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
-                  <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden />
-                  <span>Memory · ألبوم ذكرياتنا</span>
+                  <Heart className="h-3.5 w-3.5 text-accent" aria-hidden />
+                  <span>Mystery · خانة مدري شنو</span>
                 </div>
-                <h3 className="text-sm font-semibold text-foreground">ألبوم / ذكريات توما</h3>
+                <h3 className="text-sm font-semibold text-foreground">مدري شنو</h3>
                 <p className="text-xs text-muted-foreground">
-                  مكان مخصص نقدر نسوي فيه لاحقاً ألبوم لحظاتكم وصوركم وكلمات صغيرة تحت كل ذكرى.
+                  خانة غامضة... ممكن نخليها لأي شيء تبينه لاحقاً. مفاجأة، ميزة جديدة، أو أي شيء يخطر على بالنا.
                 </p>
                 <button
                   type="button"
                   className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-dashed border-border/70 bg-background/40 px-3 py-1.5 text-[0.7rem] font-semibold text-muted-foreground/90 backdrop-blur-sm"
                 >
-                  قريباً: افتحي ألبوم ذكرياتنا البنفسجية
-                </button>
-              </div>
-            </article>
-
-
-            {/* خانة: رسالة لتوما */}
-            <article
-              className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl"
-              onClick={() => playSfx("letter")}
-            >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.06),_transparent_55%)] opacity-70 group-hover:opacity-90" />
-              <div className="relative flex flex-col gap-2">
-                <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
-                  <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
-                  <span>Letter · رسالة لتوما</span>
-                </div>
-                <h3 className="text-sm font-semibold text-foreground">رسالة قلبك الطويلة لتوما</h3>
-                <p className="text-xs text-muted-foreground">
-                  خانة خاصة نقدر نحولها لاحقاً لرسالة مكتوبة منك له، مع أنيميشن بسيط يمشي مع سطور الكلام.
-                </p>
-                <button
-                  type="button"
-                  className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-dashed border-border/70 bg-background/40 px-3 py-1.5 text-[0.7rem] font-semibold text-muted-foreground/90 backdrop-blur-sm"
-                >
-                  قريباً: افتحي رسالة قلبي المكتوبة لك
+                  قريباً: اكتشفي المفاجأة
                 </button>
               </div>
             </article>
