@@ -548,7 +548,10 @@ const Index = () => {
             </article>
 
             {/* خانة: تحرشات */}
-            <article className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl">
+            <article
+              className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl hover-scale"
+              onClick={() => navigate("/teharroshat")}
+            >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_hsl(var(--primary))_0%,_transparent_70%)] opacity-35 transition-opacity duration-500 group-hover:opacity-75" />
               <div className="relative flex flex-col gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">

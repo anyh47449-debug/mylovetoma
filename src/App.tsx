@@ -12,6 +12,7 @@ import MemoryGame from "./pages/MemoryGame";
 import SpamHeartsGame from "./pages/SpamHeartsGame";
 import NotFound from "./pages/NotFound";
 import MadriShnu from "./pages/MadriShnu";
+import Teharroshat from "./pages/Teharroshat";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/games/memory" element={<MemoryGame />} />
           <Route path="/games/spam-hearts" element={<SpamHeartsGame />} />
           <Route path="/madri-shnu" element={<MadriShnu />} />
+          <Route path="/teharroshat" element={<Teharroshat />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
