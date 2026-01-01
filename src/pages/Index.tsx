@@ -536,17 +536,31 @@ const Index = () => {
                 <p className="text-xs text-muted-foreground">
                   خانة الألعاب الخاصة بتوما: كل ميني غيم هناك تكمل قصة حبّنا البنفسجية بطريقتها.
                 </p>
-                  <button
-                    type="button"
-                    onClick={handleGoToMiniGames}
-                    className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  >
-                    ادخلي صفحة الألعاب الكاملة
-                    <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
-                  </button>
+                <button
+                  type="button"
+                  onClick={handleGoToMiniGames}
+                  className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  ادخلي صفحة الألعاب الكاملة
+                  <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
+                </button>
               </div>
             </article>
 
+            {/* خانة: تحرشات */}
+            <article className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-4 backdrop-blur-xl">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_hsl(var(--primary))_0%,_transparent_70%)] opacity-35 transition-opacity duration-500 group-hover:opacity-75" />
+              <div className="relative flex flex-col gap-2">
+                <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
+                  <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
+                  <span>Teasing · تحرشات ناعمة</span>
+                </div>
+                <h3 className="text-sm font-semibold text-foreground">تحرشات</h3>
+                <p className="text-xs text-muted-foreground">
+                  مساحة مخصصة لكل الكلام القليل الأدب اللطيف، نظرات، جمل قصيرة، وتحشيش خفيف موجه بس لتوما.
+                </p>
+              </div>
+            </article>
 
             {/* خانة: مدري شنو */}
             <article
@@ -575,7 +589,6 @@ const Index = () => {
                 </button>
               </div>
             </article>
-
           </div>
         </motion.section>
       </main>
