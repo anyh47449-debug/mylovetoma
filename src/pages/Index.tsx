@@ -81,7 +81,7 @@ const Index = () => {
     () => ({
       background: `radial-gradient(circle at ${cursorPos.x}px ${cursorPos.y}px, hsl(var(--primary) / 0.55), transparent 60%)`,
     }),
-    [cursorPos.x, cursorPos.y]
+    [cursorPos.x, cursorPos.y],
   );
 
   useEffect(() => {
@@ -142,7 +142,7 @@ const Index = () => {
       if (extraEvents.length > 0) {
         const visibleWindow = 3; // مدة ظهور كل رسالة تقريباً
         const foundIndex = extraEvents.findIndex(
-          (event) => current >= event.time && current <= event.time + visibleWindow
+          (event) => current >= event.time && current <= event.time + visibleWindow,
         );
         setActiveExtraIndex(foundIndex >= 0 ? foundIndex : null);
       }
@@ -184,11 +184,8 @@ const Index = () => {
   };
   return (
     <div className="relative min-h-screen overflow-hidden">
-
       {/* SEO main heading */}
-      <h1 className="sr-only">
-        موقع هدية رومنسية بنفسجي لحبيبي توما مع تفاعل بصري مبهر وخانة ميني غيمز خاصة
-      </h1>
+      <h1 className="sr-only">موقع هدية رومنسية بنفسجي لحبيبي توما مع تفاعل بصري مبهر وخانة ميني غيمز خاصة</h1>
 
       {/* Mouse-follow glow */}
       <div
@@ -200,10 +197,7 @@ const Index = () => {
       />
 
       {/* Floating romantic hearts background */}
-      <div
-        className="romantic-hearts-layer transition-opacity duration-700 opacity-100"
-        aria-hidden
-      >
+      <div className="romantic-hearts-layer transition-opacity duration-700 opacity-100" aria-hidden>
         {Array.from({ length: 16 }).map((_, index) => (
           <span
             key={index}
@@ -318,34 +312,32 @@ const Index = () => {
           <button
             type="button"
             onClick={() => {
-               const audioEl = audioRef.current;
-               const vidEl = videoRef.current;
-               if (!audioEl) return;
- 
-               if (isMusicPlaying) {
-                 audioEl.pause();
-                 vidEl?.pause();
-                 setIsMusicPlaying(false);
-               } else {
-                 // ابدئي الاثنين من نفس اللحظة تقريبًا
-                 audioEl.currentTime = 0;
-                 if (vidEl) {
-                   vidEl.currentTime = 0;
-                 }
- 
-                 // فعّلي حالة التشغيل فور الضغط عشان الفيديو والخلفيات يشتغلون بنفس الوقت
-                 setIsMusicPlaying(true);
-                 if (vidEl) {
-                   vidEl.play().catch(() => {});
-                 }
- 
-                 void audioEl
-                   .play()
-                   .catch(() => {
-                     // حتى لو فشل التشغيل (إعدادات المتصفح)، نخلي الأنيميشن شغالة
-                   });
-               }
-             }}
+              const audioEl = audioRef.current;
+              const vidEl = videoRef.current;
+              if (!audioEl) return;
+
+              if (isMusicPlaying) {
+                audioEl.pause();
+                vidEl?.pause();
+                setIsMusicPlaying(false);
+              } else {
+                // ابدئي الاثنين من نفس اللحظة تقريبًا
+                audioEl.currentTime = 0;
+                if (vidEl) {
+                  vidEl.currentTime = 0;
+                }
+
+                // فعّلي حالة التشغيل فور الضغط عشان الفيديو والخلفيات يشتغلون بنفس الوقت
+                setIsMusicPlaying(true);
+                if (vidEl) {
+                  vidEl.play().catch(() => {});
+                }
+
+                void audioEl.play().catch(() => {
+                  // حتى لو فشل التشغيل (إعدادات المتصفح)، نخلي الأنيميشن شغالة
+                });
+              }
+            }}
             className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {isMusicPlaying ? (
@@ -442,7 +434,7 @@ const Index = () => {
               {isMusicPlaying && (
                 <div className="pointer-events-none absolute inset-x-10 bottom-2 flex items-end justify-center gap-[4px]">
                   {Array.from({ length: 11 }).map((_, index) => {
-                    const base = 0.7 + ((index % 4) * 0.15);
+                    const base = 0.7 + (index % 4) * 0.15;
                     return (
                       <motion.span
                         key={index}
@@ -472,10 +464,11 @@ const Index = () => {
             transition={{ duration: 0.7, ease: "easeInOut" }}
           >
             <p className="leading-relaxed">
-              هذه الصفحة هدية خاصة لك يا توما؛ كل لمعة، كل قلب، وكل حركة هنا مكتوبة بحبّ، ومصممة فقط لتقول:
+              يعنيييييييييييي احبج هذا احلا مدري شنو لعيونج باحلا يوم بتاريخ الكون الي هو عيد ميلاد حبيبت روحي
+              الحلوههههه{" "}
             </p>
             <p className="mt-2 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-base font-semibold text-transparent sm:text-lg">
-              أنت عالمي البنفسجي.
+              عيونج كيوتي.
             </p>
           </motion.div>
 
@@ -512,7 +505,7 @@ const Index = () => {
             </section>
           )}
         </motion.section>
- 
+
         {/* Mini games + sections overview */}
         <motion.section
           className="w-full max-w-5xl animate-enter"
@@ -577,9 +570,7 @@ const Index = () => {
                   <span>Mystery · خانة مدري شنو</span>
                 </div>
                 <h3 className="text-sm font-semibold text-foreground">مدري شنو</h3>
-                <p className="text-xs text-muted-foreground">
-                  خانة غامضة تحولت لرسالة حب سرّية مكتوبة بس لتوما.
-                </p>
+                <p className="text-xs text-muted-foreground">خانة غامضة تحولت لرسالة حب سرّية مكتوبة بس لتوما.</p>
                 <button
                   type="button"
                   onClick={(e) => {
@@ -595,7 +586,6 @@ const Index = () => {
           </div>
         </motion.section>
       </main>
-
     </div>
   );
 };
