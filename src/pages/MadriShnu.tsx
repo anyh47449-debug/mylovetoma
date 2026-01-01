@@ -149,8 +149,33 @@ const MadriShnu = () => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
         >
-          {/* هالة قلوب وبالونات خفيفة */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--accent))_0%,_transparent_55%),radial-gradient(circle_at_bottom_left,_hsl(var(--primary))_0%,_transparent_60%)] opacity-40" />
+          {/* هالة قلوب وبالونات خفيفة + كيكة خلفية */}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--accent))_0%,_transparent_55%),radial-gradient(circle_at_bottom_left,_hsl(var(--primary))_0%,_transparent_60%)] opacity-35" />
+
+          {/* كيكة كبيرة في الخلفية داخل الكرت */}
+          <div className="pointer-events-none absolute inset-x-6 bottom-[-4.5rem] flex justify-center sm:bottom-[-5.5rem]">
+            <div className="relative h-40 w-full max-w-xl">
+              {/* طبقات الكيكة */}
+              <div className="absolute bottom-0 left-1/2 h-20 w-[88%] -translate-x-1/2 rounded-3xl bg-[linear-gradient(to_top,_hsl(var(--card)),_hsl(var(--secondary)))] shadow-[0_18px_60px_hsl(var(--primary)/0.7)] opacity-80" />
+              <div className="absolute bottom-10 left-1/2 h-10 w-[68%] -translate-x-1/2 rounded-3xl bg-[linear-gradient(to_top,_hsl(var(--card)),_hsl(var(--primary)/0.5))] shadow-[0_10px_40px_hsl(var(--accent)/0.7)]" />
+
+              {/* الشموع فوق الكيكة */}
+              <div className="absolute -top-1 left-1/2 flex -translate-x-1/2 gap-3">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center justify-end"
+                    style={{ animation: `flicker-${index % 3} 2.7s ease-in-out infinite` }}
+                  >
+                    <div className="h-10 w-1.5 rounded-full bg-[linear-gradient(to_top,_hsl(var(--primary)/0.8),_hsl(var(--accent)/0.3))] shadow-[0_0_18px_hsl(var(--primary)/0.7)]" />
+                    <div className="-mt-3 h-3 w-3 rounded-full bg-[radial-gradient(circle,_hsl(var(--accent))_0%,_transparent_65%)] shadow-[0_0_22px_hsl(var(--accent)/0.95)]" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* بالونات قلوب تطلع لفوق */}
           <div className="pointer-events-none absolute inset-0">
             {Array.from({ length: 9 }).map((_, index) => (
               <span
