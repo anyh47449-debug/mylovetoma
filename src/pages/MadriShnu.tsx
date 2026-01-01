@@ -53,8 +53,25 @@ const MadriShnu = () => {
         className="hidden"
       />
       {/* خلفيات وأجواء عيد ميلاد */}
-      <div className="pointer-events-none fixed inset-0 -z-30 bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.3),_transparent_60%)]" />
-      <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_bottom,_hsl(var(--accent)/0.25),_transparent_55%)]" />
+      <div className="pointer-events-none fixed inset-0 -z-40 bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.38),_transparent_58%),radial-gradient(circle_at_bottom,_hsl(var(--accent)/0.3),_transparent_60%)]" />
+      {/* هالة كيكة كبيرة في الخلفية */}
+      <div className="pointer-events-none fixed inset-x-0 top-10 -z-30 flex justify-center">
+        <div className="h-64 w-64 rounded-full bg-[radial-gradient(circle,_hsl(var(--card))_0%,_transparent_70%)] shadow-[0_0_120px_hsl(var(--primary)/0.7)] opacity-40" />
+      </div>
+      {/* أعمدة شموع ناعمة مع توهج */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 -z-20 flex justify-center gap-6 px-8 pb-4">
+        {Array.from({ length: 7 }).map((_, index) => (
+          <div
+            key={index}
+            className="relative flex h-20 w-2 items-end justify-center sm:h-24"
+            style={{ animation: `flicker-${index % 3} 3.2s ease-in-out infinite` }}
+          >
+            <div className="h-16 w-full rounded-full bg-[linear-gradient(to_top,_hsl(var(--primary)/0.75),_hsl(var(--accent)/0.2))] shadow-[0_0_30px_hsl(var(--primary)/0.6)]" />
+            <div className="absolute -top-3 h-4 w-4 rounded-full bg-[radial-gradient(circle,_hsl(var(--accent))_0%,_transparent_65%)] shadow-[0_0_25px_hsl(var(--accent)/0.9)]" />
+          </div>
+        ))}
+      </div>
+      {/* شرارات قلوب خفيفة */}
       <div className="pointer-events-none fixed inset-0 -z-10 opacity-60">
         {Array.from({ length: 18 }).map((_, index) => (
           <span
