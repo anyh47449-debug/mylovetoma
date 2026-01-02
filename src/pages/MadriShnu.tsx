@@ -95,10 +95,10 @@ const MadriShnu = () => {
               Birthday Letter · رسالة عيد ميلاد
             </p>
             <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-              خانة "مدري شنو" الخاصة بعيد ميلاد توما
+              خانة "المدري شنو" الخاصة بعيد ميلاد مريتي
             </h1>
             <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-              رسالة سرّية، بس لقلب توما الي أحبّه اكثر من كل شي بهالدنيا.
+              بس لعيون توما الي أحبّهن اكثر من كل شي بهالدنيا.
             </p>
           </div>
           <motion.div
