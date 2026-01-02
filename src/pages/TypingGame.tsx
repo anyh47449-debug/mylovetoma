@@ -9,6 +9,16 @@ const SENTENCES = [
   "أنتي أجمل صدفة صارت في حياتي",
   "ضحكتك هي الصوت المفضل عندي",
   "معاك أحس الدنيا أبسط وأحلى",
+  "اموت عليج",
+  "اعشقج",
+  "اموت عله شعرج",
+  "اريد حلك",
+  "تريدين جاي",
+  "ادري المدري شننو كي ومو ذاك الواو بس يعني والله احبج",
+  "اريد بنوته",
+  "بتول كي",
+  "الذكاء الاصطناعي خسيس",
+  "هعيهيعهيعهيعيهعي",
 ];
 
 const GAME_DURATION = 30; // ثواني
@@ -93,10 +103,10 @@ const TypingGame = () => {
       <section className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-10 md:px-6">
         <header className="space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            سباق رسائل الحب ⌨️
+            سباق كتابه ....الذكاء الاصطاعي كي وبتول كي
           </h1>
           <p className="text-sm text-muted-foreground">
-            عندك 30 ثانية تكتبين أكبر عدد ممكن من الحروف الصحيحة في جمل لطيفة.
+            عندج 30 ثانية تكتبين أكبر عدد ممكن من الحروف الصحيحة في جمل لطيفة مثل عيونج.
           </p>
         </header>
 
@@ -114,13 +124,10 @@ const TypingGame = () => {
             </div>
 
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-primary transition-[width]"
-                style={{ width: `${progress}%` }}
-              />
+              <div className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${progress}%` }} />
             </div>
 
-            <CardTitle className="text-base">اكتبي الجملة الظاهرة قدامك</CardTitle>
+            <CardTitle className="text-base">اكتبي الجملة الظاهرة قدامج وبس </CardTitle>
             <CardDescription className="text-xs text-muted-foreground sm:text-sm">
               كل ما خلصتي جملة كاملة، يطلع لك سطر جديد تلقائيًا.
             </CardDescription>
@@ -156,7 +163,7 @@ const TypingGame = () => {
               {isRunning ? "إعادة من جديد" : "ابدأي السباق"}
             </Button>
             <p className="text-[11px] text-muted-foreground sm:text-xs">
-              تقدرين تتحدين شريكك: كل واحد يلعب جولة وتشوفون مين يطلع بأعلى عدد حروف.
+              تقدرين تتحدين شريكك: كل واحد يلعب جولة وتشوفون مين يطلع بأعلى عدد حروف...انا فايز مايحتاج.
             </p>
           </CardFooter>
         </Card>
