@@ -71,11 +71,7 @@ const MemoryGame = () => {
 
       if (firstTile.icon === secondTile.icon) {
         // تطابق
-        setTiles((prev) =>
-          prev.map((tile, i) =>
-            i === first || i === second ? { ...tile, matched: true } : tile,
-          ),
-        );
+        setTiles((prev) => prev.map((tile, i) => (i === first || i === second ? { ...tile, matched: true } : tile)));
         setTimeout(() => setOpenTiles([]), 400);
       } else {
         // مو متطابقين
@@ -97,7 +93,7 @@ const MemoryGame = () => {
       <section className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-10 md:px-6">
         <header className="space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            لعبة كروت القلوب 🎴
+            والله لو اعرف ليش يكتب القلوب بكل اسم وانرجع اعدل بالكود خره بالعرق...لعبة كروت القلوب
           </h1>
           <p className="text-sm text-muted-foreground">
             افتحي الكروت المقلوبة وحاولي تجمعين كل زوج من الأيقونات المتشابهة بأقل عدد حركات.
@@ -125,15 +121,11 @@ const MemoryGame = () => {
             <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
               <div className="rounded-md border border-border/70 bg-muted/40 p-3">
                 <p className="text-[11px] text-muted-foreground">أفضل وقت لك</p>
-                <p className="text-lg font-semibold text-foreground">
-                  {bestTime != null ? `${bestTime}s` : "—"}
-                </p>
+                <p className="text-lg font-semibold text-foreground">{bestTime != null ? `${bestTime}s` : "—"}</p>
               </div>
               <div className="rounded-md border border-border/70 bg-muted/40 p-3">
                 <p className="text-[11px] text-muted-foreground">أقل حركات مسجلة</p>
-                <p className="text-lg font-semibold text-foreground">
-                  {bestMoves != null ? bestMoves : "—"}
-                </p>
+                <p className="text-lg font-semibold text-foreground">{bestMoves != null ? bestMoves : "—"}</p>
               </div>
             </div>
           </CardHeader>
