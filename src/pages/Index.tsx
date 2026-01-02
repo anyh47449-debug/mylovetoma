@@ -13,6 +13,7 @@ const Index = () => {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const gamesSfxRef = useRef<HTMLAudioElement | null>(null);
 
   const LYRICS_TIMED = [
     { time: 0, text: "♪♪♪" },
@@ -118,6 +119,19 @@ const Index = () => {
     setExtraEvents(events);
   }, [extraEvents.length]);
 
+  // Preload main love music & games sfx for instant playback on click
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.load();
+    }
+    if (!gamesSfxRef.current) {
+      const gamesAudio = new Audio(marioCoinSfx);
+      gamesAudio.volume = 0.6;
+      gamesAudio.load();
+      gamesSfxRef.current = gamesAudio;
+    }
+  }, []);
+
   useEffect(() => {
     let frameId: number;
 
@@ -160,19 +174,31 @@ const Index = () => {
   }, [isMusicPlaying, extraEvents]);
 
   const playSfx = (type: "games" | "memories" | "letter") => {
-    const sources: Record<typeof type, string> = {
-      games: marioCoinSfx,
+    if (type === "games") {
+      const audio = gamesSfxRef.current ?? new Audio(marioCoinSfx);
+      if (!gamesSfxRef.current) {
+        gamesSfxRef.current = audio;
+        audio.load();
+      }
+      audio.currentTime = 0;
+      audio.volume = 0.6;
+      void audio.play().catch(() => {
+        // ignore play errors (e.g. if user blocked sound)
+      });
+      return;
+    }
+
+    const sources: Record<Exclude<typeof type, "games">, string> = {
       memories: "/audio/sfx-memories.mp3",
       letter: "/audio/sfx-letter.mp3",
     } as const;
 
-    const audio = new Audio(sources[type]);
+    const audio = new Audio(sources[type as Exclude<typeof type, "games">]);
     audio.volume = 0.6;
     void audio.play().catch(() => {
       // ignore play errors (e.g. if user blocked sound)
     });
   };
-
   const handleGoToMiniGames = () => {
     setIsTransitioningToGames(true);
     playSfx("games");
