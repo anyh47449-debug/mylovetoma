@@ -14,7 +14,7 @@ const CherryGame = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      <h1 className="sr-only">ميني غيمز فعلية بسيطة بينك وبين توما</h1>
+      <h1 className="sr-only">ميني غيمز شافطه الي ولمريتي</h1>
 
       <div
         aria-hidden
@@ -29,9 +29,7 @@ const CherryGame = () => {
               <span>toma galaxy · real mini games</span>
             </div>
             <h2 className="text-lg font-semibold text-foreground">ميني غيمز حقيقية وسريعة</h2>
-            <p className="text-xs text-muted-foreground">
-              اختاري لعبة واحدة، عدّي الوقت أو النقاط، وتحدّوا بعض أنتي وتوما مين يفوز أكثر.
-            </p>
+            <p className="text-xs text-muted-foreground">اختاري لعبة واحدة، وضيعي وقتج الجميل والثمين.</p>
           </div>
 
           <Link
@@ -54,7 +52,7 @@ const CherryGame = () => {
                 لعبة تجميع الكرز
               </TabButton>
               <TabButton id="spam" activeTab={activeTab} onClick={setActiveTab}>
-                لعبة لغز القلوب
+                لعبة لغز شافط
               </TabButton>
             </div>
 
@@ -75,9 +73,7 @@ const CherryGame = () => {
               <li>سجّلي النقاط أو الوقت لك وله في ورقة أو نوت بالجوال وتحدّوا بعض.</li>
               <li>كل مرة تملّون، بدّلوا اللعبة أو سووا ريمي ماتش على نفس اللعبة.</li>
             </ul>
-            <p className="pt-1 text-[0.7rem] text-muted-foreground">
-              لو حبيتي النمط هذا، نقدر نضيف ألعاب زيادة (متاهة بسيطة، لعبة ذاكرة، إلخ) لاحقاً.
-            </p>
+            <p className="pt-1 text-[0.7rem] text-muted-foreground">اريد حلك.</p>
           </aside>
         </section>
       </main>
@@ -97,9 +93,7 @@ const TabButton = ({ id, activeTab, onClick, children }: TabButtonProps) => (
     type="button"
     onClick={() => onClick(id)}
     className={`rounded-full px-4 py-1.5 transition ${
-      activeTab === id
-        ? "bg-primary text-primary-foreground shadow"
-        : "text-muted-foreground hover:bg-background/40"
+      activeTab === id ? "bg-primary text-primary-foreground shadow" : "text-muted-foreground hover:bg-background/40"
     }`}
   >
     {children}
@@ -187,7 +181,7 @@ const HeartCatchGame = () => {
             <span>Game · صيد القلوب</span>
           </p>
           <p className="text-[0.75rem] text-muted-foreground">
-            كل شوي يطلع قلب في مربع مختلف. حاولي تضغطينه قبل يروح. أنتي وتوما تتسابقون مين يجيب سكُور أعلى خلال 30 ثانية.
+            كل شوي يطلع قلب في مربع مختلف. حاولي تضغطينه قبل يروح.والله مادري جت افكر من سويت هيج لعبات يعني كي.
           </p>
         </div>
         <button
@@ -231,7 +225,7 @@ const HeartCatchGame = () => {
 
       {!running && timeLeft === 0 && (
         <p className="pt-1 text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
-          انتهت الجولة! اكتبي سكُورك وسكُور توما، وشوفي مين بطل صيد القلوب.
+          انتهت الجولة!......احبج.
         </p>
       )}
     </div>
@@ -302,8 +296,8 @@ const ReactionGame = () => {
             <span>Game · تجميع الكرز</span>
           </p>
           <p className="text-[0.75rem] text-muted-foreground">
-            حرّكي الشخصية الصغيرة داخل الشبكة عشان تجمعين أكبر عدد ممكن من الكرز قبل ما تخلص حركاتك. أنتي وتوما
-            تشوفون مين يقدر يخطط أحسن.
+            حرّكي الشخصية الصغيرة داخل الشبكة عشان تجمعين أكبر عدد ممكن من الكرز قبل ما تخلص حركاتك. هاي جانت المفروض
+            تكونن ماريو والله كي
           </p>
         </div>
         <button
@@ -335,11 +329,7 @@ const ReactionGame = () => {
               key={index}
               className="flex items-center justify-center rounded-lg border border-border/60 bg-background/80 text-sm"
             >
-              {isPlayer ? (
-                <span aria-hidden>🧸</span>
-              ) : hasCherry ? (
-                <span aria-hidden>🍒</span>
-              ) : null}
+              {isPlayer ? <span aria-hidden>🧸</span> : hasCherry ? <span aria-hidden>🍒</span> : null}
             </div>
           );
         })}
@@ -381,9 +371,7 @@ const ReactionGame = () => {
       </div>
 
       {isOver && (
-        <p className="pt-1 text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
-          الجولة انتهت! سجّلي كم كرز جمعتي أنتي وتوما، وشوفي مين بطل تخطيط المسار.
-        </p>
+        <p className="pt-1 text-center text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">الجولة انتهت!هم احبج.</p>
       )}
     </div>
   );
@@ -436,8 +424,8 @@ const HeartSpamGame = () => {
             <span>Game · لغز القلوب</span>
           </p>
           <p className="text-[0.75rem] text-muted-foreground">
-            كل خانة فيها قلب يطفي ويولع، وإذا ضغطتي وحدة يتأثر معها جيرانها. الهدف تضوين كل القلوب بأقل عدد
-            ممكن من الحركات.
+            كل خانة فيها قلب يطفي ويولع، وإذا ضغطتي وحدة يتأثر معها جيرانها. الهدف تضوين كل القلوب بأقل عدد ممكن من
+            الحركات.
           </p>
         </div>
         <button
