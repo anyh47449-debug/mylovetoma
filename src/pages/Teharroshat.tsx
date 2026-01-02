@@ -1,49 +1,111 @@
 import { motion } from "framer-motion";
 
-const lovePhrases = [
-  "I love you (English)",
-  "أحبك (Arabic)",
-  "Je t'aime (French)",
-  "Te amo (Spanish)",
-  "Ti amo (Italian)",
-  "Ich liebe dich (German)",
-  "Eu te amo (Portuguese)",
-  "Я тебя люблю (Russian)",
-  "愛してる (Japanese)",
-  "사랑해 (Korean)",
-  "我爱你 (Chinese – Simplified)",
-  "我愛你 (Chinese – Traditional)",
-  "Ik hou van jou (Dutch)",
-  "Jeg elsker deg (Norwegian)",
-  "Te iubesc (Romanian)",
-  "Seni seviyorum (Turkish)",
-  "Σ' αγαπώ (Greek)",
-  "Ich liebe di (Swiss German)",
-  "T'estimo (Catalan)",
-  "Te dua (Albanian)",
+type PhraseGroup = {
+  group: string;
+  phrases: string[];
+};
+
+const lovePhraseGroups: PhraseGroup[] = [
+  {
+    group: "أوروبا",
+    phrases: [
+      "Je t'aime (French)",
+      "Te amo (Spanish)",
+      "Ti amo (Italian)",
+      "Ich liebe dich (German)",
+      "Ik hou van jou (Dutch)",
+      "Jeg elsker deg (Norwegian)",
+      "Te iubesc (Romanian)",
+      "Seni seviyorum (Turkish)",
+      "Σ' αγαπώ (Greek)",
+      "Ich liebe di (Swiss German)",
+      "T'estimo (Catalan)",
+      "Te dua (Albanian)",
+    ],
+  },
+  {
+    group: "آسيا",
+    phrases: [
+      "أحبك (Arabic)",
+      "愛してる (Japanese)",
+      "사랑해 (Korean)",
+      "我爱你 (Chinese – Simplified)",
+      "我愛你 (Chinese – Traditional)",
+      "मैं तुमसे प्यार करता हूँ / करती हूँ (Hindi)",
+      "ฉันรักคุณ (Thai)",
+      "Aku cinta kamu (Indonesian)",
+      "Saranghaeyo (Korean – formal)",
+    ],
+  },
+  {
+    group: "الأمريكتان",
+    phrases: [
+      "I love you (English)",
+      "Eu te amo (Portuguese – Brazil)",
+      "Te quiero (Spanish – Latin America)",
+      "Mi ta stimabo (Papiamento)",
+    ],
+  },
+  {
+    group: "أفريقيا وباقي العالم",
+    phrases: [
+      "Nakupenda (Swahili)",
+      "Ngiyakuthanda (Zulu)",
+      "Ek is lief vir jou (Afrikaans)",
+      "Aloha wau ia 'oe (Hawaiian)",
+    ],
+  },
 ];
 
-const birthdayPhrases = [
-  "Happy Birthday (English)",
-  "عيد ميلاد سعيد (Arabic)",
-  "Joyeux anniversaire (French)",
-  "Feliz cumpleaños (Spanish)",
-  "Buon compleanno (Italian)",
-  "Alles Gute zum Geburtstag (German)",
-  "Feliz aniversário (Portuguese)",
-  "С днем рождения (Russian)",
-  "お誕生日おめでとう (Japanese)",
-  "생일 축하해 (Korean)",
-  "生日快乐 (Chinese – Simplified)",
-  "生日快樂 (Chinese – Traditional)",
-  "Gefeliciteerd met je verjaardag (Dutch)",
-  "Gratulerer med dagen (Norwegian)",
-  "La multi ani (Romanian)",
-  "Doğum günün kutlu olsun (Turkish)",
-  "Χρόνια πολλά (Greek)",
-  "Alles Gueti zum Geburtstag (Swiss German)",
-  "Per molts anys (Catalan)",
-  "Gëzuar ditëlindjen (Albanian)",
+const birthdayPhraseGroups: PhraseGroup[] = [
+  {
+    group: "أوروبا",
+    phrases: [
+      "Joyeux anniversaire (French)",
+      "Feliz cumpleaños (Spanish)",
+      "Buon compleanno (Italian)",
+      "Alles Gute zum Geburtstag (German)",
+      "Gefeliciteerd met je verjaardag (Dutch)",
+      "Gratulerer med dagen (Norwegian)",
+      "La multi ani (Romanian)",
+      "Doğum günün kutlu olsun (Turkish)",
+      "Χρόνια πολλά (Greek)",
+      "Alles Gueti zum Geburtstag (Swiss German)",
+      "Per molts anys (Catalan)",
+      "Gëzuar ditëlindjen (Albanian)",
+    ],
+  },
+  {
+    group: "آسيا",
+    phrases: [
+      "عيد ميلاد سعيد (Arabic)",
+      "お誕生日おめでとう (Japanese)",
+      "생일 축하해 (Korean)",
+      "生日快乐 (Chinese – Simplified)",
+      "生日快樂 (Chinese – Traditional)",
+      "जन्मदिन मुबारक हो (Hindi)",
+      "สุขสันต์วันเกิด (Thai)",
+      "Selamat ulang tahun (Indonesian)",
+    ],
+  },
+  {
+    group: "الأمريكتان",
+    phrases: [
+      "Happy Birthday (English)",
+      "Feliz aniversário (Portuguese – Brazil)",
+      "Feliz cumpleaños (Spanish – Latin America)",
+      "Happy Earthstrong (Caribbean English)",
+    ],
+  },
+  {
+    group: "أفريقيا وباقي العالم",
+    phrases: [
+      "Herzlichen Glückwunsch zum Geburtstag (German – extended)",
+      "Veels geluk met jou verjaarsdag (Afrikaans)",
+      "Ndinokushuvira zuva rekuzvarwa rakanaka (Shona)",
+      "Happy bornday (Slang)",
+    ],
+  },
 ];
 
 const Teharroshat = () => {
@@ -88,16 +150,23 @@ const Teharroshat = () => {
               <p className="text-xs text-muted-foreground">
                 كل سطر هنا يقول نفس الشيء: أنا متيم بيج، حتى لغات العالم كلها صارت تنطقها.
               </p>
-              <ul className="mt-3 max-h-80 space-y-1.5 overflow-y-auto pr-1 text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
-                {lovePhrases.map((phrase) => (
-                  <li
-                    key={phrase}
-                    className="hover-scale rounded-full border border-border/40 bg-background/60 px-3 py-1 text-start shadow-sm"
-                  >
-                    {phrase}
-                  </li>
+              <div className="mt-3 max-h-80 space-y-3 overflow-y-auto pr-1 text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
+                {lovePhraseGroups.map((group) => (
+                  <div key={group.group} className="space-y-1.5">
+                    <h3 className="text-[0.7rem] font-semibold text-muted-foreground/90">{group.group}</h3>
+                    <ul className="space-y-1.5">
+                      {group.phrases.map((phrase) => (
+                        <li
+                          key={phrase}
+                          className="hover-scale rounded-full border border-border/40 bg-background/60 px-3 py-1 text-start shadow-sm"
+                        >
+                          {phrase}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </motion.article>
 
@@ -118,16 +187,23 @@ const Teharroshat = () => {
               <p className="text-xs text-muted-foreground">
                 هنا نفس الفكرة بس مخصوصة لعيد ميلادج البنفسجي، كل لغة قاعدة تحتفل بيج بطريقتها.
               </p>
-              <ul className="mt-3 max-h-80 space-y-1.5 overflow-y-auto pr-1 text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
-                {birthdayPhrases.map((phrase) => (
-                  <li
-                    key={phrase}
-                    className="hover-scale rounded-full border border-border/40 bg-background/60 px-3 py-1 text-start shadow-sm"
-                  >
-                    {phrase}
-                  </li>
+              <div className="mt-3 max-h-80 space-y-3 overflow-y-auto pr-1 text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
+                {birthdayPhraseGroups.map((group) => (
+                  <div key={group.group} className="space-y-1.5">
+                    <h3 className="text-[0.7rem] font-semibold text-muted-foreground/90">{group.group}</h3>
+                    <ul className="space-y-1.5">
+                      {group.phrases.map((phrase) => (
+                        <li
+                          key={phrase}
+                          className="hover-scale rounded-full border border-border/40 bg-background/60 px-3 py-1 text-start shadow-sm"
+                        >
+                          {phrase}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </motion.article>
         </section>
