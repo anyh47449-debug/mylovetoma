@@ -21,9 +21,7 @@ const MiniGames = () => {
             <span>toma galaxy · mini games</span>
           </div>
           <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">
-              هنا كوكب الألعاب البنفسجي حقّك أنتي وتوما؛ اختاري اللعبة اللي تعجبك وخلي قلبك يلعب قبال قلبه.
-            </p>
+            <p className="text-sm text-muted-foreground"></p>
           </div>
         </header>
 
@@ -163,7 +161,8 @@ const RomanticMiniGamesCard = () => {
         </div>
         <h2 className="text-base font-semibold text-foreground">ثلاث ميني غيمز ناعمة لتوما</h2>
         <p className="text-xs text-muted-foreground">
-          غرفة صغيرة فيها ثلاث ألعاب: تحديات حب، أسئلة ذكريات، وعدّاد قلوب. ما فيها منصات ولا جري، بس كلام ناعم يطلّع اللي في قلبك.
+          غرفة صغيرة فيها ثلاث ألعاب: تحديات حب، أسئلة ذكريات، وعدّاد قلوب. ما فيها منصات ولا جري، بس كلام ناعم يطلّع
+          اللي في قلبك.
         </p>
       </div>
       <div className="mt-4 space-y-3">
@@ -198,4 +197,3 @@ const RomanticMiniGamesCard = () => {
 };
 
 export default MiniGames;
-
