@@ -345,7 +345,7 @@ const Index = () => {
             ) : (
               <Music className="h-3.5 w-3.5 text-primary" aria-hidden />
             )}
-            <span className="hidden sm:inline">موسيقى الحب</span>
+            <span className="hidden sm:inline">اقنيه</span>
           </button>
 
           <audio
@@ -525,16 +525,16 @@ const Index = () => {
                   <Gamepad2 className="h-3.5 w-3.5 text-primary" aria-hidden />
                   <span>Mini Games · ألعاب حب لتوما</span>
                 </div>
-                <h3 className="text-sm font-semibold text-foreground">خانة الميني غيمز البنفسجية</h3>
+                <h3 className="text-sm font-semibold text-foreground">العاب لسمجتي الحلوه</h3>
                 <p className="text-xs text-muted-foreground">
-                  خانة الألعاب الخاصة بتوما: كل ميني غيم هناك تكمل قصة حبّنا البنفسجية بطريقتها.
+                  هي العاب عاوية بس يعني هذا الي كدرت علي خلال فتره كي بسيطه احبج يعني تونسي
                 </p>
                 <button
                   type="button"
                   onClick={handleGoToMiniGames}
                   className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  ادخلي صفحة الألعاب الكاملة
+                  ادخلي صفحة الألعاب
                   <Gamepad2 className="h-3.5 w-3.5" aria-hidden />
                 </button>
               </div>
@@ -549,11 +549,11 @@ const Index = () => {
               <div className="relative flex flex-col gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
                   <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
-                  <span>Teasing · تحرشات ناعمة</span>
+                  <span>Teasing · تحرشات</span>
                 </div>
                 <h3 className="text-sm font-semibold text-foreground">تحرشات</h3>
                 <p className="text-xs text-muted-foreground">
-                  مساحة مخصصة لكل الكلام القليل الأدب اللطيف، نظرات، جمل قصيرة، وتحشيش خفيف موجه بس لتوما.
+                  مساحة مخصصة لكل الكلام القليل الأدب هعيهيعهعيهعيهعيهعيهعيهع.
                 </p>
               </div>
             </article>
@@ -567,10 +567,10 @@ const Index = () => {
               <div className="relative flex flex-col gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
                   <Heart className="h-3.5 w-3.5 text-accent" aria-hidden />
-                  <span>Mystery · خانة مدري شنو</span>
+                  <span>Mystery · خانة المدري شنو</span>
                 </div>
-                <h3 className="text-sm font-semibold text-foreground">مدري شنو</h3>
-                <p className="text-xs text-muted-foreground">خانة غامضة تحولت لرسالة حب سرّية مكتوبة بس لتوما.</p>
+                <h3 className="text-sm font-semibold text-foreground">المدري شنو</h3>
+                <p className="text-xs text-muted-foreground">مدري شنو.</p>
                 <button
                   type="button"
                   onClick={(e) => {
@@ -579,7 +579,7 @@ const Index = () => {
                   }}
                   className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-dashed border-border/70 bg-background/40 px-3 py-1.5 text-[0.7rem] font-semibold text-muted-foreground/90 backdrop-blur-sm"
                 >
-                  افتحي رسالة "مدري شنو" السرّية
+                  مدري ششنو
                 </button>
               </div>
             </article>
