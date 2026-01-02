@@ -44,9 +44,7 @@ const SpamHeartsGame = () => {
     <main className="min-h-screen bg-background">
       <section className="mx-auto flex max-w-xl flex-col gap-6 px-4 py-10 md:px-6">
         <header className="space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            لعبة سبام القلوب 💘
-          </h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">لعبة سبام القلوب 💘</h1>
           <p className="text-sm text-muted-foreground">
             عندك {DURATION} ثواني بس، سبّمي على الزر قد ما تقدرين وشوفي كم قلب قدرتِ تجمعين.
           </p>
@@ -56,7 +54,7 @@ const SpamHeartsGame = () => {
           <CardHeader className="space-y-3">
             <CardTitle className="text-base">من اللي يقدر يسبّم أكثر؟</CardTitle>
             <CardDescription className="text-xs text-muted-foreground sm:text-sm">
-              أنتي وتوما تلعبون بالتناوب، وكل واحد يحاول يكسر رقم الثاني.
+              اني اقوى منج مايحتاج يعني{" "}
             </CardDescription>
 
             <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
@@ -71,10 +69,7 @@ const SpamHeartsGame = () => {
             </div>
 
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-primary transition-[width]"
-                style={{ width: `${progress}%` }}
-              />
+              <div className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${progress}%` }} />
             </div>
           </CardHeader>
 
@@ -106,7 +101,7 @@ const SpamHeartsGame = () => {
               {isRunning ? "إعادة من جديد" : "ابدأي جولة سبام"}
             </Button>
             <p className="text-[11px] text-muted-foreground sm:text-xs">
-              كل واحد منكم يلعب جولة، وسجّلوا أعلى رقم قلوب عشان تعرفون مين السبّام الحقيقي.
+              احبج هنا الذكاء الاصطناعي كاتب هواي اشياء كي مسحتهن
             </p>
           </CardFooter>
         </Card>
