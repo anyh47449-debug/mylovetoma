@@ -125,8 +125,7 @@ const Teharroshat = () => {
           >
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Soft teasing · تحرشات حب</p>
             <p className="text-sm text-[hsl(var(--romantic-text-soft))]">
-              هذه الصفحة مخصصة للتحرشات النظيفة: نفس الجملة مرتين، مرة تقول أحبج بكل اللغات، ومرة تهنّي توما بعيد ميلاده
-              بكل اللغات .
+              هذه الصفحة مخصصة للتحرشات ويعنني شسمه نسيت يعني مدري شكتب هنا فاا جاي امضرط
             </p>
           </motion.div>
         </section>
