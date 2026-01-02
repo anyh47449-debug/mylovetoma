@@ -46,13 +46,7 @@ const MadriShnu = () => {
   };
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-      <audio
-        ref={audioRef}
-        src={birthdayMusic}
-        loop
-        autoPlay
-        className="hidden"
-      />
+      <audio ref={audioRef} src={birthdayMusic} loop autoPlay className="hidden" />
       {/* خلفيات وأجواء عيد ميلاد */}
       <div className="pointer-events-none fixed inset-0 -z-40 bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.38),_transparent_58%),radial-gradient(circle_at_bottom,_hsl(var(--accent)/0.3),_transparent_60%)]" />
       {/* هالة كيكة كبيرة في الخلفية */}
@@ -220,7 +214,7 @@ const MadriShnu = () => {
                 transition={{ duration: 0.5, delay: 0.25 }}
               >
                 <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
-                <span>من قلب يحبج اكثر مما يتخيل الكون</span>
+                <span>من قلب يحبج اكثر مما تتخيلي ياكي احبج</span>
               </motion.div>
 
               <motion.div
@@ -257,6 +251,10 @@ const MadriShnu = () => {
                   "احبج يا روحي، اموت عليج، اعشقج كلش هواي، انت فوك كل غزل وسبب كل شعور حلو احس بيه، انت اول دفعه وحافز يجيني اكمل بيه حياتي وشغلي وافكر بمستقبلي. انت مستقبلي وحياتي وروحي وعقلي وقلبي وكلشي حلو بحياتي.",
                   "طولج الحلو وشعراتج الناعمات، خرب روحج، اريد ازمج واجعصج جعصصصصصصصصصصصص. صدك يعني فدوه اروحلج، اموت بيج اموت بيج اموت بيج يا توما، احبج.",
                   "اعذريني عله المدري شنو هذا، انت تستاهلين اضعاف، بس والله لوما هذا الذكاء الاصطناعي والاشتراك، جان كل شوي اغير وافكار اكثر. بس الأهم: أحبج هواي.",
+                  "اريد حلكا قويا منج لان انت سبب كلشي حلو بحياتي ياحلوه اموت بيج واعشق هذا اليوم ",
+                  "اسف لا انا متاخر دائما بكلشي وياج واسف عله كلشي كي سويته وزعلج احب كل لحظات حياتي وياج احبج من قلبي ادري هذا الحجي مكرر",
+                  "بس كلما اكرره هو طالع من قلبي يعني اننت صدك احلا شي بكلشي تستاهلين بوسات وحلوك وفراشات وجمال وطلعات وفرات احبجج يا احلا اهداف حياتي",
+                  "كل عام واتن بالف خير ياعمري احبج",
                 ].map((paragraph, index) => (
                   <motion.p
                     key={index}
@@ -275,7 +273,7 @@ const MadriShnu = () => {
 
         {/* فوتر بسيط */}
         <footer className="flex items-center justify-between gap-4 pt-2 text-xs text-muted-foreground">
-          <span>من قلب شايل اسم توما بكل نبضة.</span>
+          <span>احبج مريتي.</span>
           <Link
             to="/"
             className="hover-scale inline-flex items-center gap-1 rounded-full border border-border/70 bg-background/70 px-3 py-1 font-medium text-[0.7rem] hover:bg-secondary/60"
