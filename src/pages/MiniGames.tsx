@@ -1,4 +1,4 @@
-import { useState } from "react";
+ي اشياء قوimport { useState } from "react";
 import { Heart, Gamepad2, Sparkles, MessagesSquare, Stars } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import marioCoinSfx from "../assets/mario-coin.mp3";
@@ -159,10 +159,9 @@ const RomanticMiniGamesCard = () => {
           <Gamepad2 className="h-3.5 w-3.5 text-primary" aria-hidden />
           <span>Game 1 · Soft Mini Games</span>
         </div>
-        <h2 className="text-base font-semibold text-foreground">ثلاث ميني غيمز ناعمة لتوما</h2>
+        <h2 className="text-base font-semibold text-foreground">ماعرف شسمي هاي الخانه</h2>
         <p className="text-xs text-muted-foreground">
-          غرفة صغيرة فيها ثلاث ألعاب: تحديات حب، أسئلة ذكريات، وعدّاد قلوب. ما فيها منصات ولا جري، بس كلام ناعم يطلّع
-          اللي في قلبك.
+          والله مدري شجنت اسوي هنا ردت اسوي العاب احلا بس الذكاء الاصطناعي خرب كلشي من نقلت البروجكت وعانيت معاناة عالمية حرفيا جنت مسوي لعبة ماريو يجمع كرز 
         </p>
       </div>
       <div className="mt-4 space-y-3">
@@ -171,10 +170,9 @@ const RomanticMiniGamesCard = () => {
           onClick={handleEnterGame}
           className="w-full rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
         >
-          ادخلي غرفة الميني غيمز
-        </button>
+طبي للغرفه ...مالالعاب هعهعهع        </button>
         <p className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-          اختاري اللعبة اللي تعجبك من فوق: تحدّي، سؤال، أو عدّاد قلوب… وكل شيء مصمَّم علشان أنتي وتوما.
+          اختاري اللعبة اللي تعجبك من فوك وضيعي وقتج الثمين جدا هيعهيعيهع.
         </p>
       </div>
 
@@ -187,7 +185,7 @@ const RomanticMiniGamesCard = () => {
               <div className="absolute inset-4 rounded-2xl bg-[radial-gradient(circle_at_top,_hsl(var(--romantic-heart-soft)),_hsl(var(--accent)))] shadow-[0_0_25px_rgba(255,107,156,0.9)]" />
             </div>
             <p className="text-xs text-[hsl(var(--romantic-text-soft))]">
-              جاري فتح غرفة الميني غيمز الرومنسية… ركّزي في اللي يحس فيه قلبك 💜
+              جاري فتح غرفة الميني غيمز الشافطه احبج 💜 جثيررر احبج
             </p>
           </div>
         </div>
