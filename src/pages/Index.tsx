@@ -300,7 +300,7 @@ const Index = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
             >
-              استعدي لمملكة الألعاب البنفسجية… الكرز يتحول لعصا تحكم مخصوصة لتوما
+              مدري شنو تونسي احبج اموت عليج جدا جدا هواي
             </motion.p>
           </motion.div>
         </div>
