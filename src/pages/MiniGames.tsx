@@ -1,4 +1,4 @@
-ي اشياء قوimport { useState } from "react";
+import { useState } from "react";
 import { Heart, Gamepad2, Sparkles, MessagesSquare, Stars } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import marioCoinSfx from "../assets/mario-coin.mp3";
