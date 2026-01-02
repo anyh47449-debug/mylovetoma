@@ -597,6 +597,15 @@ const Index = () => {
             </article>
           </div>
         </motion.section>
+
+        {/* ملاحظة بسيطة لتوتاتي */}
+        <section className="w-full max-w-3xl animate-fade-in rounded-2xl border border-border/60 bg-card/80 px-5 py-4 text-xs text-muted-foreground shadow-[var(--romantic-card-glow)] backdrop-blur-xl sm:text-sm">
+          <p className="whitespace-pre-line leading-relaxed">
+            &quot;اسف كلش هواي انت تستاهلين شي اكبر منن هذا بهواي واعرف بي مكرر هواي
+احبج واموت عليج وكل عام وانت بخير ...التحديث الجاي يوم 19....ووعد هاي المره صدك مو مجرد تمضرط واذا ماسويته الج حق تكتليي
+احبج كلش كلش هواي توتاتيييي اسف وهم احبج&quot;
+          </p>
+        </section>
       </main>
     </div>
   );
