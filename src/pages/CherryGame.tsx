@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Gamepad2, Heart, Timer, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import FloatingHeartsBackground from "../components/FloatingHeartsBackground";
 
 // صفحة ميني غيمز فعلية بدون حكي طويل:
 // 1) لعبة صيد القلوب في شبكة مربعات
@@ -15,6 +16,8 @@ const CherryGame = () => {
   return (
     <div className="relative min-h-screen overflow-hidden">
       <h1 className="sr-only">ميني غيمز شافطه الي ولمريتي</h1>
+
+      <FloatingHeartsBackground />
 
       <div
         aria-hidden

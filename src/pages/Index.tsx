@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Heart, Sparkles, Gamepad2, Music, Pause, Cherry } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import marioCoinSfx from "../assets/mario-coin.mp3";
+import FloatingHeartsBackground from "../components/FloatingHeartsBackground";
 const Index = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
@@ -209,7 +210,7 @@ const Index = () => {
     }, 2300);
   };
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
       {/* SEO main heading */}
       <h1 className="sr-only">موقع هدية رومنسية بنفسجي لحبيبي توما مع تفاعل بصري مبهر وخانة ميني غيمز خاصة</h1>
 
@@ -223,22 +224,7 @@ const Index = () => {
       />
 
       {/* Floating romantic hearts background */}
-      <div className="romantic-hearts-layer transition-opacity duration-700 opacity-100" aria-hidden>
-        {Array.from({ length: 16 }).map((_, index) => (
-          <span
-            key={index}
-            className="floating-heart"
-            style={{
-              left: `${5 + ((index * 6) % 90)}%`,
-              animationDelay: `${index * 0.9}s`,
-              animationDuration: `${16 + (index % 5)}s`,
-              opacity: 0.35 + (index % 3) * 0.18,
-            }}
-          >
-            ♥
-          </span>
-        ))}
-      </div>
+      <FloatingHeartsBackground />
 
       {/* Floating random love messages layer */}
       {isMusicPlaying && activeExtraIndex !== null && extraEvents[activeExtraIndex] && (

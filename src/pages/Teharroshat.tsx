@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import FloatingHeartsBackground from "../components/FloatingHeartsBackground";
 
 type PhraseGroup = {
   group: string;
@@ -111,6 +112,7 @@ const birthdayPhraseGroups: PhraseGroup[] = [
 const Teharroshat = () => {
   return (
     <div className="relative min-h-screen overflow-hidden">
+      <FloatingHeartsBackground />
       {/* Hidden SEO heading */}
       <h1 className="sr-only">تحرشات حب رومانسية لتوما بكلمة أحبج وهابي بيرث داي بكل لغات العالم</h1>
 
