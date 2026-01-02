@@ -37,20 +37,23 @@ const MiniGames = () => {
                 <MessagesSquare className="h-3.5 w-3.5 text-accent" aria-hidden />
                 <span>Game 2 · Love Letters</span>
               </div>
-              <h2 className="text-base font-semibold text-foreground">رسائل حب عشوائية لتوما</h2>
+              <h2 className="text-base font-semibold text-foreground">
+                حان وقت اعذبج بما انو انت ماتعرفين تكتبين بالكيبورد بسرعه{" "}
+              </h2>
               <p className="text-xs text-muted-foreground">
-                لعبة كتابة سريعة: كل جولة جملة حب جديدة، حاولي تكتبينها بأقل أخطاء وفي وقت قصير.
+                لعبة كتابة سريعة: مادري همين منين اجيت بهاي الفكره بس اتذكر جان اكو موقع اتعلم بي اكتب سريع فااا كلت ليش
+                لا نعذب مريتي.
               </p>
               <button
                 type="button"
                 onClick={() => navigate("/games/typing")}
                 className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
               >
-                ادخلي لعبة الكتابة
+                ادخلي ويعني شسمه ... احبج
               </button>
             </div>
             <p className="mt-4 rounded-xl bg-secondary/40 px-3 py-2 text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-              مثال رسالة: "في كل مرّة أغمض عيني، المدينة الوحيدة اللي أشوفها هي مدينة اسمها توما." ✦
+              مثال رسالة: الرسائل عشوائية من الغباء الاصطناعي انا معلي ." ✦
             </p>
           </article>
 
@@ -159,9 +162,10 @@ const RomanticMiniGamesCard = () => {
           <Gamepad2 className="h-3.5 w-3.5 text-primary" aria-hidden />
           <span>Game 1 · Soft Mini Games</span>
         </div>
-        <h2 className="text-base font-semibold text-foreground">ماعرف شسمي هاي الخانه</h2>
+        <h2 className="text-base font-semibold text-foreground">ثلاث ميني غيمز ناعمة لتوما</h2>
         <p className="text-xs text-muted-foreground">
-          والله مدري شجنت اسوي هنا ردت اسوي العاب احلا بس الذكاء الاصطناعي خرب كلشي من نقلت البروجكت وعانيت معاناة عالمية حرفيا جنت مسوي لعبة ماريو يجمع كرز 
+          غرفة صغيرة فيها ثلاث ألعاب: تحديات حب، أسئلة ذكريات، وعدّاد قلوب. ما فيها منصات ولا جري، بس كلام ناعم يطلّع
+          اللي في قلبك.
         </p>
       </div>
       <div className="mt-4 space-y-3">
@@ -170,9 +174,10 @@ const RomanticMiniGamesCard = () => {
           onClick={handleEnterGame}
           className="w-full rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
         >
-طبي للغرفه ...مالالعاب هعهعهع        </button>
+          ادخلي غرفة الميني غيمز
+        </button>
         <p className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-          اختاري اللعبة اللي تعجبك من فوك وضيعي وقتج الثمين جدا هيعهيعيهع.
+          اختاري اللعبة اللي تعجبك من فوق: تحدّي، سؤال، أو عدّاد قلوب… وكل شيء مصمَّم علشان أنتي وتوما.
         </p>
       </div>
 
@@ -185,7 +190,7 @@ const RomanticMiniGamesCard = () => {
               <div className="absolute inset-4 rounded-2xl bg-[radial-gradient(circle_at_top,_hsl(var(--romantic-heart-soft)),_hsl(var(--accent)))] shadow-[0_0_25px_rgba(255,107,156,0.9)]" />
             </div>
             <p className="text-xs text-[hsl(var(--romantic-text-soft))]">
-              جاري فتح غرفة الميني غيمز الشافطه احبج 💜 جثيررر احبج
+              جاري فتح غرفة الميني غيمز الرومنسية… ركّزي في اللي يحس فيه قلبك 💜
             </p>
           </div>
         </div>
