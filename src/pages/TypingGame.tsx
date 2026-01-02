@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import FloatingHeartsBackground from "../components/FloatingHeartsBackground";
 
 const SENTENCES = [
   "أحبك أكثر مما أقدر أشرح بالكلام",
@@ -99,7 +100,8 @@ const TypingGame = () => {
   }, [target, input]);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen overflow-hidden bg-background">
+      <FloatingHeartsBackground />
       <section className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-10 md:px-6">
         <header className="space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">

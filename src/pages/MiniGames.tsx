@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Heart, Gamepad2, Sparkles, MessagesSquare, Stars } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import marioCoinSfx from "../assets/mario-coin.mp3";
+import FloatingHeartsBackground from "../components/FloatingHeartsBackground";
 const MiniGames = () => {
   const navigate = useNavigate();
   return (
     <div className="relative min-h-screen overflow-hidden">
       <h1 className="sr-only">صفحة الميني غيمز الرومنسية لتوما</h1>
+
+      <FloatingHeartsBackground />
 
       {/* subtle background glow */}
       <div

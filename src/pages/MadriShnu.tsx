@@ -4,6 +4,7 @@ import { Cake, Heart, Sparkles, Music2, PauseCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import birthdayMusic from "@/assets/HAPPY_BIRTHDAY_INSTRUMENTAL.mp3";
 import birthdayBg from "@/assets/madri-birthday-bg.jpg";
+import FloatingHeartsBackground from "../components/FloatingHeartsBackground";
 
 const MadriShnu = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -47,6 +48,9 @@ const MadriShnu = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <audio ref={audioRef} src={birthdayMusic} loop autoPlay className="hidden" />
+
+      <FloatingHeartsBackground />
+
       {/* خلفيات وأجواء عيد ميلاد */}
       <div className="pointer-events-none fixed inset-0 -z-40 bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.38),_transparent_58%),radial-gradient(circle_at_bottom,_hsl(var(--accent)/0.3),_transparent_60%)]" />
       {/* هالة كيكة كبيرة في الخلفية */}
