@@ -125,8 +125,8 @@ const Teharroshat = () => {
           >
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Soft teasing · تحرشات حب</p>
             <p className="text-sm text-[hsl(var(--romantic-text-soft))]">
-              هذه الصفحة مخصصة للتحرشات النظيفة: نفس الجملة مرتين، مرة تقول أحبج بكل اللغات، ومرة تهنّي توما بعيد ميلاده بكل
-              اللغات بعد.
+              هذه الصفحة مخصصة للتحرشات النظيفة: نفس الجملة مرتين، مرة تقول أحبج بكل اللغات، ومرة تهنّي توما بعيد ميلاده
+              بكل اللغات .
             </p>
           </motion.div>
         </section>
@@ -147,9 +147,7 @@ const Teharroshat = () => {
                 <span>احبج بكل لغات العالم</span>
               </div>
               <h2 className="text-sm font-semibold text-foreground">أحبج بكل اللغات</h2>
-              <p className="text-xs text-muted-foreground">
-                كل سطر هنا يقول نفس الشيء: أنا متيم بيج، حتى لغات العالم كلها صارت تنطقها.
-              </p>
+              <p className="text-xs text-muted-foreground">بعنيييييي أاحببججج اننجبي اموت عليج.</p>
               <div className="mt-3 max-h-80 space-y-3 overflow-y-auto pr-1 text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
                 {lovePhraseGroups.map((group) => (
                   <div key={group.group} className="space-y-1.5">
@@ -185,7 +183,7 @@ const Teharroshat = () => {
               </div>
               <h2 className="text-sm font-semibold text-foreground">هابي بيرث داي بكل اللغات</h2>
               <p className="text-xs text-muted-foreground">
-                هنا نفس الفكرة بس مخصوصة لعيد ميلادج البنفسجي، كل لغة قاعدة تحتفل بيج بطريقتها.
+                هنا نفس الفكرة بس مخصوصة لعيد ميلادج ، ويعني هابي بيرث دي وكذا.
               </p>
               <div className="mt-3 max-h-80 space-y-3 overflow-y-auto pr-1 text-[0.75rem] text-[hsl(var(--romantic-text-soft))]">
                 {birthdayPhraseGroups.map((group) => (
@@ -216,7 +214,7 @@ const Teharroshat = () => {
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
             className="mx-auto max-w-xl rounded-3xl border border-dashed border-border/70 bg-background/80 px-5 py-3 text-sm text-[hsl(var(--romantic-text-soft))] shadow-[var(--romantic-card-glow)] backdrop-blur-xl"
           >
-            احبج جذب ماكو تحرشات، من تكملين "مدري شنو" نتحرش هعيهعيعه
+            احبج جذب ماكو تحرشات، من تكملين "المدري شنو" نتحرش هعيهعيعه
           </motion.p>
         </section>
       </main>
