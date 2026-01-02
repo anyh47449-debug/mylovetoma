@@ -65,21 +65,20 @@ const MiniGames = () => {
                 <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
                 <span>Game 3 · Hearts Match</span>
               </div>
-              <h2 className="text-base font-semibold text-foreground">تطابق القلوب البنفسجية</h2>
+              <h2 className="text-base font-semibold text-foreground">لعبة تطابق شافطه مالصرصور يهعيهع</h2>
               <p className="text-xs text-muted-foreground">
-                لعبة كروت قلوب: اكتشفي مكان كل زوج متشابه بأقل عدد حركات وبأسرع وقت.
+                لعبة كروت: اكتشفي مكان كل زوج متشابه بأقل عدد حركات وبأسرع وقت...اني عندي رقم قياسي ماتكدرينن تكسري بكل
+                لعبة هنا .
               </p>
               <button
                 type="button"
                 onClick={() => navigate("/games/memory")}
                 className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
               >
-                ادخلي لعبة القلوب
+                ادخلي للعبة ويعني شسمه ...احب عيونج
               </button>
             </div>
-            <p className="mt-4 text-[0.7rem] text-muted-foreground/90">
-              هنا لاحقاً نضيف اختيارات مثل: "ألطف شيء تحبيه فيه"، "أول موقف ما نسيتيه"… إلخ.
-            </p>
+            <p className="mt-4 text-[0.7rem] text-muted-foreground/90">هذا تمضرط زايد احبج.</p>
           </article>
 
           {/* Game 4: Memory of Us */}
@@ -89,21 +88,19 @@ const MiniGames = () => {
                 <Stars className="h-3.5 w-3.5 text-accent" aria-hidden />
                 <span>Game 4 · Reaction Duel</span>
               </div>
-              <h2 className="text-base font-semibold text-foreground">تحدّي ردة الفعل</h2>
+              <h2 className="text-base font-semibold text-foreground">هاي اللعبة انا احبها </h2>
               <p className="text-xs text-muted-foreground">
-                شاشة تصير خضراء فجأة؛ أول واحدة تضغط أسرع تاخذ الجولة. اللعبة تحفظ أفضل زمن وصلتِ له.
+                ردة فعل سريعة بالضغط كامت قل الرقم كلما فزتي انا رقمي القياسي بيها 120.
               </p>
               <button
                 type="button"
                 onClick={() => navigate("/games/reaction")}
                 className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition hover:shadow-[var(--romantic-card-glow)]"
               >
-                ادخلي لعبة السرعة
+                ادخلي للعبة ويعني شسمه ...احب خصرج
               </button>
             </div>
-            <p className="mt-4 text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-              جربي تلعبين أكثر من جولة مع توما وشوفي مين أسرع واحد فيكم فعلًا.
-            </p>
+            <p className="mt-4 text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">انا اسرع منج مايحتاج تحاولين .</p>
           </article>
 
           {/* Game 5: Secret Message */}
@@ -114,10 +111,8 @@ const MiniGames = () => {
                 <Heart className="h-3.5 w-3.5 text-primary" aria-hidden />
                 <span>Game 5 · Spam Hearts</span>
               </div>
-              <h2 className="text-base font-semibold text-foreground">رسالة سبام القلوب</h2>
-              <p className="text-xs text-muted-foreground">
-                لعبة سريعة: سبّمي على زر القلب خلال وقت محدد، وشوفي كم قلب حب تقدرين تطلقين له.
-              </p>
+              <h2 className="text-base font-semibold text-foreground"> سبام القلوب</h2>
+              <p className="text-xs text-muted-foreground">لعبة عاويية للاسف من اختييار الغباء الاصطاعي</p>
               <button
                 type="button"
                 onClick={() => navigate("/games/spam-hearts")}
@@ -127,7 +122,7 @@ const MiniGames = () => {
               </button>
             </div>
             <p className="mt-4 text-[0.7rem] text-muted-foreground/90">
-              تقدرين تتحدين توما: كل واحد يلعب جولة وتشوفون مين يجمع قلوب أكثر في نفس الوقت.
+              وهم ماتكدريلي عنندي بيها رقم قياسي عبرت ال 100
             </p>
           </article>
         </section>
@@ -162,11 +157,8 @@ const RomanticMiniGamesCard = () => {
           <Gamepad2 className="h-3.5 w-3.5 text-primary" aria-hidden />
           <span>Game 1 · Soft Mini Games</span>
         </div>
-        <h2 className="text-base font-semibold text-foreground">ثلاث ميني غيمز ناعمة لتوما</h2>
-        <p className="text-xs text-muted-foreground">
-          غرفة صغيرة فيها ثلاث ألعاب: تحديات حب، أسئلة ذكريات، وعدّاد قلوب. ما فيها منصات ولا جري، بس كلام ناعم يطلّع
-          اللي في قلبك.
-        </p>
+        <h2 className="text-base font-semibold text-foreground">غرفه ....ايموجي شفه</h2>
+        <p className="text-xs text-muted-foreground">مدري شنو احبج والقران</p>
       </div>
       <div className="mt-4 space-y-3">
         <button
@@ -177,7 +169,8 @@ const RomanticMiniGamesCard = () => {
           ادخلي غرفة الميني غيمز
         </button>
         <p className="text-[0.7rem] text-[hsl(var(--romantic-text-soft))]">
-          اختاري اللعبة اللي تعجبك من فوق: تحدّي، سؤال، أو عدّاد قلوب… وكل شيء مصمَّم علشان أنتي وتوما.
+          اختاري اللعبة اللي تعجبك من فوق: ويعني هم الذكاء الاطاعيي خرب والله جنت خال هنا ماريو يجمع كرز ولعبة 2d مرتبه
+          خرا بالعراق.
         </p>
       </div>
 
@@ -189,9 +182,7 @@ const RomanticMiniGamesCard = () => {
               <div className="absolute inset-0 animate-[spin_1.2s_ease-in-out_forwards] rounded-full border-2 border-dashed border-[hsl(var(--primary))]" />
               <div className="absolute inset-4 rounded-2xl bg-[radial-gradient(circle_at_top,_hsl(var(--romantic-heart-soft)),_hsl(var(--accent)))] shadow-[0_0_25px_rgba(255,107,156,0.9)]" />
             </div>
-            <p className="text-xs text-[hsl(var(--romantic-text-soft))]">
-              جاري فتح غرفة الميني غيمز الرومنسية… ركّزي في اللي يحس فيه قلبك 💜
-            </p>
+            <p className="text-xs text-[hsl(var(--romantic-text-soft))]">جاري فتح غرفة الميني غيمز احبج 💜</p>
           </div>
         </div>
       )}
